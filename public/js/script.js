@@ -63,6 +63,8 @@ function initMobileMenu() {
   const hamburger = document.getElementById('hamburger');
   const menu = document.getElementById('mobile-menu');
 
+  if (!hamburger) return; // La página del escape room no tiene menú
+
   const setOpen = (open) => {
     menu.classList.toggle('open', open);
     document.body.classList.toggle('menu-open', open);
@@ -102,7 +104,48 @@ function initThemeSwitch() {
   });
 }
 
+// Sol de día o luna de noche, que aparece en el fondo al hacer scroll
+function initSky() {
+  const DAY_START_HOUR = 7;
+  const DAY_END_HOUR = 20;
+  const REVEAL_VIEWPORTS = 0.6; // Pantallas de scroll hasta que se ve del todo
+
+  const SUN = `
+    <svg viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="46" fill="currentColor" />
+      <path d="M100 12v28M100 160v28M12 100h28M160 100h28M38 38l20 20M142 142l20 20M38 162l20-20M142 58l20-20"
+        stroke="currentColor" stroke-width="10" stroke-linecap="round" />
+    </svg>
+  `;
+  const MOON = `
+    <svg viewBox="0 0 64 64">
+      <path fill="currentColor" d="M42 7A26 26 0 1 0 42 57 30 30 0 0 1 42 7Z" />
+    </svg>
+  `;
+
+  const sky = document.getElementById('sky');
+  const hour = new Date().getHours();
+  const isDay = hour >= DAY_START_HOUR && hour < DAY_END_HOUR;
+
+  sky.innerHTML = isDay ? SUN : MOON;
+  sky.classList.add(isDay ? 'sky-sun' : 'sky-moon');
+
+  const update = () => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    // En páginas cortas se revela con el scroll disponible
+    const revealDistance = Math.min(window.innerHeight * REVEAL_VIEWPORTS, maxScroll) || 1;
+    const progress = Math.min(window.scrollY / revealDistance, 1);
+
+    sky.style.setProperty('--sky-progress', progress);
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
 initCursor();
 initNavbar();
 initMobileMenu();
 initThemeSwitch();
+initSky();

@@ -17,6 +17,9 @@
   --ink-rgb: 253, 241, 238; /* Bordes y fondos translúcidos */
   --bg-rgb: 20, 12, 12;
   --accent-rgb: 255, 122, 89;
+  --sky-sun: #f5b94a;
+  --sky-moon: #e8e4d8;
+  --sky-opacity: 0.09;
 
   --radius: 12px;
   --radius-lg: 20px;
@@ -39,6 +42,9 @@
   --ink-rgb: 42, 35, 32;
   --bg-rgb: 250, 245, 236;
   --accent-rgb: 194, 65, 12;
+  --sky-sun: #f5b94a;
+  --sky-moon: #c3cbe0;
+  --sky-opacity: 0.11;
 }
 
 /* ---------- Reset ---------- */
@@ -52,6 +58,10 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 body {
@@ -153,6 +163,11 @@ main {
   font-weight: 500;
   color: var(--white2);
   transition: background var(--transition), color var(--transition);
+}
+
+.nav-links a[aria-current="page"] {
+  background: rgba(var(--ink-rgb), 0.08);
+  color: var(--accent);
 }
 
 .nav-links a:hover {
@@ -311,7 +326,7 @@ main {
   color: var(--accent);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .nav-links,
   .nav-socials {
     display: none;
@@ -328,6 +343,216 @@ main {
   body.menu-open {
     overflow: hidden;
   }
+}
+
+/* ---------- Fondo: sol o luna ---------- */
+/* La opacidad máxima de cada tema (--sky-opacity) mantiene el contraste del texto */
+.sky {
+  position: fixed;
+  top: 14vh;
+  right: -6vw;
+  z-index: -1;
+  width: clamp(220px, 38vw, 520px);
+  aspect-ratio: 1;
+  opacity: calc(var(--sky-progress, 0) * var(--sky-opacity));
+  transform: translateY(calc((1 - var(--sky-progress, 0)) * 3rem));
+  pointer-events: none;
+}
+
+.sky-sun {
+  color: var(--sky-sun);
+}
+
+.sky-moon {
+  color: var(--sky-moon);
+}
+
+.sky svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Secciones de página ---------- */
+.page-section {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: 3rem 2.5rem;
+  scroll-margin-top: 6rem;
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.section-text {
+  max-width: 65ch;
+  margin-bottom: 1rem;
+  color: var(--white2);
+}
+
+/* ---------- Tarjetas de proyecto ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: var(--dark);
+  border: 1px solid rgba(var(--ink-rgb), 0.08);
+  border-radius: var(--radius);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.card-text {
+  flex: 1;
+  color: var(--white2);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  padding: 0.15rem 0.6rem;
+  background: var(--dark2);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--white2);
+}
+
+.card-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------- Botones ---------- */
+.button-link {
+  display: inline-block;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--white);
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.button-link:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--black);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* ---------- Paneles y formularios ---------- */
+.panel {
+  max-width: 520px;
+  padding: 1.5rem;
+  background: var(--dark);
+  border: 1px solid rgba(var(--ink-rgb), 0.08);
+  border-radius: var(--radius-lg);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field input {
+  padding: 0.6rem 0.8rem;
+  background: var(--black);
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 400;
+  color: var(--white);
+}
+
+.field input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.form-error,
+.riddle-feedback {
+  min-height: 1.6em;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--accent);
+}
+
+/* ---------- Mi Pet ---------- */
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.stat progress {
+  width: 100%;
+  height: 10px;
+  accent-color: var(--accent);
+}
+
+/* ---------- Escape room ---------- */
+.riddle-progress {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+.riddle-question {
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 /* ---------- Footer ---------- */
@@ -373,7 +598,7 @@ main {
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-weight: 900;
-  font-size: clamp(4rem, 15vw, 12rem);
+  font-size: clamp(2rem, 13vw, 12rem);
   line-height: 1.4;
   color: transparent;
   -webkit-text-stroke: 1px rgba(var(--ink-rgb), 0.04);
@@ -382,6 +607,14 @@ main {
 }
 
 @media (max-width: 600px) {
+  .navbar {
+    padding-inline: 1.25rem;
+  }
+
+  .page-section {
+    padding-inline: 1.25rem;
+  }
+
   .footer-row {
     flex-direction: column;
     text-align: center;
@@ -456,6 +689,10 @@ html.cursor-hover .cursor-ring {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .sky {
+    transform: none;
   }
 
   *,

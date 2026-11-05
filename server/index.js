@@ -1,0 +1,66 @@
+// Punto de entrada: sirve la web de public/ y la API de Mi Pet.
+
+const path = require('node:path');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const { runMigrations } = require('../db/migrate');
+const { router: authRouter } = require('./auth');
+const { pool } = require('./db');
+const { router: petRouter } = require('./pet');
+
+const PORT = process.env.PORT || 3000;
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+
+const app = express();
+
+app.disable('x-powered-by');
+app.set('trust proxy', 1); // Railway va por delante: da la IP real y detecta HTTPS
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', database: Boolean(pool) });
+});
+
+app.use('/api', (req, res, next) => {
+  if (pool) {
+    next();
+    return;
+  }
+  res.status(503).json({ error: 'Mi Pet no está disponible: falta la base de datos.' });
+});
+
+app.use('/api', express.json({ limit: '10kb' }), cookieParser());
+app.use('/api/auth', authRouter);
+app.use('/api/pet', petRouter);
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Esta ruta no existe.' });
+});
+
+// extensions permite abrir /juegos además de /juegos.html
+app.use(express.static(PUBLIC_DIR, { extensions: ['html'] }));
+
+// Express identifica este middleware de errores por sus cuatro parámetros
+app.use((error, req, res, next) => {
+  if (error.status && error.status < 500) {
+    res.status(error.status).json({ error: 'La petición no es válida.' });
+    return;
+  }
+
+  console.error(error);
+  res.status(500).json({ error: 'Algo ha fallado en el servidor.' });
+});
+
+async function start() {
+  if (pool) {
+    await runMigrations(pool);
+  } else {
+    console.warn('Sin DATABASE_URL: la web funciona, pero Mi Pet queda desactivado.');
+  }
+
+  app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+}
+
+start().catch((error) => {
+  console.error('No se pudo arrancar:', error.message);
+  process.exit(1);
+});
