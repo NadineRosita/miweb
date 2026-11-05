@@ -14,7 +14,7 @@ public/                     Todo lo que ve el navegador
   juegos.html               Juegos
   aplicaciones.html         Aplicaciones
   mi-pet.html               Mi Pet: acceso y mascota
-  jaja-que-tonto.html       Escape room
+  jaja-que-tonto.html       Futuro escape room (de momento, «Próximamente»)
   css/styles.css            Estilos y colores de los temas
   imagenes/                 Imágenes y favicon
   js/
@@ -24,7 +24,6 @@ public/                     Todo lo que ve el navegador
     theme-init.js           Aplica el tema guardado antes de pintar la página
     inicio.js               Pinta las secciones de Inicio
     mi-pet.js               Lógica de la página Mi Pet
-    escape-room.js          Acertijos y lógica del escape room
 server/                     Backend
   index.js                  Arranque del servidor
   db.js                     Conexión a PostgreSQL
@@ -41,7 +40,6 @@ db/
 | ---------------------------------- | -------------------------------------------- |
 | Textos de Sobre mí, Proyectos…     | `public/js/contenido-inicio.js`              |
 | Pestañas y enlaces de redes        | `public/js/layout.js`                        |
-| Acertijos del escape room          | `ACERTIJOS` en `public/js/escape-room.js`    |
 | Efecto de las acciones de Mi Pet   | `ACTIONS` en `server/pet.js`                 |
 | Horas del sol y la luna            | `initSky` en `public/js/script.js`           |
 | Intensidad del sol y la luna       | `--sky-opacity` en `public/css/styles.css`   |

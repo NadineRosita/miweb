@@ -2,13 +2,29 @@
 // Están aquí para cambiarlas en un solo sitio.
 //
 // Cada página indica en <body> qué pestaña marcar: data-page="juegos".
-// Con data-nav="oculta" no hay enlaces para salir (página del escape room).
 
 const SITE_NAME = 'NadineRoss';
 
-// Pestañas de la barra de navegación
+// Luna menguante junto al nombre, con la misma forma que el favicon
+const MOON_ICON = `
+  <svg class="moon-icon" viewBox="5 5 38 54" aria-hidden="true">
+    <path fill="currentColor" d="M42 7A26 26 0 1 0 42 57 30 30 0 0 1 42 7Z" />
+  </svg>
+`;
+
+// Pestañas del menú. En sections van los apartados de esa página:
+// id es el id de la <section> a la que se desplaza.
 const NAV_LINKS = [
-  { id: 'inicio', label: 'Inicio', href: 'index.html' },
+  {
+    id: 'inicio',
+    label: 'Inicio',
+    href: 'index.html',
+    sections: [
+      { id: 'sobre-mi', label: 'Sobre mí' },
+      { id: 'proyectos', label: 'Proyectos' },
+      { id: 'contacto', label: 'Contacto' },
+    ],
+  },
   { id: 'juegos', label: 'Juegos', href: 'juegos.html' },
   { id: 'aplicaciones', label: 'Aplicaciones', href: 'aplicaciones.html' },
   { id: 'mi-pet', label: 'Mi Pet', href: 'mi-pet.html' },
@@ -22,27 +38,22 @@ const SOCIAL_LINKS = [
 ];
 
 function navLinksHtml(currentPage) {
-  return NAV_LINKS.map(({ id, label, href }) => {
-    const current = id === currentPage ? ' aria-current="page"' : '';
-    return `<a href="${href}"${current}>${label}</a>`;
-  });
+  return NAV_LINKS.map(({ id, label, href, sections = [] }) => {
+    const isCurrent = id === currentPage;
+    const current = isCurrent ? ' aria-current="page"' : '';
+    // En la propia página basta el #: con la dirección completa el navegador
+    // recargaría la página en vez de desplazarse suavemente
+    const base = isCurrent ? '' : href;
+    const sectionLinks = sections.map((section) => (
+      `<a href="${base}#${section.id}">${section.label}</a>`
+    ));
+    const submenu = sectionLinks.length ? `<div class="site-submenu">${sectionLinks.join('')}</div>` : '';
+
+    return `<a href="${href}"${current}>${label}</a>${submenu}`;
+  }).join('');
 }
 
-function headerHtml(currentPage, navHidden) {
-  const logoContent = `
-    <span class="logo-star" aria-hidden="true">✦</span>
-    <span class="logo-name">${SITE_NAME}</span>
-  `;
-
-  if (navHidden) {
-    return `
-      <header class="navbar" id="navbar">
-        <span class="logo">${logoContent}</span>
-        <div class="nav-actions">${themeSwitchHtml()}</div>
-      </header>
-    `;
-  }
-
+function headerHtml(currentPage) {
   const links = navLinksHtml(currentPage);
   const socials = SOCIAL_LINKS.map(({ short, label, href }) => (
     `<a href="${href}" class="social-pill" aria-label="${label}">${short}</a>`
@@ -50,26 +61,25 @@ function headerHtml(currentPage, navHidden) {
 
   return `
     <header class="navbar" id="navbar">
-      <a href="index.html" class="logo">${logoContent}</a>
+      <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-      <nav aria-label="Navegación principal">
-        <ul class="nav-links">
-          ${links.map((link) => `<li>${link}</li>`).join('')}
-        </ul>
-      </nav>
+      <a href="index.html" class="logo">
+        ${MOON_ICON}
+        <span class="logo-name">${SITE_NAME}</span>
+      </a>
 
       <div class="nav-actions">
         <div class="nav-socials">${socials.join('')}</div>
         ${themeSwitchHtml()}
-        <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
-          <span></span>
-          <span></span>
-        </button>
       </div>
     </header>
 
-    <div class="mobile-menu" id="mobile-menu">
-      <nav aria-label="Navegación móvil">${links.join('')}</nav>
+    <div class="site-menu" id="site-menu">
+      <nav aria-label="Navegación principal">${links}</nav>
     </div>
   `;
 }
@@ -94,7 +104,7 @@ function footerHtml() {
   return `
     <footer class="footer">
       <div class="footer-row">
-        <span class="footer-name"><span class="footer-star" aria-hidden="true">✦</span> ${SITE_NAME}</span>
+        <span class="footer-name">${MOON_ICON} ${SITE_NAME}</span>
         <span class="footer-copy">© ${new Date().getFullYear()} — Todos los derechos reservados</span>
         <a href="#top" class="footer-top">Volver arriba ↑</a>
       </div>
@@ -104,13 +114,13 @@ function footerHtml() {
 }
 
 function renderLayout() {
-  const { page, nav } = document.body.dataset;
+  const { page } = document.body.dataset;
 
   document.body.insertAdjacentHTML('afterbegin', `
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
     <div class="sky" id="sky" aria-hidden="true"></div>
-    ${headerHtml(page, nav === 'oculta')}
+    ${headerHtml(page)}
   `);
   document.body.insertAdjacentHTML('beforeend', footerHtml());
 }

@@ -58,12 +58,18 @@ function initNavbar() {
   update();
 }
 
-// Apertura y cierre del menú móvil
-function initMobileMenu() {
-  const hamburger = document.getElementById('hamburger');
-  const menu = document.getElementById('mobile-menu');
+// Menú de pestañas: en ordenador se despliega al acercar el ratón a las tres rayitas
+// o al borde izquierdo; en móvil y tableta, al pulsarlas
+function initMenu() {
+  const NEAR_EDGE_PX = 28;
+  const NEAR_BUTTON_X_PX = 130;
+  const NEAR_BUTTON_Y_PX = 90;
 
-  if (!hamburger) return; // La página del escape room no tiene menú
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('site-menu');
+  const hoverMode = window.matchMedia('(min-width: 1001px) and (hover: hover)');
+
+  const isOpen = () => menu.classList.contains('open');
 
   const setOpen = (open) => {
     menu.classList.toggle('open', open);
@@ -72,10 +78,38 @@ function initMobileMenu() {
     hamburger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   };
 
-  hamburger.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+  hamburger.addEventListener('click', (event) => {
+    // Con ratón ya está abierto al llegar al botón. Un clic de teclado tiene detail 0.
+    if (hoverMode.matches && event.detail > 0) return;
+
+    setOpen(!isOpen());
+
+    // Con teclado, el foco salta a las pestañas en vez de recorrer antes la barra
+    if (isOpen() && event.detail === 0) menu.querySelector('a').focus();
+  });
 
   menu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('mousemove', (event) => {
+    if (!hoverMode.matches) return;
+
+    const { clientX: x, clientY: y } = event;
+    const nearButton = x < NEAR_BUTTON_X_PX && y < NEAR_BUTTON_Y_PX;
+
+    if (x < NEAR_EDGE_PX || nearButton) {
+      setOpen(true);
+    } else if (isOpen() && x > menu.offsetWidth) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && isOpen()) {
+      setOpen(false);
+      hamburger.focus();
+    }
   });
 }
 
@@ -146,6 +180,6 @@ function initSky() {
 
 initCursor();
 initNavbar();
-initMobileMenu();
+initMenu();
 initThemeSwitch();
 initSky();
