@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[NOMBRE]</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <header class="navbar" id="navbar">
+    <a href="#" class="logo">
+      <span class="logo-star" aria-hidden="true">✦</span>
+      <span class="logo-name">[NOMBRE]</span>
+    </a>
+
+    <nav aria-label="Navegación principal">
+      <ul class="nav-links">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Sección 1</a></li>
+        <li><a href="#">Sección 2</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-socials">
+      <a href="#" class="social-pill" aria-label="Instagram">IG</a>
+      <a href="#" class="social-pill" aria-label="GitHub">GH</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <nav aria-label="Navegación móvil">
+      <a href="#">Inicio</a>
+      <a href="#">Sección 1</a>
+      <a href="#">Sección 2</a>
+      <a href="#">Contacto</a>
+    </nav>
+  </div>
+
+  <main id="top">
+    <!-- Contenido aquí -->
+  </main>
+
+  <footer class="footer">
+    <div class="footer-row">
+      <span class="footer-name"><span class="footer-star" aria-hidden="true">✦</span> [NOMBRE]</span>
+      <span class="footer-copy">© 2026 — Todos los derechos reservados</span>
+      <a href="#top" class="footer-top">Volver arriba ↑</a>
+    </div>
+    <div class="footer-deco" aria-hidden="true">[NOMBRE]</div>
+  </footer>
+</body>
+</html>
