@@ -94,8 +94,23 @@
         <p class="form-error" id="lobby-error" role="alert"></p>
       </div>
 
-      <!-- Partida -->
+      <!-- Partida: opciones arriba, tablero en el centro y texto debajo -->
       <div class="chess-layout" id="chess-game" hidden>
+        <div class="chess-toolbar">
+          <div class="chess-room" id="chess-room" hidden>
+            <span class="chess-note" data-i18n="chess.roomCode">Código de sala</span>
+            <strong class="chess-code" id="chess-room-code"></strong>
+            <button class="button-link" id="chess-copy" type="button" data-i18n="chess.copyLink">Copiar enlace</button>
+          </div>
+
+          <div class="chess-actions">
+            <button class="button-link" id="chess-draw" type="button" hidden></button>
+            <button class="button-link" id="chess-decline" type="button" data-i18n="chess.declineDraw" hidden>Rechazar</button>
+            <button class="button-link" id="chess-resign" type="button" data-i18n="chess.resign" hidden>Rendirse</button>
+            <button class="button-link" id="chess-new" type="button" data-i18n="chess.newGame">Nueva partida</button>
+          </div>
+        </div>
+
         <div class="chess-table">
           <div class="chess-player">
             <span id="chess-player-top-name"></span>
@@ -108,27 +123,13 @@
           </div>
         </div>
 
-        <aside class="chess-side">
+        <div class="chess-info">
           <p class="chess-status" id="chess-status" role="status"></p>
           <p class="chess-note" id="chess-presence" data-i18n="chess.opponentAway" hidden>Tu rival se ha desconectado. Puede volver cuando quiera.</p>
-
-          <div class="chess-room" id="chess-room" hidden>
-            <span class="chess-note" data-i18n="chess.roomCode">Código de sala</span>
-            <strong class="chess-code" id="chess-room-code"></strong>
-            <button class="button-link" id="chess-copy" type="button" data-i18n="chess.copyLink">Copiar enlace</button>
-          </div>
-
-          <ol class="chess-moves" id="chess-moves"></ol>
-
           <p class="chess-note" id="chess-offer" hidden></p>
-          <div class="form-actions">
-            <button class="button-link" id="chess-draw" type="button" hidden></button>
-            <button class="button-link" id="chess-decline" type="button" data-i18n="chess.declineDraw" hidden>Rechazar</button>
-            <button class="button-link" id="chess-resign" type="button" data-i18n="chess.resign" hidden>Rendirse</button>
-            <button class="button-link" id="chess-new" type="button" data-i18n="chess.newGame">Nueva partida</button>
-          </div>
           <p class="form-error" id="chess-error" role="alert"></p>
-        </aside>
+          <ol class="chess-moves" id="chess-moves"></ol>
+        </div>
       </div>
     </section>
   </main>

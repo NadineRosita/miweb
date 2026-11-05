@@ -4,11 +4,14 @@
 // En una sala, el servidor es quien decide: aquí solo se muestra su estado.
 
 import { Chess } from '/vendor/chess.js';
+import { clearEnding, playEnding } from './final.js';
 import { Board } from './tablero.js';
 import { RoomConnection, forgetToken, saveToken, savedToken } from './sala.js';
 
 const LOCAL_GAME_KEY = 'ajedrez-maquina';
 const CLOCK_TICK_MS = 200;
+const ENGINE_MIN_DELAY_MS = 500; // Para que se vea tu jugada antes de la respuesta
+const ENDING_DELAY_MS = 350; // Deja terminar la última jugada antes del final
 const LOW_TIME_MS = 30000;
 
 const $ = (id) => document.getElementById(id);
@@ -138,6 +141,37 @@ function renderActions() {
   if (isRoom) $('chess-room-code').textContent = game.code;
 }
 
+function endingKind() {
+  const { result, reason } = game.finished;
+
+  if (reason === 'stalemate') return 'stalemate';
+  if (result === 'draw') return 'draw';
+  return result === game.color ? 'won' : 'lost';
+}
+
+// Los finales de partida se ven una vez, al ocurrir: no al recargar una ya acabada
+function showEnding() {
+  const current = game;
+  const kind = endingKind();
+  const { result, reason } = game.finished;
+  const isDecisive = result !== 'draw';
+
+  game.endingShown = true;
+
+  setTimeout(() => {
+    if (game !== current) return;
+
+    playEnding(board, {
+      kind,
+      title: i18n.t(`chess.ending.${kind}`),
+      subtitle: i18n.t(kind === 'stalemate' ? 'chess.outcome.draw' : `chess.reason.${reason}`),
+      winner: isDecisive ? result : null,
+      loser: isDecisive ? opposite(result) : null,
+      stuck: turnColor(game.chess),
+    });
+  }, ENDING_DELAY_MS);
+}
+
 function render() {
   if (!game) return;
 
@@ -157,17 +191,25 @@ function render() {
   renderClock();
   renderMoves();
   renderActions();
+
+  if (game.finished && !game.endingShown) showEnding();
 }
 
 function showGame() {
+  if (gameView.hidden) window.scrollTo({ top: 0, behavior: 'instant' });
+
   lobby.hidden = true;
   gameView.hidden = false;
+  document.body.classList.add('chess-playing');
 }
 
 function showLobby() {
   game = null;
+  clearEnding();
+  board.reset();
   gameView.hidden = true;
   lobby.hidden = false;
+  document.body.classList.remove('chess-playing');
   history.replaceState(null, '', location.pathname);
 }
 
@@ -188,12 +230,15 @@ function askEngine() {
 
   const request = engineRequest;
   const current = game;
+  const askedAt = Date.now();
 
   engine.onmessage = ({ data }) => {
-    if (data.id !== request || game !== current) return; // Respuesta de una partida ya abandonada
+    setTimeout(() => {
+      if (data.id !== engineRequest || game !== current) return; // Partida ya abandonada
 
-    current.chess.move(data.move);
-    afterLocalMove();
+      current.chess.move(data.move);
+      afterLocalMove();
+    }, ENGINE_MIN_DELAY_MS - (Date.now() - askedAt));
   };
 
   engine.postMessage({ id: request, fen: game.chess.fen(), level: game.level });
@@ -215,12 +260,21 @@ function startMachineGame({ level, color, moves = [], resigned = false }) {
     chess: replay(moves),
     finished: resigned ? { result: opposite(color), reason: 'resign' } : null,
   };
+  game.finished ??= ruleResult(game.chess);
+  game.endingShown = Boolean(game.finished);
+  restoreFallenKing();
 
   showGame();
   afterLocalMove();
 }
 
 // ---------- Contra otra persona ----------
+
+// Una partida ya terminada se muestra quieta, con el rey vencido tumbado
+function restoreFallenKing() {
+  const { result } = game.finished ?? {};
+  board.fallen = result && result !== 'draw' ? opposite(result) : null;
+}
 
 function handleRoomState(state) {
   clearRoomError();
@@ -233,6 +287,12 @@ function handleRoomState(state) {
     drawOffer: state.drawOffer,
     clock: state.clock && { ...state.clock, receivedAt: Date.now() },
   });
+
+  if (!game.synced) {
+    game.synced = true;
+    game.endingShown = Boolean(game.finished);
+    restoreFallenKing();
+  }
 
   showGame();
   render();

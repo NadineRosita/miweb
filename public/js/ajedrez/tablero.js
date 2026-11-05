@@ -3,6 +3,8 @@
 
 const FILES = 'abcdefgh';
 const DRAG_THRESHOLD_PX = 6;
+const MOVE_MS = 240;
+const MOVE_EASING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 const PROMOTIONS = ['q', 'r', 'b', 'n'];
 
 const BASE = '<path d="M11 39.500h23v-3a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2z"/>';
@@ -32,6 +34,9 @@ export class Board {
     this.interactive = false;
     this.drag = null;
     this.ignoreClick = false;
+    this.moveCount = null;
+    this.draggedMove = false;
+    this.fallen = null;
 
     element.addEventListener('click', (event) => this.handleClick(event));
     element.addEventListener('pointerdown', (event) => this.handlePointerDown(event));
@@ -70,6 +75,11 @@ export class Board {
   render({ chess, orientation, interactive, lastMove }) {
     if (orientation !== this.orientation) this.buildSquares(orientation);
 
+    // Solo se anima una jugada nueva: ni al recargar ni al recuperar varias de golpe
+    const moveCount = chess.history().length;
+    const isNewMove = this.moveCount !== null && moveCount === this.moveCount + 1;
+
+    this.moveCount = moveCount;
     this.chess = chess;
     this.interactive = interactive;
     this.lastMove = lastMove;
@@ -77,6 +87,79 @@ export class Board {
 
     this.element.classList.toggle('is-interactive', interactive);
     this.paint();
+
+    if (isNewMove && lastMove) this.animateMove(lastMove);
+    this.draggedMove = false;
+  }
+
+  // Olvida la partida anterior, para que la siguiente empiece sin animar nada
+  reset() {
+    this.moveCount = null;
+    this.fallen = null;
+  }
+
+  // Tumba el rey de ese color y lo deja así
+  setFallen(color) {
+    this.fallen = color;
+    this.paint();
+  }
+
+  kingSquare(color) {
+    const code = color === 'white' ? 'w' : 'b';
+
+    for (const [name, square] of this.squares) {
+      const piece = this.chess.get(name);
+      if (piece?.type === 'k' && piece.color === code) return square;
+    }
+    return null;
+  }
+
+  kingPiece(color) {
+    return this.kingSquare(color)?.querySelector('.piece');
+  }
+
+  animateMove(move) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Lo arrastrado ya está en su sitio
+    if (!this.draggedMove) this.slide(move.from, move.to);
+
+    const rank = move.to[1];
+    if (move.flags.includes('k')) this.slide(`h${rank}`, `f${rank}`);
+    if (move.flags.includes('q')) this.slide(`a${rank}`, `d${rank}`);
+
+    if (move.captured) {
+      const square = move.flags.includes('e') ? `${move.to[0]}${move.from[1]}` : move.to;
+      this.fadeCaptured(square, { type: move.captured, color: move.color === 'w' ? 'b' : 'w' });
+    }
+  }
+
+  // Desliza la pieza que ya está en destino desde la casilla de origen
+  slide(from, to) {
+    const piece = this.squares.get(to).querySelector('.piece');
+    const start = this.squares.get(from).getBoundingClientRect();
+    const end = this.squares.get(to).getBoundingClientRect();
+    const animation = piece.animate([
+      { transform: `translate(${start.left - end.left}px, ${start.top - end.top}px)` },
+      { transform: 'none' },
+    ], { duration: MOVE_MS, easing: MOVE_EASING });
+
+    piece.classList.add('is-moving');
+    animation.onfinish = () => piece.classList.remove('is-moving');
+  }
+
+  fadeCaptured(square, piece) {
+    const element = this.squares.get(square);
+    const ghost = document.createElement('span');
+
+    ghost.className = 'piece-ghost';
+    ghost.innerHTML = pieceSvg(piece);
+    element.prepend(ghost);
+
+    ghost.animate([
+      { opacity: 1, transform: 'none' },
+      { opacity: 0, transform: 'scale(0.6)' },
+    ], { duration: MOVE_MS, easing: 'ease-in' }).onfinish = () => ghost.remove();
   }
 
   ownPiece(square) {
@@ -103,6 +186,7 @@ export class Board {
       square.classList.toggle('is-target', Boolean(target));
       square.classList.toggle('is-capture', Boolean(target?.captured));
       square.classList.toggle('is-check', Boolean(inCheck && piece?.type === 'k' && piece.color === turn));
+      square.classList.toggle('is-fallen', Boolean(piece?.type === 'k' && this.fallen && piece.color === this.fallen[0]));
 
       const pieceName = piece ? i18n.t(`chess.piece.${piece.color}${piece.type}`) : i18n.t('chess.piece.empty');
       square.setAttribute('aria-label', `${name}: ${pieceName}`);
@@ -244,8 +328,12 @@ export class Board {
     const name = target?.dataset.square;
 
     if (name && name !== this.selected) {
+      this.draggedMove = true;
       this.tryMove(name).then((moved) => {
-        if (!moved) this.select(null);
+        if (!moved) {
+          this.draggedMove = false;
+          this.select(null);
+        }
       });
     }
   }
