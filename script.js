@@ -77,6 +77,32 @@ function initMobileMenu() {
   });
 }
 
+// Interruptor de modo claro/oscuro con fundido entre temas
+function initThemeSwitch() {
+  const root = document.documentElement;
+  const toggle = document.getElementById('theme-switch');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const setTheme = (theme) => {
+    root.dataset.theme = theme;
+    toggle.setAttribute('aria-checked', String(theme === 'dark'));
+    localStorage.setItem('theme', theme);
+  };
+
+  toggle.setAttribute('aria-checked', String(root.dataset.theme === 'dark'));
+
+  toggle.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+
+    if (document.startViewTransition && !reducedMotion.matches) {
+      document.startViewTransition(() => setTheme(next));
+    } else {
+      setTheme(next);
+    }
+  });
+}
+
 initCursor();
 initNavbar();
 initMobileMenu();
+initThemeSwitch();

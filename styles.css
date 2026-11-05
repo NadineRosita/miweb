@@ -1,17 +1,44 @@
 /* ---------- Variables ---------- */
+/* Los nombres indican función, no tono: --black es siempre el fondo
+   y --white siempre el texto, también en el modo claro. */
 :root {
-  --black: #0a0a0a;
-  --dark: #111111;
-  --dark2: #1a1a1a;
-  --white: #f5f5f5;
-  --white2: #e0e0e0;
-  --gray: #888;
-  --gray2: #444;
-  --accent: #ff4dab;
-  --accent2: #ff1a96;
+  color-scheme: dark;
+
+  /* Modo oscuro: Coral */
+  --black: #140c0c;
+  --dark: #1e1312;
+  --dark2: #2b1c1a;
+  --white: #fdf1ee;
+  --white2: #ecd8d3;
+  --gray: #ab928c;
+  --gray2: #553f3a;
+  --accent: #ff7a59;
+  --accent2: #ff5a33;
+  --ink-rgb: 253, 241, 238; /* Bordes y fondos translúcidos */
+  --bg-rgb: 20, 12, 12;
+  --accent-rgb: 255, 122, 89;
+
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Modo claro: Crema */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --black: #faf5ec;
+  --dark: #f1e9db;
+  --dark2: #e6dbc8;
+  --white: #2a2320;
+  --white2: #4a403a;
+  --gray: #75675d;
+  --gray2: #c9bcab;
+  --accent: #c2410c;
+  --accent2: #9a3412;
+  --ink-rgb: 42, 35, 32;
+  --bg-rgb: 250, 245, 236;
+  --accent-rgb: 194, 65, 12;
 }
 
 /* ---------- Reset ---------- */
@@ -83,10 +110,10 @@ main {
 }
 
 .navbar.scrolled {
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(var(--bg-rgb), 0.85);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(var(--ink-rgb), 0.06);
 }
 
 .logo {
@@ -113,8 +140,8 @@ main {
   display: flex;
   gap: 0.25rem;
   padding: 0.3rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(var(--ink-rgb), 0.04);
+  border: 1px solid rgba(var(--ink-rgb), 0.08);
   border-radius: 100px;
 }
 
@@ -129,8 +156,14 @@ main {
 }
 
 .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(var(--ink-rgb), 0.08);
   color: var(--white);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .nav-socials {
@@ -140,7 +173,7 @@ main {
 
 .social-pill {
   padding: 0.3rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
   border-radius: 100px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -152,6 +185,60 @@ main {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--black);
+}
+
+/* ---------- Interruptor de tema ---------- */
+.theme-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 56px;
+  height: 32px;
+  background: rgba(var(--ink-rgb), 0.08);
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: 100px;
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--black);
+  /* Con nombre propio, la transición lo desliza en vez de fundirlo en dos sitios */
+  view-transition-name: theme-switch-thumb;
+}
+
+:root:not([data-theme="light"]) .theme-switch-thumb {
+  transform: translateX(24px);
+}
+
+.theme-icon {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:root[data-theme="light"] .theme-icon-moon,
+:root:not([data-theme="light"]) .theme-icon-sun {
+  display: none;
+}
+
+/* Fundido entre temas */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
 }
 
 /* ---------- Hamburguesa ---------- */
@@ -246,7 +333,7 @@ main {
 /* ---------- Footer ---------- */
 .footer {
   padding: 2.5rem 2.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(var(--ink-rgb), 0.06);
 }
 
 .footer-row {
@@ -289,7 +376,7 @@ main {
   font-size: clamp(4rem, 15vw, 12rem);
   line-height: 1.4;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+  -webkit-text-stroke: 1px rgba(var(--ink-rgb), 0.04);
   -webkit-user-select: none;
   user-select: none;
 }
@@ -339,7 +426,7 @@ html.cursor-visible .cursor-ring {
 .cursor-ring {
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(255, 77, 171, 0.5);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
   transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
 }
 
