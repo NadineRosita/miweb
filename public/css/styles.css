@@ -21,6 +21,10 @@
   --sky-moon: #e8e4d8;
   --sky-opacity: 0.09;
 
+  --font-title: 'Fraunces', serif;
+  --font-text: 'Source Serif 4', serif;
+  --font-accent: 'Fraunces', serif;
+
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -70,7 +74,7 @@ body {
   min-height: 100vh;
   background: var(--black);
   color: var(--white);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-text);
   font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -129,6 +133,7 @@ main {
 .logo {
   display: flex;
   margin-right: auto;
+  font-family: var(--font-title);
   align-items: center;
   gap: 0.5rem;
   font-weight: 800;
@@ -345,6 +350,11 @@ main {
     display: none;
   }
 
+  /* A pantalla completa, las pestañas son grandes como títulos */
+  .site-menu nav > a {
+    font-family: var(--font-title);
+  }
+
   /* En móvil las rayitas van a la derecha */
   .hamburger {
     order: 1;
@@ -451,6 +461,7 @@ main {
 }
 
 .hero-title {
+  font-family: var(--font-title);
   margin-bottom: 1.25rem;
   font-size: clamp(2.4rem, 6.5vw, 4.25rem);
   font-weight: 800;
@@ -460,7 +471,7 @@ main {
 
 .hero-highlight {
   display: block;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-accent);
   font-style: italic;
   font-weight: 700;
   color: var(--accent);
@@ -498,6 +509,7 @@ main {
 }
 
 .section-title {
+  font-family: var(--font-title);
   margin-bottom: 1rem;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 800;
@@ -533,6 +545,7 @@ main {
 }
 
 .card-title {
+  font-family: var(--font-title);
   font-size: 1.15rem;
   font-weight: 700;
 }
@@ -708,10 +721,10 @@ main {
   overflow: hidden;
   text-align: center;
   white-space: nowrap;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-accent);
   font-style: italic;
   font-weight: 900;
-  font-size: clamp(2rem, 13vw, 12rem);
+  font-size: clamp(2rem, calc((100vw - 5rem) / 6.1), 12rem); /* Ancho libre / ancho del nombre en em */
   line-height: 1.4;
   color: transparent;
   -webkit-text-stroke: 1px rgba(var(--ink-rgb), 0.04);
