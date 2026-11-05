@@ -501,6 +501,10 @@ main {
 }
 
 /* ---------- Secciones de página ---------- */
+.page-section:empty {
+  display: none;
+}
+
 .page-section {
   width: min(100%, 960px);
   margin: 0 auto;

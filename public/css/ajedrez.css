@@ -87,6 +87,37 @@
   width: 100%;
 }
 
+.chess-history {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.chess-nav {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.chess-nav:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--black);
+}
+
+.chess-nav:disabled {
+  opacity: 0.35;
+}
+
+.button-accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--black);
+}
+
 .chess-actions {
   display: flex;
   flex-wrap: wrap;
@@ -245,6 +276,12 @@
 .piece-b {
   fill: var(--piece-dark);
   stroke: var(--piece-light);
+}
+
+/* Se está mirando una posición anterior: el marco avisa de que no es la actual */
+.chess-board.is-preview {
+  outline: 3px dashed var(--accent);
+  outline-offset: 3px;
 }
 
 .piece.is-moving {
@@ -476,6 +513,7 @@
 }
 
 .chess-moves {
+  position: relative; /* Para situar la jugada activa dentro de la lista */
   width: 100%;
   max-height: 9rem;
   padding: 0.6rem 0.6rem 0.6rem 2.1rem;
@@ -485,7 +523,25 @@
   border: 1px solid rgba(var(--ink-rgb), 0.08);
   border-radius: var(--radius);
   font-size: 0.9rem;
-  white-space: pre;
+}
+
+.chess-moves li::marker {
+  color: var(--gray);
+}
+
+.chess-move {
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.4rem;
+  transition: background var(--transition), color var(--transition);
+}
+
+.chess-move:hover {
+  background: rgba(var(--ink-rgb), 0.1);
+}
+
+.chess-move[aria-current] {
+  background: var(--accent);
+  color: var(--black);
 }
 
 .chess-moves:empty {

@@ -37,6 +37,7 @@ export class Board {
     this.moveCount = null;
     this.draggedMove = false;
     this.fallen = null;
+    this.preview = false;
 
     element.addEventListener('click', (event) => this.handleClick(event));
     element.addEventListener('pointerdown', (event) => this.handlePointerDown(event));
@@ -72,7 +73,8 @@ export class Board {
   }
 
   // Actualiza el tablero. interactive indica si ahora se puede mover
-  render({ chess, orientation, interactive, lastMove }) {
+  // preview indica que se está mirando una posición anterior
+  render({ chess, orientation, interactive, lastMove, preview = false }) {
     if (orientation !== this.orientation) this.buildSquares(orientation);
 
     // Solo se anima una jugada nueva: ni al recargar ni al recuperar varias de golpe
@@ -83,9 +85,11 @@ export class Board {
     this.chess = chess;
     this.interactive = interactive;
     this.lastMove = lastMove;
+    this.preview = preview;
     if (!interactive) this.selected = null;
 
     this.element.classList.toggle('is-interactive', interactive);
+    this.element.classList.toggle('is-preview', preview);
     this.paint();
 
     if (isNewMove && lastMove) this.animateMove(lastMove);
@@ -186,7 +190,9 @@ export class Board {
       square.classList.toggle('is-target', Boolean(target));
       square.classList.toggle('is-capture', Boolean(target?.captured));
       square.classList.toggle('is-check', Boolean(inCheck && piece?.type === 'k' && piece.color === turn));
-      square.classList.toggle('is-fallen', Boolean(piece?.type === 'k' && this.fallen && piece.color === this.fallen[0]));
+      square.classList.toggle('is-fallen', Boolean(
+        !this.preview && piece?.type === 'k' && this.fallen && piece.color === this.fallen[0],
+      ));
 
       const pieceName = piece ? i18n.t(`chess.piece.${piece.color}${piece.type}`) : i18n.t('chess.piece.empty');
       square.setAttribute('aria-label', `${name}: ${pieceName}`);

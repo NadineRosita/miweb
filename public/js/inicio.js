@@ -119,19 +119,24 @@ function renderContact({ titulo, parrafos, enlaces }) {
   );
 }
 
+// Cada sección de la página con su bloque de contenido-inicio.js.
+// Si se borra un bloque de ese archivo, la sección simplemente no aparece.
+const HOME_SECTIONS = [
+  { id: 'presentacion', key: 'presentacion', render: renderIntro },
+  { id: 'sobre-mi', key: 'sobreMi', render: renderAbout },
+  { id: 'conocimientos', key: 'conocimientos', render: renderSkills },
+  { id: 'proyectos', key: 'proyectos', render: renderProjects },
+  { id: 'contacto', key: 'contacto', render: renderContact },
+];
+
 // Pinta Inicio en el idioma actual. Se repite al cambiar de idioma.
 function renderHome() {
   const content = CONTENIDO_INICIO[i18n.lang];
 
-  ['presentacion', 'sobre-mi', 'conocimientos', 'proyectos', 'contacto'].forEach((id) => {
+  HOME_SECTIONS.forEach(({ id, key, render }) => {
     document.getElementById(id).replaceChildren();
+    if (content[key]) render(content[key]);
   });
-
-  renderIntro(content.presentacion);
-  renderAbout(content.sobreMi);
-  renderSkills(content.conocimientos);
-  renderProjects(content.proyectos);
-  renderContact(content.contacto);
 }
 
 i18n.onChange(renderHome);

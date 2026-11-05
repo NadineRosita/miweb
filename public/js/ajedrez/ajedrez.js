@@ -73,20 +73,76 @@ function statusText() {
   return `${i18n.t(`chess.status.${key}`)}${check}`;
 }
 
+// ---------- Repasar la partida ----------
+// game.viewPly es el número de jugadas de la posición que se está mirando.
+// Con null se ve la partida en curso. Solo cambia lo que se ve, nunca la partida.
+
+const totalPlies = () => game.chess.history().length;
+const shownPly = () => game.viewPly ?? totalPlies();
+const isPreviewing = () => game.viewPly !== null;
+
+function positionAt(ply) {
+  const moves = game.chess.history({ verbose: true }).slice(0, ply);
+  return replay(moves.map(({ from, to, promotion }) => ({ from, to, promotion })));
+}
+
+function goToPly(ply) {
+  if (!game) return;
+
+  game.viewPly = ply >= totalPlies() ? null : Math.max(ply, 0);
+  render();
+}
+
 function renderMoves() {
-  const history = game.chess.history();
+  const moves = game.chess.history();
   const list = $('chess-moves');
+  const current = shownPly();
 
   list.replaceChildren();
 
-  for (let i = 0; i < history.length; i += 2) {
+  for (let i = 0; i < moves.length; i += 2) {
     const item = document.createElement('li');
 
-    item.textContent = history.slice(i, i + 2).join('  ');
+    moves.slice(i, i + 2).forEach((san, offset) => {
+      const ply = i + offset + 1;
+      const button = document.createElement('button');
+
+      button.type = 'button';
+      button.className = 'chess-move';
+      button.dataset.ply = ply;
+      button.textContent = san;
+      if (ply === current) button.setAttribute('aria-current', 'true');
+      item.append(button);
+    });
+
     list.append(item);
   }
 
-  list.scrollTop = list.scrollHeight;
+  const active = list.querySelector('[aria-current]');
+  const showActive = isPreviewing() && active;
+
+  list.scrollTop = showActive ? active.offsetTop - list.clientHeight / 2 : list.scrollHeight;
+}
+
+function renderHistory() {
+  const total = totalPlies();
+  const ply = shownPly();
+  const previewing = isPreviewing();
+  const viewing = $('chess-viewing');
+
+  $('chess-history').hidden = total === 0;
+  $('chess-first').disabled = ply === 0;
+  $('chess-prev').disabled = ply === 0;
+  $('chess-next').disabled = !previewing;
+  $('chess-last').disabled = !previewing;
+  $('chess-live').hidden = !previewing;
+
+  viewing.hidden = !previewing;
+  if (previewing) {
+    viewing.textContent = ply === 0
+      ? i18n.t('chess.history.start')
+      : i18n.t('chess.history.viewing').replace('{ply}', ply).replace('{total}', total);
+  }
 }
 
 function playerLabel(color) {
@@ -175,21 +231,29 @@ function showEnding() {
 function render() {
   if (!game) return;
 
-  const canMove = !game.finished
+  // Si la partida acaba mientras se repasa, se vuelve para ver el final
+  if (game.finished && !game.endingShown) game.viewPly = null;
+
+  const previewing = isPreviewing();
+  const shown = previewing ? positionAt(game.viewPly) : game.chess;
+  const canMove = !previewing
+    && !game.finished
     && turnColor(game.chess) === game.color
     && (game.mode === 'machine' || (game.status === 'playing' && game.connected));
 
   board.render({
-    chess: game.chess,
+    chess: shown,
     orientation: game.color,
     interactive: canMove,
-    lastMove: lastMoveOf(game.chess),
+    lastMove: lastMoveOf(shown),
+    preview: previewing,
   });
 
   $('chess-status').textContent = statusText();
   renderPlayers();
   renderClock();
   renderMoves();
+  renderHistory();
   renderActions();
 
   if (game.finished && !game.endingShown) showEnding();
@@ -241,6 +305,13 @@ function askEngine() {
     }, ENGINE_MIN_DELAY_MS - (Date.now() - askedAt));
   };
 
+  // Sin esto, si el motor no se descarga se quedaría pensando para siempre
+  engine.onerror = () => {
+    engine = null;
+    $('chess-error').dataset.i18n = 'error.connection';
+    $('chess-error').textContent = i18n.t('error.connection');
+  };
+
   engine.postMessage({ id: request, fen: game.chess.fen(), level: game.level });
 }
 
@@ -259,6 +330,7 @@ function startMachineGame({ level, color, moves = [], resigned = false }) {
     color,
     chess: replay(moves),
     finished: resigned ? { result: opposite(color), reason: 'resign' } : null,
+    viewPly: null,
   };
   game.finished ??= ruleResult(game.chess);
   game.endingShown = Boolean(game.finished);
@@ -325,6 +397,7 @@ function enterRoom(code, token) {
     status: 'waiting',
     finished: null,
     connected: false,
+    viewPly: null,
     opponentConnected: false,
     drawOffer: null,
     clock: null,
@@ -472,6 +545,36 @@ $('chess-copy').addEventListener('click', async () => {
   await navigator.clipboard.writeText(location.href);
   $('chess-copy').dataset.i18n = 'chess.copied';
   $('chess-copy').textContent = i18n.t('chess.copied');
+});
+
+$('chess-first').addEventListener('click', () => goToPly(0));
+$('chess-prev').addEventListener('click', () => goToPly(shownPly() - 1));
+$('chess-next').addEventListener('click', () => goToPly(shownPly() + 1));
+$('chess-last').addEventListener('click', () => goToPly(totalPlies()));
+$('chess-live').addEventListener('click', () => goToPly(totalPlies()));
+
+$('chess-moves').addEventListener('click', (event) => {
+  const ply = event.target.closest('[data-ply]')?.dataset.ply;
+  if (!ply) return;
+
+  goToPly(Number(ply));
+  $('chess-moves').querySelector('[aria-current]')?.focus(); // La lista se acaba de repintar
+});
+
+const HISTORY_KEYS = {
+  ArrowLeft: () => shownPly() - 1,
+  ArrowRight: () => shownPly() + 1,
+  Home: () => 0,
+  End: () => totalPlies(),
+};
+
+document.addEventListener('keydown', (event) => {
+  const isTyping = event.target.closest('input, select, textarea');
+
+  if (!game || isTyping || document.querySelector('.promotion') || !Object.hasOwn(HISTORY_KEYS, event.key)) return;
+
+  event.preventDefault();
+  goToPly(HISTORY_KEYS[event.key]());
 });
 
 setInterval(renderClock, CLOCK_TICK_MS);

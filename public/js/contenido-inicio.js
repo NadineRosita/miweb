@@ -29,8 +29,8 @@ const CONTENIDO_INICIO = {
       fraseDestacada: 'un proyecto cada vez.',
       subtitulo: [
         'Estudiante de Ingeniería del Software',
-        'Desarrolladora en formación',
-        'Entusiasta de la tecnología',
+        'Presidenta de la asociación: ASTRA',
+        'Meloncilla',
       ],
     },
 
@@ -39,56 +39,15 @@ const CONTENIDO_INICIO = {
       titulo: 'Sobre mí',
       // Cada texto entre comillas es un párrafo. Añade o quita los que quieras.
       parrafos: [
-        'Soy Nadine Ross y estudio Ingeniería del Software en la Universidad de Sevilla. Soy curiosa, creativa y bastante autodidacta: si algo me llama la atención, acabo abriendo el editor para probarlo.',
-        'Me interesan el desarrollo de software, las aplicaciones, los sistemas y las bases de datos. Aprendo haciendo: elijo una idea, la convierto en proyecto y descubro por el camino todo lo que me falta por saber.',
-        'Estoy construyendo mi trayectoria como desarrolladora paso a paso, y cada proyecto de esta web es uno de esos pasos.',
+        'Soy Nadia Coronel, también puedes llamarme Nadine, y estudio Ingeniería del Software en la Universidad de Sevilla. Estoy aprendiendo mientras exploro diferentes áreas y creo mis primeros proyectos.',
+        'Me interesan el desarrollo de software, las aplicaciones, los sistemas y las bases de datos.',
+        'Además de la carrera, me encanta observar la luna, la fotografía y el Hollow Knight xd.',
       ],
       // Las tres ideas que definen el portfolio
       pilares: [
         { nombre: 'Curiosidad', texto: 'Explorar tecnologías nuevas y seguir aprendiendo siempre.' },
         { nombre: 'Creatividad', texto: 'Imaginar proyectos propios y atreverme a construirlos.' },
         { nombre: 'Crecimiento', texto: 'Evolucionar en cada paso como futura ingeniera de software.' },
-      ],
-    },
-
-    // ---------- Conocimientos ----------
-    conocimientos: {
-      titulo: 'Conocimientos',
-      introduccion: 'Las herramientas de mi caja por ahora. Sin barras de nivel: prefiero que hablen los proyectos.',
-      leyenda: 'Lo que sigo explorando',
-      // usadas: etiquetas normales. aprendiendo: etiquetas con borde punteado.
-      // Para cambiar una tecnología de grupo, muévela de una lista a la otra.
-      categorias: [
-        {
-          nombre: 'Lenguajes',
-          descripcion: 'Fundamentos de programación, aplicaciones y orientación a objetos.',
-          usadas: ['Python', 'Java'],
-          aprendiendo: ['JavaScript'],
-        },
-        {
-          nombre: 'Web y apps',
-          descripcion: 'Páginas web y aplicaciones multiplataforma.',
-          usadas: ['HTML', 'CSS', 'Expo', 'React Native'],
-          aprendiendo: [],
-        },
-        {
-          nombre: 'Datos y backend',
-          descripcion: 'Bases de datos, backend y gestión de datos.',
-          usadas: ['SQL', 'Supabase'],
-          aprendiendo: [],
-        },
-        {
-          nombre: 'Flujo de trabajo',
-          descripcion: 'Control de versiones, gestión de proyectos y pruebas automatizadas.',
-          usadas: ['Git', 'GitHub', 'pytest'],
-          aprendiendo: [],
-        },
-        {
-          nombre: 'Escritorio e IA local',
-          descripcion: 'Interfaces gráficas y modelos de lenguaje en mi propio equipo.',
-          usadas: ['PySide6', 'Ollama'],
-          aprendiendo: [],
-        },
       ],
     },
 
@@ -99,12 +58,6 @@ const CONTENIDO_INICIO = {
       // Cada bloque { ... } es una tarjeta. Copia uno entero para añadir un proyecto.
       // Si un proyecto no tiene enlace, deja enlace: ''
       lista: [
-        {
-          nombre: 'DND Campaign Manager',
-          descripcion: 'Una aplicación de línea de comandos en Python para organizar campañas de Dungeons & Dragons. Hoy gestiona personajes y los guarda en JSON; campañas y sesiones son los siguientes pasos. Aquí he cuidado la estructura del código, las pruebas con pytest y la documentación.',
-          etiquetas: ['Python', 'pytest', 'Git', 'GitHub'],
-          enlace: ENLACES.dnd,
-        },
         {
           nombre: 'ASTRAmentor',
           descripcion: 'Una app para ASTRA, asociación universitaria de la ETSII de la Universidad de Sevilla, que conecta estudiantes y mentores y ayuda a integrarse a quienes acaban de llegar. Incluye perfiles con roles, solicitudes de mentoría, categorías de asignaturas y vida universitaria, y recomendaciones por afinidad.',
@@ -130,8 +83,7 @@ const CONTENIDO_INICIO = {
     contacto: {
       titulo: 'Contacto',
       parrafos: [
-        'Las buenas ideas empiezan con una conversación. Ya sea sobre tecnología, una colaboración o esa idea curiosa que no te sacas de la cabeza, mi bandeja de entrada siempre está abierta.',
-        'Siempre me apetece conocer a otros desarrolladores y encontrar proyectos interesantes, oportunidades para aprender y nuevas experiencias en tecnología.',
+        'Siempre me apetece conocer a otros desarrolladores y encontrar proyectos interesantes, oportunidades para aprender y nuevas experiencias en tecnología. Si te interesa hablar conmigo puedes contactarme:',
       ],
       enlaces: [
         { etiqueta: 'Correo', url: ENLACES.correo },
@@ -157,9 +109,9 @@ const CONTENIDO_INICIO = {
     sobreMi: {
       titulo: 'About me',
       parrafos: [
-        'I\'m Nadine Ross, a Software Engineering student at the University of Seville. I\'m curious, creative and largely self-taught: if something catches my eye, I usually end up opening the editor to try it.',
-        'I\'m interested in software development, applications, systems and databases. I learn by doing: I pick an idea, turn it into a project and discover along the way everything I still have to learn.',
-        'I\'m building my path as a developer step by step, and every project on this site is one of those steps.',
+        'I\'m Nadia Coronel, you can also call me Nadine, a Software Engineering student at the University of Seville. I\m learning while I explore different areas and create my own little projects.',
+        'I\'m interested in software development, applications, systems and databases.',
+        'Outside of my studies, I love observing the moon, photography, and playing Hollow Knight!',
       ],
       pilares: [
         { nombre: 'Curiosity', texto: 'Exploring new technologies and never stopping learning.' },
@@ -211,12 +163,6 @@ const CONTENIDO_INICIO = {
       introduccion: 'Ideas that turned into code, and a few that are still growing.',
       lista: [
         {
-          nombre: 'DND Campaign Manager',
-          descripcion: 'A Python command-line app for organising Dungeons & Dragons campaigns. Today it manages characters and saves them to JSON; campaigns and sessions come next. Here I focused on code structure, testing with pytest and documentation.',
-          etiquetas: ['Python', 'pytest', 'Git', 'GitHub'],
-          enlace: ENLACES.dnd,
-        },
-        {
           nombre: 'ASTRAmentor',
           descripcion: 'An app for ASTRA, a student association at the University of Seville\'s School of Computer Engineering, that connects students with mentors and helps newcomers settle in. It includes role-based profiles, mentoring requests, categories for subjects and university life, and affinity-based recommendations.',
           etiquetas: ['Expo', 'React Native', 'Supabase'],
@@ -240,8 +186,7 @@ const CONTENIDO_INICIO = {
     contacto: {
       titulo: 'Contact',
       parrafos: [
-        'Good ideas start with a conversation. Whether it\'s about technology, collaboration, or a random interesting idea, my inbox is always open.',
-        'I\'m always happy to meet other developers and find interesting projects, chances to learn and new experiences in tech.',
+        'I\'m always happy to meet other developers and find interesting projects, chances to learn and new experiences in tech. If you\d like to talk, feel free to get in touch:',
       ],
       enlaces: [
         { etiqueta: 'Email', url: ENLACES.correo },

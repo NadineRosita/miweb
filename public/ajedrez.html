@@ -103,7 +103,15 @@
             <button class="button-link" id="chess-copy" type="button" data-i18n="chess.copyLink">Copiar enlace</button>
           </div>
 
+          <div class="chess-history" id="chess-history" hidden>
+            <button class="chess-nav" id="chess-first" type="button" data-i18n-aria="chess.history.first">«</button>
+            <button class="chess-nav" id="chess-prev" type="button" data-i18n-aria="chess.history.prev">‹</button>
+            <button class="chess-nav" id="chess-next" type="button" data-i18n-aria="chess.history.next">›</button>
+            <button class="chess-nav" id="chess-last" type="button" data-i18n-aria="chess.history.last">»</button>
+          </div>
+
           <div class="chess-actions">
+            <button class="button-link button-accent" id="chess-live" type="button" data-i18n="chess.history.live" hidden>Volver a la partida</button>
             <button class="button-link" id="chess-draw" type="button" hidden></button>
             <button class="button-link" id="chess-decline" type="button" data-i18n="chess.declineDraw" hidden>Rechazar</button>
             <button class="button-link" id="chess-resign" type="button" data-i18n="chess.resign" hidden>Rendirse</button>
@@ -124,6 +132,7 @@
         </div>
 
         <div class="chess-info">
+          <p class="chess-note" id="chess-viewing" hidden></p>
           <p class="chess-status" id="chess-status" role="status"></p>
           <p class="chess-note" id="chess-presence" data-i18n="chess.opponentAway" hidden>Tu rival se ha desconectado. Puede volver cuando quiera.</p>
           <p class="chess-note" id="chess-offer" hidden></p>

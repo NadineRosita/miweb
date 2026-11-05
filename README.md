@@ -49,6 +49,7 @@ db/
 | Efecto de las acciones de Mi Pet   | `ACTIONS` en `server/pet.js`                 |
 | Horas del sol y la luna            | `initSky` en `public/js/script.js`           |
 | Intensidad del sol y la luna       | `--sky-opacity` en `public/css/styles.css`   |
+| Animaciones del final de partida   | `public/js/ajedrez/final.js`                 |
 | Dificultad de la máquina           | `LEVELS` en `public/js/ajedrez/motor.js` |
 | Tablas de la base de datos         | Archivo nuevo en `db/migrations/` (`004_…`)  |
 
