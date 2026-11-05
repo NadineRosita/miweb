@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajedrez — NadineRoss</title>
+  <link rel="icon" href="imagenes/luna-menguante.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700..800;1,700..900&family=Source+Serif+4:wght@400..700&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/ajedrez.css">
+  <script src="js/layout.js" defer></script>
+  <script src="js/script.js" defer></script>
+  <script type="module" src="js/ajedrez/ajedrez.js"></script>
+</head>
+<body data-page="ajedrez" data-tab="juegos">
+  <main id="top">
+    <section class="page-section">
+      <a class="back-link" href="juegos.html" data-i18n="chess.back">← Juegos</a>
+      <h1 class="section-title" data-i18n="chess.title">Ajedrez</h1>
+
+      <!-- Lobby -->
+      <div id="chess-lobby">
+        <p class="section-text" data-i18n="chess.intro">Juega contra la máquina o invita a alguien con un código. No hace falta cuenta.</p>
+
+        <div class="chess-lobby-grid">
+          <form class="panel form" id="machine-form">
+            <h2 class="card-title" data-i18n="chess.vsMachine">Contra la máquina</h2>
+            <label class="field">
+              <span data-i18n="chess.level">Dificultad</span>
+              <select name="level">
+                <option value="easy" data-i18n="chess.level.easy">Fácil</option>
+                <option value="normal" selected data-i18n="chess.level.normal">Normal</option>
+                <option value="hard" data-i18n="chess.level.hard">Difícil</option>
+              </select>
+            </label>
+            <label class="field">
+              <span data-i18n="chess.playAs">Juegas con</span>
+              <select name="color">
+                <option value="white" data-i18n="chess.color.white">Blancas</option>
+                <option value="black" data-i18n="chess.color.black">Negras</option>
+                <option value="random" data-i18n="chess.color.random">Al azar</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button class="button-link" type="submit" data-i18n="chess.play">Jugar</button>
+            </div>
+          </form>
+
+          <div class="chess-online">
+            <form class="panel form" id="room-form">
+              <h2 class="card-title" data-i18n="chess.vsPerson">Contra otra persona</h2>
+              <label class="field">
+                <span data-i18n="chess.clock">Reloj</span>
+                <select name="clock">
+                  <option value="none" data-i18n="chess.clock.none">Sin reloj</option>
+                  <option value="3+2">3 min + 2 s</option>
+                  <option value="5+0">5 min</option>
+                  <option value="10+0">10 min</option>
+                  <option value="10+5">10 min + 5 s</option>
+                  <option value="30+0">30 min</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="chess.playAs">Juegas con</span>
+                <select name="color">
+                  <option value="random" data-i18n="chess.color.random">Al azar</option>
+                  <option value="white" data-i18n="chess.color.white">Blancas</option>
+                  <option value="black" data-i18n="chess.color.black">Negras</option>
+                </select>
+              </label>
+              <div class="form-actions">
+                <button class="button-link" type="submit" data-i18n="chess.createRoom">Crear sala</button>
+              </div>
+            </form>
+
+            <form class="panel form" id="join-form">
+              <label class="field">
+                <span data-i18n="chess.roomCode">Código de sala</span>
+                <input class="code-input" name="code" required minlength="6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false">
+              </label>
+              <div class="form-actions">
+                <button class="button-link" type="submit" data-i18n="chess.join">Unirse a una sala</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <p class="form-error" id="lobby-error" role="alert"></p>
+      </div>
+
+      <!-- Partida -->
+      <div class="chess-layout" id="chess-game" hidden>
+        <div class="chess-table">
+          <div class="chess-player">
+            <span id="chess-player-top-name"></span>
+            <span class="chess-clock" id="chess-clock-top" hidden></span>
+          </div>
+          <div class="chess-board" id="chess-board"></div>
+          <div class="chess-player">
+            <span id="chess-player-bottom-name"></span>
+            <span class="chess-clock" id="chess-clock-bottom" hidden></span>
+          </div>
+        </div>
+
+        <aside class="chess-side">
+          <p class="chess-status" id="chess-status" role="status"></p>
+          <p class="chess-note" id="chess-presence" data-i18n="chess.opponentAway" hidden>Tu rival se ha desconectado. Puede volver cuando quiera.</p>
+
+          <div class="chess-room" id="chess-room" hidden>
+            <span class="chess-note" data-i18n="chess.roomCode">Código de sala</span>
+            <strong class="chess-code" id="chess-room-code"></strong>
+            <button class="button-link" id="chess-copy" type="button" data-i18n="chess.copyLink">Copiar enlace</button>
+          </div>
+
+          <ol class="chess-moves" id="chess-moves"></ol>
+
+          <p class="chess-note" id="chess-offer" hidden></p>
+          <div class="form-actions">
+            <button class="button-link" id="chess-draw" type="button" hidden></button>
+            <button class="button-link" id="chess-decline" type="button" data-i18n="chess.declineDraw" hidden>Rechazar</button>
+            <button class="button-link" id="chess-resign" type="button" data-i18n="chess.resign" hidden>Rendirse</button>
+            <button class="button-link" id="chess-new" type="button" data-i18n="chess.newGame">Nueva partida</button>
+          </div>
+          <p class="form-error" id="chess-error" role="alert"></p>
+        </aside>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -8,11 +8,14 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const { runMigrations } = require('../db/migrate');
 const { router: authRouter } = require('./auth');
+const { attachChessSockets, router: chessRouter } = require('./chess');
 const { pool } = require('./db');
 const { router: petRouter } = require('./pet');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+// Mismas reglas de ajedrez en el navegador y en el servidor
+const CHESS_LIBRARY = path.join(path.dirname(require.resolve('chess.js/package.json')), 'dist/esm/chess.js');
 
 const app = express();
 
@@ -34,10 +37,13 @@ app.use('/api', (req, res, next) => {
 app.use('/api', express.json({ limit: '10kb' }), cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/pet', petRouter);
+app.use('/api/chess', chessRouter);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ error: 'not_found' });
 });
+
+app.get('/vendor/chess.js', (req, res) => res.sendFile(CHESS_LIBRARY));
 
 // extensions permite abrir /juegos además de /juegos.html
 app.use(express.static(PUBLIC_DIR, { extensions: ['html'] }));
@@ -60,7 +66,9 @@ async function start() {
     console.warn('Sin DATABASE_URL: la web funciona, pero Mi Pet queda desactivado.');
   }
 
-  app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+  const server = app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+
+  attachChessSockets(server);
 }
 
 start().catch((error) => {

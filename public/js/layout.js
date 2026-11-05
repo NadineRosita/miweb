@@ -2,6 +2,7 @@
 // Están aquí para cambiarlas en un solo sitio.
 //
 // Cada página indica en <body> qué pestaña marcar: data-page="juegos".
+// Una subpágina puede marcar la de su sección con data-tab="juegos".
 
 const SITE_NAME = 'NadineRoss';
 
@@ -116,13 +117,13 @@ function footerHtml() {
 }
 
 function renderLayout() {
-  const { page } = document.body.dataset;
+  const { page, tab = page } = document.body.dataset;
 
   document.body.insertAdjacentHTML('afterbegin', `
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true"></div>
     <div class="sky" id="sky" aria-hidden="true"></div>
-    ${headerHtml(page)}
+    ${headerHtml(tab)}
   `);
   document.body.insertAdjacentHTML('beforeend', footerHtml());
   i18n.apply();

@@ -20,8 +20,22 @@
   <main id="top">
     <section class="page-section">
       <h1 class="section-title" data-i18n="nav.juegos">Juegos</h1>
-      <p class="section-text" data-i18n="common.comingSoon">Próximamente.</p>
-      <!-- Los juegos se añaden aquí -->
+      <p class="section-text" data-i18n="games.intro">Pequeños proyectos para jugar un rato.</p>
+
+      <!-- Cada juego es una tarjeta que lleva a su propia página -->
+      <div class="card-grid">
+        <a class="card game-card" href="ajedrez.html">
+          <svg class="game-icon" viewBox="0 0 45 45" aria-hidden="true">
+            <circle cx="22.500" cy="13" r="5.500" />
+            <path d="M17 19.500h11v2.500H17z" />
+            <path d="M19 22c0 5-2 8-5 12.500h17c-3-4.500-5-7.500-5-12.500z" />
+            <path d="M11 39.500h23v-3a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2z" />
+          </svg>
+          <h2 class="card-title" data-i18n="chess.title">Ajedrez</h2>
+          <p class="card-text" data-i18n="games.chess">Contra la máquina o contra quien quieras, con un código de sala.</p>
+          <span class="card-link" data-i18n="games.play">Jugar →</span>
+        </a>
+      </div>
     </section>
   </main>
 </body>

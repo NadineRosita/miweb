@@ -570,6 +570,23 @@ main {
   color: var(--white2);
 }
 
+/* Tarjeta entera clicable, como la de un juego */
+.game-card {
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.game-icon {
+  width: 3rem;
+  height: 3rem;
+  fill: var(--accent);
+}
+
 /* Tecnologías que sigue explorando */
 .tag-learning {
   background: none;

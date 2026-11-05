@@ -14,6 +14,7 @@ public/                     Todo lo que ve el navegador
   juegos.html               Juegos
   aplicaciones.html         Aplicaciones
   mi-pet.html               Mi Pet: acceso y mascota
+  ajedrez.html              Ajedrez, contra la máquina o por salas
   jaja-que-tonto.html       Futuro escape room (de momento, «Próximamente»)
   css/styles.css            Estilos y colores de los temas
   imagenes/                 Imágenes y favicon
@@ -25,11 +26,14 @@ public/                     Todo lo que ve el navegador
     theme-init.js           Aplica el tema guardado antes de pintar la página
     inicio.js               Pinta las secciones de Inicio
     mi-pet.js               Lógica de la página Mi Pet
+    ajedrez/                Tablero, partida, conexión con salas y motor de la máquina
 server/                     Backend
   index.js                  Arranque del servidor
   db.js                     Conexión a PostgreSQL
   auth.js                   Cuentas y sesiones
   pet.js                    Estado y acciones de la mascota
+  chess.js                  Salas de ajedrez: API y WebSocket
+  chess-rooms.js            Reglas de las salas: jugadas, reloj y guardado
 db/
   migrate.js                Aplica las migraciones pendientes
   migrations/               Cambios de la base de datos, en orden
@@ -45,7 +49,8 @@ db/
 | Efecto de las acciones de Mi Pet   | `ACTIONS` en `server/pet.js`                 |
 | Horas del sol y la luna            | `initSky` en `public/js/script.js`           |
 | Intensidad del sol y la luna       | `--sky-opacity` en `public/css/styles.css`   |
-| Tablas de la base de datos         | Archivo nuevo en `db/migrations/` (`003_…`)  |
+| Dificultad de la máquina           | `LEVELS` en `public/js/ajedrez/motor.js` |
+| Tablas de la base de datos         | Archivo nuevo en `db/migrations/` (`004_…`)  |
 
 No edites una migración ya aplicada, porque no se volvería a ejecutar. Añade siempre una nueva.
 
