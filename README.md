@@ -17,6 +17,8 @@ public/                     Todo lo que ve el navegador
   ajedrez.html              Ajedrez, contra la máquina o por salas
   jaja-que-tonto.html       Futuro escape room (de momento, «Próximamente»)
   css/styles.css            Estilos y colores de los temas
+  css/mi-pet.css            Estilos del juego Mi Pet
+  css/mi-pet-widget.css     Mascota flotante de las demás páginas
   imagenes/                 Imágenes y favicon
   js/
     contenido-inicio.js     Textos de Inicio en español e inglés (edita este para cambiarlos)
@@ -25,18 +27,22 @@ public/                     Todo lo que ve el navegador
     script.js               Cursor, menú, tema claro/oscuro y sol/luna de fondo
     theme-init.js           Aplica el tema guardado antes de pintar la página
     inicio.js               Pinta las secciones de Inicio
-    mi-pet.js               Lógica de la página Mi Pet
+    mi-pet.js               Inicio de sesión de Mi Pet; al entrar arranca el juego
+    mi-pet/                 El juego en el navegador (ver «Mi Pet» más abajo)
     ajedrez/                Tablero, partida, conexión con salas y motor de la máquina
 server/                     Backend
   index.js                  Arranque del servidor
   db.js                     Conexión a PostgreSQL
   auth.js                   Cuentas y sesiones
-  pet.js                    Estado y acciones de la mascota
+  pet.js                    API de Mi Pet
+  mi-pet/                   Reglas y datos del juego (ver «Mi Pet» más abajo)
   chess.js                  Salas de ajedrez: API y WebSocket
   chess-rooms.js            Reglas de las salas: jugadas, reloj y guardado
 db/
   migrate.js                Aplica las migraciones pendientes
   migrations/               Cambios de la base de datos, en orden
+test/
+  mi-pet/                   Pruebas de las reglas del juego (npm test)
 ```
 
 ## Tareas habituales
@@ -46,7 +52,13 @@ db/
 | Textos de Sobre mí, Proyectos…     | `public/js/contenido-inicio.js`              |
 | Pestañas y enlaces de redes        | `public/js/layout.js`                        |
 | Textos de menú, pie y mensajes     | `public/js/i18n.js`                          |
-| Efecto de las acciones de Mi Pet   | `ACTIONS` en `server/pet.js`                 |
+| Velocidades, topes y pagos del juego | `server/mi-pet/config.js`                  |
+| Objetos y precios de Mi Pet        | `server/mi-pet/data/items.js`                |
+| Especies y evoluciones             | `server/mi-pet/data/species.js`              |
+| Diálogos de las mascotas           | `server/mi-pet/data/dialogues.js`            |
+| Logros, eventos, zonas y misiones  | `server/mi-pet/data/world.js`                |
+| Dibujo de una mascota              | `public/js/mi-pet/sprites.js`                |
+| Textos de la interfaz del juego    | `public/js/mi-pet/textos.js`                 |
 | Horas del sol y la luna            | `initSky` en `public/js/script.js`           |
 | Intensidad del sol y la luna       | `--sky-opacity` en `public/css/styles.css`   |
 | Animaciones del final de partida   | `public/js/ajedrez/final.js`                 |
@@ -68,6 +80,65 @@ La web queda en <http://localhost:3000>. Sin base de datos funciona todo menos M
 
 Para probar Mi Pet en local necesitas un PostgreSQL propio: copia `.env.example` como `.env`
 y pon tu `DATABASE_URL`. Las migraciones se aplican solas al arrancar.
+
+## Mi Pet
+
+Mi Pet es un juego de mascotas virtuales dentro de la web. Lo que hay que saber para tocarlo:
+
+```
+server/mi-pet/
+  config.js      Todos los números del juego
+  data/          Objetos, especies, diálogos, logros, eventos, zonas…
+  catalog.js     Reúne los datos y los índices; es lo que recibe el navegador
+  save.js        Formato de la partida, validación y migraciones
+  sim.js         El paso del tiempo y los estados de la mascota
+  progress.js    Monedas, experiencia, logros, misiones y requisitos
+  actions.js     Todo lo que puede hacer el jugador
+  view.js        Lo que se envía al navegador
+public/js/mi-pet/
+  juego.js       Armazón: estado, navegación, avisos y ventanas
+  vistas/        Una pantalla por archivo
+  minijuegos/    Un minijuego por archivo
+  pixel.js       Pincel de pixel art
+  sprites.js     Mascotas · muebles.js: muebles y fondos · iconos.js: iconos
+  escena.js      La habitación viva · retrato.js: mascotas sueltas
+  dialogos.js    Elige qué dice la mascota
+  sonido.js      Sonidos sintetizados
+  widget.js      Mascota flotante en las demás páginas
+```
+
+Decisiones que conviene conocer:
+
+- **Las reglas están en el servidor.** El navegador pide acciones (`POST /api/pet/action`) y nunca fija
+  un valor. Cada acción bloquea la fila de la partida, así que dos pestañas no gastan dos veces lo mismo.
+- **La partida va en PostgreSQL, ligada a la cuenta**, no en LocalStorage: se conserva al cambiar de
+  navegador. Es un JSON con versión en `pet_saves`, junto a la copia anterior válida. LocalStorage solo
+  guarda dos marcas sin datos de partida, para que el widget sepa si debe cargarse.
+- **Para cambiar el formato de la partida** sube `SAVE_VERSION` y añade una función a `MIGRATIONS` en
+  `save.js`. Un campo nuevo opcional no lo necesita: `sanitizeSave` rellena lo que falte. Si llega una
+  partida más nueva que el código, se rechaza sin escribir para no destruirla.
+- **El tiempo no depende de tener la página abierta.** Cada petición simula lo transcurrido desde la
+  última, hasta 48 horas. Una ausencia nunca baja una necesidad de 10.
+- **La muerte es permanente pero difícil.** Enfermar exige varias necesidades muy bajas durante horas, y
+  morir, además, muchas horas enferma sin medicina. Una sola ausencia no puede matarla, y si no te llega
+  para la medicina hay un botiquín gratis al día.
+- **Experiencia y nivel son del jugador**, no de cada mascota, para no perder el progreso si muere una.
+  Cariño, personalidad, días de cuidados y habitación sí son de cada mascota.
+- **Con varias mascotas, solo la activa pasa el tiempo.** Las demás están en la guardería. Exigir cuidar
+  once a la vez sería una obligación, no un juego.
+- **Los minijuegos corren en el navegador**, así que su puntuación no es de fiar del todo: el servidor
+  rechaza lo imposible para el tiempo jugado, y los topes diarios limitan lo que se puede ganar con trampas.
+  La captura de la pesca sí la decide el servidor.
+- **Los gráficos se dibujan por código**, sin archivos de imagen: son originales y comparten pincel, silueta
+  y paleta. Las fotos del álbum guardan la escena, no una imagen, y se vuelven a dibujar.
+- **El juego tiene su propio aspecto en ambos temas**: es una pantalla azul encendida dentro de la página.
+  Lo que la une al resto de la web es el color de acento en las barras de ventana.
+
+Las pruebas de las reglas no necesitan base de datos:
+
+```bash
+npm test
+```
 
 ## Desplegar en Railway
 

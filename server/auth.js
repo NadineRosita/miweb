@@ -161,4 +161,4 @@ router.get('/me', requireUser, (req, res) => {
   res.json({ username: req.user.username });
 });
 
-module.exports = { router, requireUser };
+module.exports = { router, requireUser, findUser };

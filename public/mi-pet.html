@@ -9,17 +9,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700..800;1,700..900&family=Source+Serif+4:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Press+Start+2P&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
 
   <script src="js/theme-init.js"></script>
   <script src="js/i18n.js"></script>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/mi-pet.css">
   <script src="js/layout.js" defer></script>
   <script src="js/mi-pet.js" defer></script>
   <script src="js/script.js" defer></script>
 </head>
 <body data-page="mi-pet">
   <main id="top">
-    <section class="page-section">
+    <section class="page-section" id="pet-section">
       <h1 class="section-title" data-i18n="nav.mi-pet">Mi Pet</h1>
 
       <!-- Acceso -->
@@ -43,25 +45,8 @@
         </form>
       </div>
 
-      <!-- Juego: el futuro Tamagotchi se construye dentro de esta sección -->
-      <div class="panel" id="pet-game" hidden>
-        <p class="section-text"><span data-i18n="pet.hello">Hola,</span> <strong id="pet-user"></strong><span data-i18n="pet.intro">. Esta es tu mascota:</span></p>
-        <h2 class="card-title" id="pet-name"></h2>
-
-        <div class="stats">
-          <label class="stat"><span data-i18n="pet.food">Comida</span> <progress id="stat-food" max="100"></progress></label>
-          <label class="stat"><span data-i18n="pet.happiness">Felicidad</span> <progress id="stat-happiness" max="100"></progress></label>
-          <label class="stat"><span data-i18n="pet.energy">Energía</span> <progress id="stat-energy" max="100"></progress></label>
-        </div>
-
-        <div class="form-actions">
-          <button class="button-link" type="button" data-pet-action="feed" data-i18n="pet.feed">Dar de comer</button>
-          <button class="button-link" type="button" data-pet-action="play" data-i18n="pet.play">Jugar</button>
-          <button class="button-link" type="button" data-pet-action="sleep" data-i18n="pet.sleep">Dormir</button>
-          <button class="button-link" type="button" id="logout" data-i18n="pet.logout">Cerrar sesión</button>
-        </div>
-        <p class="form-error" id="game-error" role="alert"></p>
-      </div>
+      <!-- Juego: lo monta public/js/mi-pet/juego.js al iniciar sesión -->
+      <div id="pet-game" hidden></div>
     </section>
   </main>
 </body>

@@ -1,0 +1,80 @@
+/* Mascota flotante de las demás páginas. Usa los colores del tema de la web. */
+.pet-widget {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 800; /* Por debajo de la navbar y del menú */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: none; /* Solo sus botones reciben clics: el resto no estorba */
+}
+
+.pet-widget-bubble {
+  max-width: 200px;
+  padding: 0.4rem 0.6rem;
+  background: var(--dark);
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: var(--white);
+}
+
+.pet-widget-toggle {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  background: var(--dark);
+  border: 1px solid rgba(var(--ink-rgb), 0.15);
+  border-radius: 50%;
+  font-size: 0.8rem;
+  line-height: 1;
+  color: var(--white2);
+  pointer-events: auto;
+  transition: background var(--transition), color var(--transition);
+}
+
+.pet-widget-toggle:hover {
+  background: var(--accent);
+  color: var(--black);
+}
+
+.pet-widget.is-collapsed .pet-widget-toggle {
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+}
+
+.pet-widget-pet {
+  display: block;
+  width: 64px;
+  height: 64px;
+  pointer-events: auto;
+  transition: transform var(--transition);
+}
+
+.pet-widget-pet:hover {
+  transform: translateY(-3px);
+}
+
+.pet-widget-pet canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+@media (max-width: 600px) {
+  .pet-widget-pet {
+    width: 48px;
+    height: 48px;
+  }
+
+  .pet-widget-bubble {
+    max-width: 160px;
+  }
+}

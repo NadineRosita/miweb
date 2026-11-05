@@ -1,12 +1,10 @@
-// Página Mi Pet: inicio de sesión y estado de la mascota.
-// El estado se guarda en el servidor (ver server/pet.js).
-// El futuro juego se construye dentro de <section id="pet-game"> en mi-pet.html.
+// Página Mi Pet: inicio de sesión. Al entrar, arranca el juego (public/js/mi-pet/juego.js).
 
 const authView = document.getElementById('pet-auth');
 const gameView = document.getElementById('pet-game');
 const authForm = document.getElementById('auth-form');
 const authError = document.getElementById('auth-error');
-const gameError = document.getElementById('game-error');
+const section = document.getElementById('pet-section');
 
 async function api(path, { method = 'GET', body } = {}) {
   const response = await fetch(`/api${path}`, {
@@ -38,26 +36,30 @@ const clearError = (element) => {
   element.textContent = '';
 };
 
-function renderPet(pet) {
-  document.getElementById('pet-name').textContent = pet.name;
-
-  ['food', 'happiness', 'energy'].forEach((stat) => {
-    const bar = document.getElementById(`stat-${stat}`);
-    bar.value = pet[stat];
-    bar.textContent = `${pet[stat]} %`;
-  });
-}
-
 function showAuth() {
   gameView.hidden = true;
+  section.classList.remove('pet-playing');
   authView.hidden = false;
 }
 
+async function logout() {
+  showAuth();
+
+  try {
+    await api('/auth/logout', { method: 'POST' });
+  } catch (error) {
+    showError(authError, error);
+  }
+}
+
 async function showGame(username) {
-  renderPet(await api('/pet'));
-  document.getElementById('pet-user').textContent = username;
+  // El juego solo se descarga cuando hace falta
+  const { startGame } = await import('./mi-pet/juego.js');
+
   authView.hidden = true;
   gameView.hidden = false;
+  section.classList.add('pet-playing');
+  await startGame({ root: gameView, username, onSignedOut: showAuth, onLogout: logout });
 }
 
 authForm.addEventListener('submit', async (event) => {
@@ -73,28 +75,6 @@ authForm.addEventListener('submit', async (event) => {
     await showGame(user.username);
   } catch (error) {
     showError(authError, error);
-  }
-});
-
-document.querySelectorAll('[data-pet-action]').forEach((button) => {
-  button.addEventListener('click', async () => {
-    clearError(gameError);
-
-    try {
-      renderPet(await api(`/pet/actions/${button.dataset.petAction}`, { method: 'POST' }));
-    } catch (error) {
-      if (error.status === 401) showAuth();
-      else showError(gameError, error);
-    }
-  });
-});
-
-document.getElementById('logout').addEventListener('click', async () => {
-  try {
-    await api('/auth/logout', { method: 'POST' });
-    showAuth();
-  } catch (error) {
-    showError(gameError, error);
   }
 });
 

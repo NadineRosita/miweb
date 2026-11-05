@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --env-file-if-exists=.env --watch server/index.js",
-    "migrate": "node --env-file-if-exists=.env db/migrate.js"
+    "migrate": "node --env-file-if-exists=.env db/migrate.js",
+    "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -129,4 +129,12 @@ function renderLayout() {
   i18n.apply();
 }
 
+// Mascota flotante: solo para quien ya juega, y nunca dentro del propio juego
+function loadPetWidget() {
+  if (document.body.dataset.page === 'mi-pet' || localStorage.getItem('mipet-widget') !== '1') return;
+
+  import('./mi-pet/widget.js').catch(() => {});
+}
+
 renderLayout();
+loadPetWidget();
