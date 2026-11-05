@@ -19,26 +19,86 @@ function createLink(url, className, text) {
   return link;
 }
 
-function renderAbout({ titulo, parrafos }) {
+function createTagList(tags, learningTags = []) {
+  const list = createElement('ul', 'tag-list');
+
+  list.append(
+    ...tags.map((tag) => createElement('li', 'tag', tag)),
+    ...learningTags.map((tag) => createElement('li', 'tag tag-learning', tag)),
+  );
+  return list;
+}
+
+function createParagraphs(paragraphs) {
+  return paragraphs.map((paragraph) => createElement('p', 'section-text', paragraph));
+}
+
+function renderIntro({ frase, fraseDestacada, subtitulo }) {
+  const title = createElement('h1', 'hero-title', frase);
+  const roles = createElement('ul', 'hero-roles');
+
+  title.append(' ', createElement('span', 'hero-highlight', fraseDestacada));
+  roles.append(...subtitulo.map((rol) => createElement('li', '', rol)));
+  document.getElementById('presentacion').append(title, roles);
+}
+
+function renderPillar({ nombre, texto }) {
+  const card = createElement('article', 'card');
+
+  card.append(createElement('h3', 'card-title', nombre), createElement('p', 'card-text', texto));
+  return card;
+}
+
+function renderAbout({ titulo, parrafos, pilares }) {
+  const pillars = createElement('div', 'card-grid');
+
+  pillars.append(...pilares.map(renderPillar));
   document.getElementById('sobre-mi').append(
     createElement('h2', 'section-title', titulo),
-    ...parrafos.map((parrafo) => createElement('p', 'section-text', parrafo)),
+    ...createParagraphs(parrafos),
+    pillars,
+  );
+}
+
+function renderSkillCategory({ nombre, descripcion, usadas, aprendiendo }) {
+  const card = createElement('article', 'card');
+
+  card.append(
+    createElement('h3', 'card-title', nombre),
+    createElement('p', 'card-text', descripcion),
+    createTagList(usadas, aprendiendo),
+  );
+  return card;
+}
+
+function renderSkills({ titulo, introduccion, leyenda, categorias }) {
+  const grid = createElement('div', 'card-grid');
+  const legend = createElement('p', 'skills-legend');
+
+  legend.append(createElement('span', 'tag tag-learning', leyenda));
+  grid.append(...categorias.map(renderSkillCategory), legend);
+  document.getElementById('conocimientos').append(
+    createElement('h2', 'section-title', titulo),
+    createElement('p', 'section-text', introduccion),
+    grid,
   );
 }
 
 function renderProject({ nombre, descripcion, etiquetas, enlace }) {
   const card = createElement('article', 'card');
-  const tags = createElement('ul', 'tag-list');
 
-  tags.append(...etiquetas.map((etiqueta) => createElement('li', 'tag', etiqueta)));
-  card.append(createElement('h3', 'card-title', nombre), createElement('p', 'card-text', descripcion), tags);
+  card.append(
+    createElement('h3', 'card-title', nombre),
+    createElement('p', 'card-text', descripcion),
+    createTagList(etiquetas),
+  );
 
-  if (enlace) card.append(createLink(enlace, 'card-link', 'Ver proyecto →'));
+  if (enlace) card.append(createLink(enlace, 'card-link', i18n.t('home.viewProject')));
   return card;
 }
 
 function renderProjects({ titulo, introduccion, lista }) {
-  const grid = createElement('div', 'card-grid');
+  const grid = createElement('div', 'card-grid card-grid-wide');
 
   grid.append(...lista.map(renderProject));
   document.getElementById('proyectos').append(
@@ -48,17 +108,31 @@ function renderProjects({ titulo, introduccion, lista }) {
   );
 }
 
-function renderContact({ titulo, texto, enlaces }) {
+function renderContact({ titulo, parrafos, enlaces }) {
   const list = createElement('div', 'contact-links');
 
   list.append(...enlaces.map(({ etiqueta, url }) => createLink(url, 'button-link', etiqueta)));
   document.getElementById('contacto').append(
     createElement('h2', 'section-title', titulo),
-    createElement('p', 'section-text', texto),
+    ...createParagraphs(parrafos),
     list,
   );
 }
 
-renderAbout(CONTENIDO_INICIO.sobreMi);
-renderProjects(CONTENIDO_INICIO.proyectos);
-renderContact(CONTENIDO_INICIO.contacto);
+// Pinta Inicio en el idioma actual. Se repite al cambiar de idioma.
+function renderHome() {
+  const content = CONTENIDO_INICIO[i18n.lang];
+
+  ['presentacion', 'sobre-mi', 'conocimientos', 'proyectos', 'contacto'].forEach((id) => {
+    document.getElementById(id).replaceChildren();
+  });
+
+  renderIntro(content.presentacion);
+  renderAbout(content.sobreMi);
+  renderSkills(content.conocimientos);
+  renderProjects(content.proyectos);
+  renderContact(content.contacto);
+}
+
+i18n.onChange(renderHome);
+renderHome();

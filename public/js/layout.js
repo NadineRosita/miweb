@@ -12,56 +12,57 @@ const MOON_ICON = `
   </svg>
 `;
 
-// Pestañas del menú. En sections van los apartados de esa página:
-// id es el id de la <section> a la que se desplaza.
+// Pestañas del menú. Sus textos son nav.<id> en i18n.js.
+// En sections van los apartados de esa página: id es el de su <section>.
 const NAV_LINKS = [
   {
     id: 'inicio',
-    label: 'Inicio',
     href: 'index.html',
     sections: [
-      { id: 'sobre-mi', label: 'Sobre mí' },
-      { id: 'proyectos', label: 'Proyectos' },
-      { id: 'contacto', label: 'Contacto' },
+      { id: 'sobre-mi' },
+      { id: 'conocimientos' },
+      { id: 'proyectos' },
+      { id: 'contacto' },
     ],
   },
-  { id: 'juegos', label: 'Juegos', href: 'juegos.html' },
-  { id: 'aplicaciones', label: 'Aplicaciones', href: 'aplicaciones.html' },
-  { id: 'mi-pet', label: 'Mi Pet', href: 'mi-pet.html' },
-  { id: 'jaja-que-tonto', label: 'jaja, que tonto', href: 'jaja-que-tonto.html' },
+  { id: 'juegos', href: 'juegos.html' },
+  { id: 'aplicaciones', href: 'aplicaciones.html' },
+  { id: 'mi-pet', href: 'mi-pet.html' },
+  { id: 'jaja-que-tonto', href: 'jaja-que-tonto.html' },
 ];
 
-// Cambia los "#" por las direcciones de tus perfiles
+// Redes de la barra superior. Para añadir una, copia la línea con su dirección real.
 const SOCIAL_LINKS = [
-  { short: 'IG', label: 'Instagram', href: '#' },
-  { short: 'GH', label: 'GitHub', href: '#' },
+  { short: 'IG', label: 'Instagram', href: 'https://www.instagram.com/_just.nad/' },
+  { short: 'GH', label: 'GitHub', href: 'https://github.com/NadineRosita' },
+  { short: 'DC', label: 'Discord', href: 'https://discord.com/users/428102550349414407' },
 ];
 
 function navLinksHtml(currentPage) {
-  return NAV_LINKS.map(({ id, label, href, sections = [] }) => {
+  return NAV_LINKS.map(({ id, href, sections = [] }) => {
     const isCurrent = id === currentPage;
     const current = isCurrent ? ' aria-current="page"' : '';
     // En la propia página basta el #: con la dirección completa el navegador
     // recargaría la página en vez de desplazarse suavemente
     const base = isCurrent ? '' : href;
     const sectionLinks = sections.map((section) => (
-      `<a href="${base}#${section.id}">${section.label}</a>`
+      `<a href="${base}#${section.id}" data-i18n="nav.${section.id}"></a>`
     ));
     const submenu = sectionLinks.length ? `<div class="site-submenu">${sectionLinks.join('')}</div>` : '';
 
-    return `<a href="${href}"${current}>${label}</a>${submenu}`;
+    return `<a href="${href}"${current} data-i18n="nav.${id}"></a>${submenu}`;
   }).join('');
 }
 
 function headerHtml(currentPage) {
   const links = navLinksHtml(currentPage);
   const socials = SOCIAL_LINKS.map(({ short, label, href }) => (
-    `<a href="${href}" class="social-pill" aria-label="${label}">${short}</a>`
+    `<a href="${href}" class="social-pill" aria-label="${label}" target="_blank" rel="noopener">${short}</a>`
   ));
 
   return `
     <header class="navbar" id="navbar">
-      <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-menu">
+      <button class="hamburger" id="hamburger" type="button" data-i18n-aria="menu.open" aria-expanded="false" aria-controls="site-menu">
         <span></span>
         <span></span>
         <span></span>
@@ -74,19 +75,20 @@ function headerHtml(currentPage) {
 
       <div class="nav-actions">
         <div class="nav-socials">${socials.join('')}</div>
+        <button class="social-pill lang-switch" id="lang-switch" type="button" data-i18n="lang.button" data-i18n-aria="lang.label"></button>
         ${themeSwitchHtml()}
       </div>
     </header>
 
     <div class="site-menu" id="site-menu">
-      <nav aria-label="Navegación principal">${links}</nav>
+      <nav data-i18n-aria="nav.label">${links}</nav>
     </div>
   `;
 }
 
 function themeSwitchHtml() {
   return `
-    <button class="theme-switch" id="theme-switch" type="button" role="switch" aria-label="Modo oscuro" aria-checked="false">
+    <button class="theme-switch" id="theme-switch" type="button" role="switch" data-i18n-aria="theme.label" aria-checked="false">
       <span class="theme-switch-thumb">
         <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="4.5" />
@@ -105,8 +107,8 @@ function footerHtml() {
     <footer class="footer">
       <div class="footer-row">
         <span class="footer-name">${MOON_ICON} ${SITE_NAME}</span>
-        <span class="footer-copy">© ${new Date().getFullYear()} — Todos los derechos reservados</span>
-        <a href="#top" class="footer-top">Volver arriba ↑</a>
+        <span class="footer-copy">© ${new Date().getFullYear()} — <span data-i18n="footer.rights"></span></span>
+        <a href="#top" class="footer-top" data-i18n="footer.top"></a>
       </div>
       <div class="footer-deco" aria-hidden="true">${SITE_NAME}</div>
     </footer>
@@ -123,6 +125,7 @@ function renderLayout() {
     ${headerHtml(page)}
   `);
   document.body.insertAdjacentHTML('beforeend', footerHtml());
+  i18n.apply();
 }
 
 renderLayout();

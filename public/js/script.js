@@ -75,7 +75,8 @@ function initMenu() {
     menu.classList.toggle('open', open);
     document.body.classList.toggle('menu-open', open);
     hamburger.setAttribute('aria-expanded', String(open));
-    hamburger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    hamburger.dataset.i18nAria = open ? 'menu.close' : 'menu.open';
+    hamburger.setAttribute('aria-label', i18n.t(hamburger.dataset.i18nAria));
   };
 
   hamburger.addEventListener('click', (event) => {
@@ -113,11 +114,21 @@ function initMenu() {
   });
 }
 
+// Aplica un cambio visual con fundido, salvo que se prefiera reducir el movimiento
+function withFade(update) {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (document.startViewTransition && !reducedMotion) {
+    document.startViewTransition(update);
+  } else {
+    update();
+  }
+}
+
 // Interruptor de modo claro/oscuro con fundido entre temas
 function initThemeSwitch() {
   const root = document.documentElement;
   const toggle = document.getElementById('theme-switch');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const setTheme = (theme) => {
     root.dataset.theme = theme;
@@ -129,12 +140,15 @@ function initThemeSwitch() {
 
   toggle.addEventListener('click', () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    withFade(() => setTheme(next));
+  });
+}
 
-    if (document.startViewTransition && !reducedMotion.matches) {
-      document.startViewTransition(() => setTheme(next));
-    } else {
-      setTheme(next);
-    }
+// Botón para cambiar entre español e inglés
+function initLanguageSwitch() {
+  document.getElementById('lang-switch').addEventListener('click', () => {
+    const next = i18n.lang === 'es' ? 'en' : 'es';
+    withFade(() => i18n.setLanguage(next));
   });
 }
 
@@ -182,4 +196,5 @@ initCursor();
 initNavbar();
 initMenu();
 initThemeSwitch();
+initLanguageSwitch();
 initSky();

@@ -1,4 +1,7 @@
 // Punto de entrada: sirve la web de public/ y la API de Mi Pet.
+//
+// Los errores de la API llevan un código, no una frase: el navegador muestra
+// el texto en el idioma elegido (ver error.* en public/js/i18n.js).
 
 const path = require('node:path');
 const cookieParser = require('cookie-parser');
@@ -25,7 +28,7 @@ app.use('/api', (req, res, next) => {
     next();
     return;
   }
-  res.status(503).json({ error: 'Mi Pet no está disponible: falta la base de datos.' });
+  res.status(503).json({ error: 'database_unavailable' });
 });
 
 app.use('/api', express.json({ limit: '10kb' }), cookieParser());
@@ -33,7 +36,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/pet', petRouter);
 
 app.use('/api', (req, res) => {
-  res.status(404).json({ error: 'Esta ruta no existe.' });
+  res.status(404).json({ error: 'not_found' });
 });
 
 // extensions permite abrir /juegos además de /juegos.html
@@ -42,12 +45,12 @@ app.use(express.static(PUBLIC_DIR, { extensions: ['html'] }));
 // Express identifica este middleware de errores por sus cuatro parámetros
 app.use((error, req, res, next) => {
   if (error.status && error.status < 500) {
-    res.status(error.status).json({ error: 'La petición no es válida.' });
+    res.status(error.status).json({ error: 'invalid_request' });
     return;
   }
 
   console.error(error);
-  res.status(500).json({ error: 'Algo ha fallado en el servidor.' });
+  res.status(500).json({ error: 'server_error' });
 });
 
 async function start() {

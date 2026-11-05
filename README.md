@@ -18,7 +18,8 @@ public/                     Todo lo que ve el navegador
   css/styles.css            Estilos y colores de los temas
   imagenes/                 Imágenes y favicon
   js/
-    contenido-inicio.js     Textos de Inicio (edita este para cambiarlos)
+    contenido-inicio.js     Textos de Inicio en español e inglés (edita este para cambiarlos)
+    i18n.js                 Resto de textos en ambos idiomas y cambio de idioma
     layout.js               Barra de navegación y pie, comunes a todas las páginas
     script.js               Cursor, menú, tema claro/oscuro y sol/luna de fondo
     theme-init.js           Aplica el tema guardado antes de pintar la página
@@ -40,6 +41,7 @@ db/
 | ---------------------------------- | -------------------------------------------- |
 | Textos de Sobre mí, Proyectos…     | `public/js/contenido-inicio.js`              |
 | Pestañas y enlaces de redes        | `public/js/layout.js`                        |
+| Textos de menú, pie y mensajes     | `public/js/i18n.js`                          |
 | Efecto de las acciones de Mi Pet   | `ACTIONS` en `server/pet.js`                 |
 | Horas del sol y la luna            | `initSky` en `public/js/script.js`           |
 | Intensidad del sol y la luna       | `--sky-opacity` en `public/css/styles.css`   |

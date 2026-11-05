@@ -30,7 +30,7 @@ router.patch('/', async (req, res) => {
   const name = typeof req.body?.name === 'string' ? req.body.name.trim() : '';
 
   if (!name || name.length > NAME_MAX_LENGTH) {
-    res.status(400).json({ error: `El nombre debe tener de 1 a ${NAME_MAX_LENGTH} caracteres.` });
+    res.status(400).json({ error: 'pet_name_invalid' });
     return;
   }
 
@@ -43,7 +43,7 @@ router.patch('/', async (req, res) => {
 
 router.post('/actions/:action', async (req, res) => {
   if (!Object.hasOwn(ACTIONS, req.params.action)) {
-    res.status(400).json({ error: 'Esa acción no existe.' });
+    res.status(400).json({ error: 'action_invalid' });
     return;
   }
 

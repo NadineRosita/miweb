@@ -235,6 +235,10 @@ main {
   animation-timing-function: ease-in-out;
 }
 
+.lang-switch {
+  flex-shrink: 0;
+}
+
 /* ---------- Tres rayitas ---------- */
 .hamburger {
   position: relative;
@@ -441,6 +445,50 @@ main {
   height: 100%;
 }
 
+/* ---------- Presentación ---------- */
+.page-intro {
+  padding-bottom: 1rem;
+}
+
+.hero-title {
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.4rem, 6.5vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.1;
+  text-wrap: balance; /* Evita palabras sueltas en la última línea */
+}
+
+.hero-highlight {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.hero-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--white2);
+}
+
+.hero-roles li {
+  position: relative;
+}
+
+.hero-roles li + li::before {
+  content: '';
+  position: absolute;
+  top: 0.35em;
+  bottom: 0.35em;
+  left: -0.65rem;
+  width: 1px;
+  background: var(--accent);
+}
+
 /* ---------- Secciones de página ---------- */
 .page-section {
   width: min(100%, 960px);
@@ -465,9 +513,13 @@ main {
 /* ---------- Tarjetas de proyecto ---------- */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
+}
+
+.card-grid-wide {
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
 }
 
 .card {
@@ -503,6 +555,18 @@ main {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--white2);
+}
+
+/* Tecnologías que sigue explorando */
+.tag-learning {
+  background: none;
+  outline: 1px dashed rgba(var(--ink-rgb), 0.45);
+  outline-offset: -1px;
+}
+
+/* Ocupa el hueco libre al final de la cuadrícula */
+.skills-legend {
+  align-self: end;
 }
 
 .card-link {
@@ -655,7 +719,30 @@ main {
   user-select: none;
 }
 
+/* En los móviles más estrechos la barra superior va justa */
+@media (max-width: 380px) {
+  .nav-actions {
+    gap: 0.4rem;
+  }
+
+  .hamburger {
+    margin-left: 0.4rem;
+  }
+
+  .lang-switch {
+    padding-inline: 0.55rem;
+  }
+}
+
 @media (max-width: 600px) {
+  .hero-roles {
+    flex-direction: column;
+  }
+
+  .hero-roles li + li::before {
+    display: none;
+  }
+
   .navbar {
     padding-inline: 1.25rem;
   }

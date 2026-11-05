@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
 
   <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
   <link rel="stylesheet" href="css/styles.css">
   <script src="js/layout.js" defer></script>
   <script src="js/mi-pet.js" defer></script>
@@ -19,24 +20,24 @@
 <body data-page="mi-pet">
   <main id="top">
     <section class="page-section">
-      <h1 class="section-title">Mi Pet</h1>
+      <h1 class="section-title" data-i18n="nav.mi-pet">Mi Pet</h1>
 
       <!-- Acceso -->
       <div class="panel" id="pet-auth" hidden>
-        <p class="section-text">Entra en tu cuenta para cuidar de tu mascota. Tu progreso se guarda solo.</p>
+        <p class="section-text" data-i18n="pet.signIn">Entra en tu cuenta para cuidar de tu mascota. Tu progreso se guarda solo.</p>
 
         <form class="form" id="auth-form">
           <label class="field">
-            Usuario
+            <span data-i18n="pet.username">Usuario</span>
             <input name="username" autocomplete="username" required minlength="3" maxlength="24">
           </label>
           <label class="field">
-            Contraseña
+            <span data-i18n="pet.password">Contraseña</span>
             <input name="password" type="password" autocomplete="current-password" required minlength="8">
           </label>
           <div class="form-actions">
-            <button class="button-link" type="submit" value="login">Entrar</button>
-            <button class="button-link" type="submit" value="register">Crear cuenta</button>
+            <button class="button-link" type="submit" value="login" data-i18n="pet.login">Entrar</button>
+            <button class="button-link" type="submit" value="register" data-i18n="pet.register">Crear cuenta</button>
           </div>
           <p class="form-error" id="auth-error" role="alert"></p>
         </form>
@@ -44,20 +45,20 @@
 
       <!-- Juego: el futuro Tamagotchi se construye dentro de esta sección -->
       <div class="panel" id="pet-game" hidden>
-        <p class="section-text">Hola, <strong id="pet-user"></strong>. Esta es tu mascota:</p>
+        <p class="section-text"><span data-i18n="pet.hello">Hola,</span> <strong id="pet-user"></strong><span data-i18n="pet.intro">. Esta es tu mascota:</span></p>
         <h2 class="card-title" id="pet-name"></h2>
 
         <div class="stats">
-          <label class="stat">Comida <progress id="stat-food" max="100"></progress></label>
-          <label class="stat">Felicidad <progress id="stat-happiness" max="100"></progress></label>
-          <label class="stat">Energía <progress id="stat-energy" max="100"></progress></label>
+          <label class="stat"><span data-i18n="pet.food">Comida</span> <progress id="stat-food" max="100"></progress></label>
+          <label class="stat"><span data-i18n="pet.happiness">Felicidad</span> <progress id="stat-happiness" max="100"></progress></label>
+          <label class="stat"><span data-i18n="pet.energy">Energía</span> <progress id="stat-energy" max="100"></progress></label>
         </div>
 
         <div class="form-actions">
-          <button class="button-link" type="button" data-pet-action="feed">Dar de comer</button>
-          <button class="button-link" type="button" data-pet-action="play">Jugar</button>
-          <button class="button-link" type="button" data-pet-action="sleep">Dormir</button>
-          <button class="button-link" type="button" id="logout">Cerrar sesión</button>
+          <button class="button-link" type="button" data-pet-action="feed" data-i18n="pet.feed">Dar de comer</button>
+          <button class="button-link" type="button" data-pet-action="play" data-i18n="pet.play">Jugar</button>
+          <button class="button-link" type="button" data-pet-action="sleep" data-i18n="pet.sleep">Dormir</button>
+          <button class="button-link" type="button" id="logout" data-i18n="pet.logout">Cerrar sesión</button>
         </div>
         <p class="form-error" id="game-error" role="alert"></p>
       </div>

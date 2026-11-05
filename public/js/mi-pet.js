@@ -26,10 +26,16 @@ async function api(path, { method = 'GET', body } = {}) {
   return data;
 }
 
-const CONNECTION_ERROR = 'No se ha podido conectar con el servidor.';
-
+// Muestra el error marcado con su clave, para que cambie también con el idioma.
+// Los fallos de red no traen estado HTTP.
 const showError = (element, error) => {
-  element.textContent = error.status ? error.message : CONNECTION_ERROR;
+  element.dataset.i18n = `error.${error.status ? error.message : 'connection'}`;
+  element.textContent = i18n.t(element.dataset.i18n);
+};
+
+const clearError = (element) => {
+  delete element.dataset.i18n;
+  element.textContent = '';
 };
 
 function renderPet(pet) {
@@ -56,7 +62,7 @@ async function showGame(username) {
 
 authForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  authError.textContent = '';
+  clearError(authError);
 
   const { username, password } = Object.fromEntries(new FormData(authForm));
   const mode = event.submitter.value; // "login" o "register"
@@ -72,7 +78,7 @@ authForm.addEventListener('submit', async (event) => {
 
 document.querySelectorAll('[data-pet-action]').forEach((button) => {
   button.addEventListener('click', async () => {
-    gameError.textContent = '';
+    clearError(gameError);
 
     try {
       renderPet(await api(`/pet/actions/${button.dataset.petAction}`, { method: 'POST' }));

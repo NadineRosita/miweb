@@ -60,7 +60,7 @@ async function findUser(req) {
 async function requireUser(req, res, next) {
   req.user = await findUser(req);
   if (!req.user) {
-    res.status(401).json({ error: 'Tienes que iniciar sesión.' });
+    res.status(401).json({ error: 'login_required' });
     return;
   }
   next();
@@ -77,7 +77,7 @@ const credentialsLimiter = rateLimit({
   limit: 20,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
-  message: { error: 'Demasiados intentos. Prueba de nuevo en unos minutos.' },
+  message: { error: 'too_many_attempts' },
 });
 
 const router = express.Router();
@@ -86,13 +86,13 @@ router.post('/register', credentialsLimiter, async (req, res) => {
   const credentials = readCredentials(req.body);
 
   if (!credentials || !USERNAME_PATTERN.test(credentials.username)) {
-    res.status(400).json({ error: 'El usuario debe tener de 3 a 24 letras, números o guiones bajos.' });
+    res.status(400).json({ error: 'username_invalid' });
     return;
   }
 
   const { username, password } = credentials;
   if (password.length < PASSWORD_MIN_LENGTH || Buffer.byteLength(password) > PASSWORD_MAX_BYTES) {
-    res.status(400).json({ error: `La contraseña debe tener de ${PASSWORD_MIN_LENGTH} a ${PASSWORD_MAX_BYTES} caracteres.` });
+    res.status(400).json({ error: 'password_invalid' });
     return;
   }
 
@@ -112,7 +112,7 @@ router.post('/register', credentialsLimiter, async (req, res) => {
   } catch (error) {
     await client.query('ROLLBACK');
     if (error.code === UNIQUE_VIOLATION) {
-      res.status(409).json({ error: 'Ese nombre de usuario ya existe.' });
+      res.status(409).json({ error: 'username_taken' });
       return;
     }
     throw error;
@@ -128,7 +128,7 @@ router.post('/login', credentialsLimiter, async (req, res) => {
   const credentials = readCredentials(req.body);
 
   if (!credentials) {
-    res.status(400).json({ error: 'Escribe tu usuario y tu contraseña.' });
+    res.status(400).json({ error: 'credentials_missing' });
     return;
   }
 
@@ -140,7 +140,7 @@ router.post('/login', credentialsLimiter, async (req, res) => {
   const passwordMatches = await bcrypt.compare(credentials.password, user?.password_hash ?? DUMMY_HASH);
 
   if (!user || !passwordMatches) {
-    res.status(401).json({ error: 'Usuario o contraseña incorrectos.' });
+    res.status(401).json({ error: 'credentials_wrong' });
     return;
   }
 
