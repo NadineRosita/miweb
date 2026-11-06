@@ -1,10 +1,11 @@
 /* Página de ajedrez. Los colores del tablero son fijos: funcionan en los dos temas. */
 
 :root {
-  --board-light: #eed9c4;
-  --board-dark: #b5694f;
-  --piece-light: #fff8f0;
-  --piece-dark: #2a2320;
+  --board-light: #f0d9b5;
+  --board-dark: #b58863;
+  --piece-light: #ffffff;
+  --piece-dark: #1a1a1a;
+  --board-frame: #5c3d24;
 }
 
 .back-link {
@@ -133,8 +134,8 @@
   gap: 0.5rem;
   width: 100%;
   max-width: 44rem;
-  max-width: min(44rem, max(22rem, calc(100vh - 17rem)));
-  max-width: min(44rem, max(22rem, calc(100dvh - 17rem)));
+  max-width: min(44rem, max(22rem, calc(100vh - 14rem)));
+  max-width: min(44rem, max(22rem, calc(100dvh - 14rem)));
 }
 
 .chess-player {
@@ -174,8 +175,9 @@
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: var(--radius);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  border: clamp(4px, 1.2vw, 10px) solid var(--board-frame);
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
   -webkit-user-select: none;
   user-select: none;
 }
@@ -229,11 +231,11 @@
 }
 
 .square.is-last {
-  box-shadow: inset 0 0 0 100vmax rgba(245, 185, 74, 0.38);
+  box-shadow: inset 0 0 0 100vmax rgba(205, 210, 106, 0.5);
 }
 
 .square.is-selected {
-  box-shadow: inset 0 0 0 100vmax rgba(245, 185, 74, 0.68);
+  box-shadow: inset 0 0 0 100vmax rgba(130, 151, 105, 0.8);
 }
 
 .square.is-check {
@@ -263,7 +265,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  stroke-width: 1.2;
+  stroke-width: 1.4;
   stroke-linejoin: round;
   pointer-events: none;
 }
@@ -546,4 +548,65 @@
 
 .chess-moves:empty {
   display: none;
+}
+
+/* ---------- Estética clásica y interfaz simplificada ---------- */
+body[data-page="ajedrez"] .section-title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Historial de jugadas plegado por defecto: el tablero es lo importante */
+.chess-moves-box {
+  width: 100%;
+  text-align: left;
+}
+
+.chess-moves-box > summary {
+  cursor: pointer;
+  padding: 0.4rem 0;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--white2);
+}
+
+.chess-moves-box:not(:has(li)) {
+  display: none;
+}
+
+.chess-moves-box .chess-moves {
+  margin-top: 0.25rem;
+}
+
+/* Botones más sobrios y con zona táctil cómoda */
+.chess-actions .button-link,
+.chess-room .button-link {
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+}
+
+.chess-nav {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 6px;
+}
+
+.chess-player {
+  font-family: var(--font-title);
+}
+
+@media (max-width: 600px) {
+  .chess-playing .page-section {
+    padding: 0.5rem 0.75rem 1.5rem;
+  }
+
+  .chess-toolbar {
+    gap: 0.5rem;
+  }
+
+  .chess-actions .button-link {
+    flex: 1 1 auto;
+    font-size: 0.8rem;
+  }
 }

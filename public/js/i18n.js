@@ -58,6 +58,7 @@ const i18n = (() => {
 
       'chess.title': 'Ajedrez',
       'chess.back': '← Juegos',
+      'chess.moves': 'Jugadas',
       'chess.intro': 'Juega contra la máquina o invita a alguien con un código. No hace falta cuenta.',
       'chess.vsMachine': 'Contra la máquina',
       'chess.vsPerson': 'Contra otra persona',
@@ -199,6 +200,7 @@ const i18n = (() => {
 
       'chess.title': 'Chess',
       'chess.back': '← Games',
+      'chess.moves': 'Moves',
       'chess.intro': 'Play against the machine or invite someone with a code. No account needed.',
       'chess.vsMachine': 'Against the machine',
       'chess.vsPerson': 'Against another person',
