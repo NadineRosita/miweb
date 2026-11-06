@@ -28,7 +28,7 @@ const CONTENIDO_INICIO = {
       // Esta parte de la frase va en letra cursiva y color de acento
       fraseDestacada: 'Ingeniera del Software, gamer, melómana.',
       subtitulo: [
-        'Estudiante de Ingeniería del Software',
+        'Escritora',
         'Presidenta de la asociación: ASTRA',
         'Meloncilla',
       ],
@@ -100,7 +100,7 @@ const CONTENIDO_INICIO = {
       frase: 'Nadia Coronel,',
       fraseDestacada: 'Software Engineer, gamer, music lover.',
       subtitulo: [
-        'Software Engineering Student',
+        'Writer',
         'President of: ASTRA students club',
         'Meloncilla',
       ],
