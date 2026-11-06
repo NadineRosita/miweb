@@ -38,6 +38,8 @@ export class Board {
     this.draggedMove = false;
     this.fallen = null;
     this.preview = false;
+    this.free = false; // Partida acabada: las piezas se pueden sacar del tablero
+    this.floating = new Map(); // casilla -> pieza flotante
 
     element.addEventListener('click', (event) => this.handleClick(event));
     element.addEventListener('pointerdown', (event) => this.handlePointerDown(event));
@@ -74,7 +76,7 @@ export class Board {
 
   // Actualiza el tablero. interactive indica si ahora se puede mover
   // preview indica que se está mirando una posición anterior
-  render({ chess, orientation, interactive, lastMove, preview = false }) {
+  render({ chess, orientation, interactive, lastMove, preview = false, free = false }) {
     if (orientation !== this.orientation) this.buildSquares(orientation);
 
     // Solo se anima una jugada nueva: ni al recargar ni al recuperar varias de golpe
@@ -86,10 +88,14 @@ export class Board {
     this.interactive = interactive;
     this.lastMove = lastMove;
     this.preview = preview;
+    this.free = free;
     if (!interactive) this.selected = null;
+    if (!free) this.clearFloating();
+    this.floating.forEach((floater) => { floater.hidden = preview; });
 
     this.element.classList.toggle('is-interactive', interactive);
     this.element.classList.toggle('is-preview', preview);
+    this.element.classList.toggle('is-free', free && !preview);
     this.paint();
 
     if (isNewMove && lastMove) this.animateMove(lastMove);
@@ -100,6 +106,79 @@ export class Board {
   reset() {
     this.moveCount = null;
     this.fallen = null;
+    this.free = false;
+    this.clearFloating();
+  }
+
+  // ---------- Piezas flotantes (solo con la partida acabada) ----------
+
+  clearFloating() {
+    this.floating.forEach((floater) => floater.remove());
+    this.floating.clear();
+  }
+
+  // Saca la pieza de la casilla y la deja en la página, donde se pueda mover libremente
+  float(squareName, event) {
+    const square = this.squares.get(squareName);
+    const piece = this.chess.get(squareName);
+    const rect = square.getBoundingClientRect();
+    const floater = document.createElement('div');
+
+    floater.className = 'floating-piece';
+    floater.innerHTML = pieceSvg(piece);
+    floater.style.width = `${rect.width}px`;
+    floater.style.height = `${rect.height}px`;
+    floater.style.left = `${rect.left + window.scrollX}px`;
+    floater.style.top = `${rect.top + window.scrollY}px`;
+    document.body.append(floater);
+
+    floater.addEventListener('pointerdown', (down) => {
+      if (down.button !== 0) return;
+      down.preventDefault();
+      document.body.append(floater); // Queda por encima de las demás
+      this.dragFloater(floater, down);
+    });
+
+    this.floating.set(squareName, floater);
+    this.paint();
+    this.dragFloater(floater, event);
+  }
+
+  // Arrastra una pieza ya flotante; se queda donde se suelte
+  dragFloater(floater, startEvent) {
+    const left = parseFloat(floater.style.left);
+    const top = parseFloat(floater.style.top);
+    const { clientX: startX, clientY: startY, pointerId } = startEvent;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+
+    floater.classList.add('is-dragging');
+    floater.setPointerCapture(pointerId);
+
+    const move = (event) => {
+      if (event.pointerId !== pointerId) return;
+
+      const maxX = document.documentElement.scrollWidth - floater.offsetWidth;
+      const maxY = document.documentElement.scrollHeight - floater.offsetHeight;
+      const x = left + (event.clientX - startX) + (window.scrollX - scrollX);
+      const y = top + (event.clientY - startY) + (window.scrollY - scrollY);
+
+      floater.style.left = `${Math.min(Math.max(0, x), maxX)}px`;
+      floater.style.top = `${Math.min(Math.max(0, y), maxY)}px`;
+    };
+
+    const end = (event) => {
+      if (event.pointerId !== pointerId) return;
+
+      floater.classList.remove('is-dragging');
+      floater.removeEventListener('pointermove', move);
+      floater.removeEventListener('pointerup', end);
+      floater.removeEventListener('pointercancel', end);
+    };
+
+    floater.addEventListener('pointermove', move);
+    floater.addEventListener('pointerup', end);
+    floater.addEventListener('pointercancel', end);
   }
 
   // Tumba el rey de ese color y lo deja así
@@ -181,7 +260,7 @@ export class Board {
     const turn = this.chess.turn();
 
     this.squares.forEach((square, name) => {
-      const piece = this.chess.get(name);
+      const piece = this.floating.has(name) && !this.preview ? null : this.chess.get(name);
       const target = targets.get(name);
 
       square.innerHTML = piece ? pieceSvg(piece) : '';
@@ -281,6 +360,18 @@ export class Board {
 
   handlePointerDown(event) {
     const square = event.target.closest('[data-square]');
+
+    if (this.free && !this.preview) {
+      const name = square?.dataset.square;
+
+      if (event.button === 0 && name && !this.floating.has(name) && this.chess.get(name)) {
+        event.preventDefault();
+        this.ignoreClick = true;
+        setTimeout(() => { this.ignoreClick = false; }, 0);
+        this.float(name, event);
+      }
+      return;
+    }
 
     if (!this.interactive || event.button !== 0 || !square || !this.ownPiece(square.dataset.square)) return;
 

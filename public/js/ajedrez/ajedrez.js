@@ -247,7 +247,10 @@ function render() {
     interactive: canMove,
     lastMove: lastMoveOf(shown),
     preview: previewing,
+    free: Boolean(game.finished),
   });
+
+  $('chess-free-hint').hidden = !game.finished || previewing;
 
   $('chess-status').textContent = statusText();
   renderPlayers();

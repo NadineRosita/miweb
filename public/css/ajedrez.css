@@ -610,3 +610,32 @@ body[data-page="ajedrez"] .section-title {
     font-size: 0.8rem;
   }
 }
+
+/* ---------- Partida acabada: piezas sueltas por la página ---------- */
+.chess-board.is-free .square:has(.piece) {
+  cursor: grab;
+  touch-action: none;
+}
+
+.floating-piece {
+  position: absolute;
+  z-index: 7000;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.35));
+}
+
+.floating-piece[hidden] {
+  display: none;
+}
+
+.floating-piece.is-dragging {
+  cursor: grabbing;
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.4));
+}
+
+.floating-piece .piece {
+  pointer-events: none;
+}
