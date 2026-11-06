@@ -15,10 +15,12 @@ public/                     Todo lo que ve el navegador
   aplicaciones.html         Aplicaciones
   mi-pet.html               Mi Pet: acceso y mascota
   ajedrez.html              Ajedrez, contra la máquina o por salas
+  ciudadelas.html           Ciudadelas: salas de 2 a 7 jugadores, bots y tutorial
   jaja-que-tonto.html       Futuro escape room (de momento, «Próximamente»)
   css/styles.css            Estilos y colores de los temas
   css/mi-pet.css            Estilos del juego Mi Pet
   css/mi-pet-widget.css     Mascota flotante de las demás páginas
+  css/ciudadelas.css        Estilos de Ciudadelas
   imagenes/                 Imágenes y favicon
   js/
     contenido-inicio.js     Textos de Inicio en español e inglés (edita este para cambiarlos)
@@ -30,6 +32,7 @@ public/                     Todo lo que ve el navegador
     mi-pet.js               Inicio de sesión de Mi Pet; al entrar arranca el juego
     mi-pet/                 El juego en el navegador (ver «Mi Pet» más abajo)
     ajedrez/                Tablero, partida, conexión con salas y motor de la máquina
+    ciudadelas/             Menú, partida, cartas, textos (es/en) y consejos del tutorial
 server/                     Backend
   index.js                  Arranque del servidor
   db.js                     Conexión a PostgreSQL
@@ -38,11 +41,15 @@ server/                     Backend
   mi-pet/                   Reglas y datos del juego (ver «Mi Pet» más abajo)
   chess.js                  Salas de ajedrez: API y WebSocket
   chess-rooms.js            Reglas de las salas: jugadas, reloj y guardado
+  ciudadelas.js             Salas de Ciudadelas: API y WebSocket
+  ciudadelas/               Reglas (game.js), bots, cartas y salas en memoria
+  sockets.js                Reparte los WebSocket entre ajedrez y Ciudadelas
 db/
   migrate.js                Aplica las migraciones pendientes
   migrations/               Cambios de la base de datos, en orden
 test/
   mi-pet/                   Pruebas de las reglas del juego (npm test)
+  ciudadelas/               Pruebas de Ciudadelas: partidas completas de bots de 2 a 7 jugadores
 ```
 
 ## Tareas habituales

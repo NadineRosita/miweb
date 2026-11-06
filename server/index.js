@@ -9,6 +9,7 @@ const express = require('express');
 const { runMigrations } = require('../db/migrate');
 const { router: authRouter } = require('./auth');
 const { attachChessSockets, router: chessRouter } = require('./chess');
+const { attachCiudadelasSockets, router: ciudadelasRouter } = require('./ciudadelas');
 const { pool } = require('./db');
 const { router: petRouter } = require('./pet');
 
@@ -25,6 +26,9 @@ app.set('trust proxy', 1); // Railway va por delante: da la IP real y detecta HT
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', database: Boolean(pool) });
 });
+
+// Ciudadelas vive en memoria: funciona sin base de datos
+app.use('/api/ciudadelas', express.json({ limit: '2kb' }), ciudadelasRouter);
 
 app.use('/api', (req, res, next) => {
   if (pool) {
@@ -69,6 +73,7 @@ async function start() {
   const server = app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
 
   attachChessSockets(server);
+  attachCiudadelasSockets(server);
 }
 
 start().catch((error) => {

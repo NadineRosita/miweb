@@ -15,6 +15,7 @@ const { rateLimit } = require('express-rate-limit');
 const { WebSocketServer } = require('ws');
 const rooms = require('./chess-rooms');
 const { pool } = require('./db');
+const { registerSocketServer } = require('./sockets');
 
 const SOCKET_PATH = '/ws/ajedrez';
 const MAX_MESSAGE_BYTES = 1024;
@@ -131,7 +132,9 @@ function handleConnection(socket) {
 function attachChessSockets(server) {
   if (!pool) return;
 
-  const sockets = new WebSocketServer({ server, path: SOCKET_PATH, maxPayload: MAX_MESSAGE_BYTES });
+  const sockets = new WebSocketServer({ noServer: true, maxPayload: MAX_MESSAGE_BYTES });
+
+  registerSocketServer(server, SOCKET_PATH, sockets);
 
   sockets.on('connection', handleConnection);
 

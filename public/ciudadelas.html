@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudadelas — NadineRoss</title>
+  <link rel="icon" href="imagenes/luna-menguante.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700..800;1,700..900&family=Source+Serif+4:wght@400..700&display=swap" rel="stylesheet">
+
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/ciudadelas.css">
+  <script src="js/layout.js" defer></script>
+  <script src="js/script.js" defer></script>
+  <script type="module" src="js/ciudadelas/ciudadelas.js"></script>
+</head>
+<body data-page="ciudadelas" data-tab="juegos">
+  <main id="top">
+    <section class="page-section cd-page">
+      <a class="back-link" href="juegos.html" data-i18n="cd.back">← Juegos</a>
+      <h1 class="section-title" data-i18n="cd.title">Ciudadelas</h1>
+
+      <p class="form-error" id="cd-error" role="alert"></p>
+
+      <!-- Menú: tutorial, crear sala y unirse -->
+      <div id="cd-menu">
+        <p class="section-text" data-i18n="cd.intro">Construye la ciudad más próspera. De 2 a 7 jugadores, con salas, bots y un tutorial.</p>
+
+        <div class="cd-tutorial-card">
+          <div>
+            <h2 class="cd-title" data-i18n="cd.tutorial.title">Aprende a jugar</h2>
+            <p data-i18n="cd.tutorial.text">Una partida guiada contra 3 bots, con consejos paso a paso.</p>
+          </div>
+          <div class="cd-tutorial-buttons">
+            <button class="cd-button is-primary" id="tutorial-start" type="button" data-i18n="cd.tutorial.start">Empezar tutorial</button>
+            <button class="cd-button" id="rules-open" type="button" data-i18n="cd.rules">Reglas</button>
+          </div>
+        </div>
+
+        <div class="cd-menu-grid">
+          <form class="cd-panel" id="create-form">
+            <h2 class="cd-title" data-i18n="cd.create.title">Crear una sala</h2>
+            <label class="cd-field">
+              <span data-i18n="cd.create.name">Tu nombre</span>
+              <input name="name" maxlength="16" autocomplete="nickname">
+            </label>
+            <div class="cd-row">
+              <label class="cd-field">
+                <span data-i18n="cd.create.players">Jugadores</span>
+                <select name="players" id="create-players"></select>
+              </label>
+              <label class="cd-field">
+                <span data-i18n="cd.create.bots">Bots</span>
+                <select name="bots" id="create-bots"></select>
+              </label>
+            </div>
+            <label class="cd-field">
+              <span data-i18n="cd.create.limit">Distritos para acabar</span>
+              <select name="limit">
+                <option value="8" data-i18n="cd.create.limit.8">8 (normal)</option>
+                <option value="7" data-i18n="cd.create.limit.7">7 (más corta)</option>
+                <option value="6" data-i18n="cd.create.limit.6">6 (corta)</option>
+              </select>
+            </label>
+            <button class="cd-button is-primary" type="submit" data-i18n="cd.create.submit">Crear sala</button>
+          </form>
+
+          <form class="cd-panel" id="join-form">
+            <h2 class="cd-title" data-i18n="cd.join.title">Unirse a una sala</h2>
+            <label class="cd-field">
+              <span data-i18n="cd.create.name">Tu nombre</span>
+              <input name="name" maxlength="16" autocomplete="nickname">
+            </label>
+            <label class="cd-field">
+              <span data-i18n="cd.join.code">Código de sala</span>
+              <input class="cd-code" name="code" required minlength="6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false">
+            </label>
+            <button class="cd-button" type="submit" data-i18n="cd.join.submit">Unirse</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sala de espera y partida: las pinta js/ciudadelas/ciudadelas.js -->
+      <div id="cd-waiting" hidden></div>
+      <div id="cd-game" hidden></div>
+    </section>
+  </main>
+
+  <dialog class="cd-dialog" id="rules-dialog">
+    <h2 class="cd-title" data-i18n="cd.rulesTitle">Cómo se juega</h2>
+    <div id="rules-body"></div>
+    <button class="cd-button is-primary" type="button" data-close-dialog data-i18n="cd.close">Cerrar</button>
+  </dialog>
+
+  <dialog class="cd-dialog" id="intro-dialog">
+    <h2 class="cd-title" data-i18n="cd.tut.intro.title">Bienvenido a Ciudadelas</h2>
+    <div id="intro-body"></div>
+    <button class="cd-button is-primary" type="button" data-close-dialog data-i18n="cd.tut.intro.start">Vamos allá</button>
+  </dialog>
+</body>
+</html>
