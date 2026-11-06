@@ -1,6 +1,8 @@
 // Tablero: pinta la posición y convierte clics y arrastres en jugadas.
 // No sabe de reglas ni de rivales: recibe una partida de chess.js y avisa con onMove.
 
+import { addBody, grab, pull, release, removeBody } from './fisicas.js';
+
 const FILES = 'abcdefgh';
 const DRAG_THRESHOLD_PX = 6;
 const MOVE_MS = 240;
@@ -113,7 +115,10 @@ export class Board {
   // ---------- Piezas flotantes (solo con la partida acabada) ----------
 
   clearFloating() {
-    this.floating.forEach((floater) => floater.remove());
+    this.floating.forEach((floater) => {
+      removeBody(floater.body);
+      floater.remove();
+    });
     this.floating.clear();
   }
 
@@ -129,9 +134,13 @@ export class Board {
     floater.innerHTML = pieceSvg(piece);
     floater.style.width = `${rect.width}px`;
     floater.style.height = `${rect.height}px`;
-    floater.style.left = `${rect.left + window.scrollX}px`;
-    floater.style.top = `${rect.top + window.scrollY}px`;
     document.body.append(floater);
+    floater.body = addBody(
+      floater,
+      rect.left + window.scrollX + rect.width / 2,
+      rect.top + window.scrollY + rect.height / 2,
+      rect.width,
+    );
 
     floater.addEventListener('pointerdown', (down) => {
       if (down.button !== 0) return;
@@ -145,36 +154,23 @@ export class Board {
     this.dragFloater(floater, event);
   }
 
-  // Arrastra una pieza ya flotante; se queda donde se suelte
+  // La pieza cuelga del puntero y, al soltarla, sale lanzada (ver fisicas.js)
   dragFloater(floater, startEvent) {
-    const left = parseFloat(floater.style.left);
-    const top = parseFloat(floater.style.top);
-    const { clientX: startX, clientY: startY, pointerId } = startEvent;
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
+    const { clientX, clientY, pointerId } = startEvent;
 
-    floater.classList.remove('is-settling');
+    grab(floater.body, clientX, clientY);
     floater.classList.add('is-dragging');
     floater.setPointerCapture(pointerId);
 
     const move = (event) => {
-      if (event.pointerId !== pointerId) return;
-
-      const maxX = document.documentElement.scrollWidth - floater.offsetWidth;
-      const maxY = document.documentElement.scrollHeight - floater.offsetHeight;
-      const x = left + (event.clientX - startX) + (window.scrollX - scrollX);
-      const y = top + (event.clientY - startY) + (window.scrollY - scrollY);
-
-      floater.style.left = `${Math.min(Math.max(0, x), maxX)}px`;
-      floater.style.top = `${Math.min(Math.max(0, y), maxY)}px`;
+      if (event.pointerId === pointerId) pull(floater.body, event.clientX, event.clientY);
     };
 
     const end = (event) => {
       if (event.pointerId !== pointerId) return;
 
       floater.classList.remove('is-dragging', 'is-lifting');
-      floater.classList.add('is-settling');
-      floater.addEventListener('animationend', () => floater.classList.remove('is-settling'), { once: true });
+      release(floater.body);
       floater.removeEventListener('pointermove', move);
       floater.removeEventListener('pointerup', end);
       floater.removeEventListener('pointercancel', end);
@@ -183,12 +179,6 @@ export class Board {
     floater.addEventListener('pointermove', move);
     floater.addEventListener('pointerup', end);
     floater.addEventListener('pointercancel', end);
-  }
-
-  // Tumba el rey de ese color y lo deja así
-  setFallen(color) {
-    this.fallen = color;
-    this.paint();
   }
 
   kingSquare(color) {

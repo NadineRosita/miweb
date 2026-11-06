@@ -619,103 +619,47 @@ body[data-page="ajedrez"] .section-title {
 
 .floating-piece {
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 7000;
   cursor: grab;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  will-change: transform;
 }
 
 .floating-piece[hidden] {
   display: none;
 }
 
-.floating-piece .piece {
-  pointer-events: none;
-  transform-origin: 50% 85%;
-  transition: transform 0.18s ease-out;
-  animation: piece-bob 3s ease-in-out var(--bob-delay, 0s) infinite;
-}
-
-/* Sombra suave en el suelo, bajo la pieza */
-.floating-piece::after {
-  content: '';
-  position: absolute;
-  left: 15%;
-  right: 15%;
-  bottom: -2%;
-  z-index: -1;
-  height: 14%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45), transparent 70%);
-  filter: blur(2px);
-  pointer-events: none;
-  transition: transform 0.18s ease-out, opacity 0.18s;
-  animation: shadow-bob 3s ease-in-out var(--bob-delay, 0s) infinite;
-}
-
-/* Al cogerla: se levanta y se inclina un poco */
-.floating-piece.is-lifting .piece,
-.floating-piece.is-dragging .piece {
-  animation: none;
-  transform: translateY(-8%) scale(1.15) rotate(-5deg);
-  filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.35));
-}
-
 .floating-piece.is-dragging {
   cursor: grabbing;
 }
 
-.floating-piece.is-lifting::after,
-.floating-piece.is-dragging::after {
+/* La posición y el giro los calculan las físicas (fisicas.js); aquí solo el brillo y la sombra */
+.floating-piece .piece {
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.35));
+  transition: filter 0.2s, scale 0.2s;
+  animation: piece-bob 3s ease-in-out var(--bob-delay, 0s) infinite;
+}
+
+.floating-piece.is-dragging .piece {
+  scale: 1.12;
+  filter: drop-shadow(0 10px 7px rgba(0, 0, 0, 0.4));
   animation: none;
-  transform: translateY(35%) scale(1.15);
-  opacity: 0.55;
-}
-
-/* Al soltarla: cae y rebota un poco */
-.floating-piece.is-settling .piece {
-  animation: piece-settle 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
-}
-
-.floating-piece.is-settling::after {
-  animation: shadow-settle 0.45s ease-out;
 }
 
 @keyframes piece-bob {
   50% {
-    transform: translateY(-5%) rotate(1.5deg);
-  }
-}
-
-@keyframes shadow-bob {
-  50% {
-    transform: scale(0.85);
-    opacity: 0.6;
-  }
-}
-
-@keyframes piece-settle {
-  from {
-    transform: translateY(-8%) scale(1.15) rotate(-5deg);
-  }
-
-  to {
-    transform: none;
-  }
-}
-
-@keyframes shadow-settle {
-  from {
-    transform: translateY(35%) scale(1.15);
-    opacity: 0.55;
+    transform: translateY(-4%);
+    filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.28));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .floating-piece .piece,
-  .floating-piece::after,
-  .floating-piece.is-settling .piece,
-  .floating-piece.is-settling::after {
+  .floating-piece .piece {
     animation: none;
   }
 }
