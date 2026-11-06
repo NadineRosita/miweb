@@ -124,7 +124,8 @@ export class Board {
     const rect = square.getBoundingClientRect();
     const floater = document.createElement('div');
 
-    floater.className = 'floating-piece';
+    floater.className = 'floating-piece is-lifting';
+    floater.style.setProperty('--bob-delay', `${-Math.random() * 3}s`);
     floater.innerHTML = pieceSvg(piece);
     floater.style.width = `${rect.width}px`;
     floater.style.height = `${rect.height}px`;
@@ -152,6 +153,7 @@ export class Board {
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
 
+    floater.classList.remove('is-settling');
     floater.classList.add('is-dragging');
     floater.setPointerCapture(pointerId);
 
@@ -170,7 +172,9 @@ export class Board {
     const end = (event) => {
       if (event.pointerId !== pointerId) return;
 
-      floater.classList.remove('is-dragging');
+      floater.classList.remove('is-dragging', 'is-lifting');
+      floater.classList.add('is-settling');
+      floater.addEventListener('animationend', () => floater.classList.remove('is-settling'), { once: true });
       floater.removeEventListener('pointermove', move);
       floater.removeEventListener('pointerup', end);
       floater.removeEventListener('pointercancel', end);
