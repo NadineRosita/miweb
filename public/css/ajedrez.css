@@ -663,3 +663,180 @@ body[data-page="ajedrez"] .section-title {
     animation: none;
   }
 }
+
+/* ---------- Menú de inicio ---------- */
+body[data-page="ajedrez"] .chess-lobby-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.lobby-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #f6e8cf, #ecd7b2);
+  border: 3px solid var(--board-frame);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(60, 35, 15, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  color: #3a2614;
+}
+
+.lobby-card .card-title {
+  font-size: 1.35rem;
+  color: #3a2614;
+}
+
+.lobby-form,
+.lobby-join {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lobby-card .field {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  gap: 0.4rem;
+}
+
+.lobby-card .field > span,
+.lobby-card legend {
+  margin-bottom: 0.4rem;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b4a2b;
+}
+
+.lobby-card select,
+.lobby-card .code-input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.8rem;
+  background: #fff8ea;
+  border: 2px solid #b58863;
+  border-radius: 6px;
+  font: inherit;
+  color: #3a2614;
+}
+
+.lobby-card .code-input {
+  text-align: center;
+  font-weight: 700;
+}
+
+.lobby-card select:focus-visible,
+.lobby-card .code-input:focus-visible {
+  outline: 3px solid #5c3d24;
+  outline-offset: 1px;
+}
+
+/* Opciones en una sola fila, como botones enlazados */
+.segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border: 2px solid #b58863;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmented label {
+  position: relative;
+  display: block;
+}
+
+.segmented label + label {
+  border-left: 2px solid #b58863;
+}
+
+.lobby-card .segmented input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segmented span {
+  display: block;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.4rem;
+  background: #fff8ea;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: #5c3d24;
+  transition: background 0.2s, color 0.2s;
+}
+
+.segmented input:checked + span {
+  background: #5c3d24;
+  color: #fff8ea;
+}
+
+.segmented input:focus-visible + span {
+  outline: 3px solid #1a1a1a;
+  outline-offset: -3px;
+}
+
+.lobby-button {
+  min-height: 3rem;
+  padding: 0.6rem 1.2rem;
+  background: #5c3d24;
+  border: 2px solid #3a2614;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #fff8ea;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.lobby-button:hover {
+  background: #7a5233;
+  transform: translateY(-1px);
+}
+
+.lobby-button-light {
+  background: #fff8ea;
+  border-color: #b58863;
+  color: #3a2614;
+}
+
+.lobby-button-light:hover {
+  background: #f0d9b5;
+}
+
+/* Separador "o" entre crear y unirse */
+.lobby-or {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #6b4a2b;
+}
+
+.lobby-or::before,
+.lobby-or::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: #b58863;
+  opacity: 0.6;
+}
+
+#lobby-error:not(:empty) {
+  margin-top: 1rem;
+}
