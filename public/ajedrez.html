@@ -29,32 +29,32 @@
         <p class="section-text" data-i18n="chess.intro">Juega contra la máquina o invita a alguien con un código. No hace falta cuenta.</p>
 
         <div class="chess-lobby-grid">
-          <form class="panel form" id="machine-form">
+          <section class="lobby-card">
             <h2 class="card-title" data-i18n="chess.vsMachine">Contra la máquina</h2>
-            <label class="field">
-              <span data-i18n="chess.level">Dificultad</span>
-              <select name="level">
-                <option value="easy" data-i18n="chess.level.easy">Fácil</option>
-                <option value="normal" selected data-i18n="chess.level.normal">Normal</option>
-                <option value="hard" data-i18n="chess.level.hard">Difícil</option>
-              </select>
-            </label>
-            <label class="field">
-              <span data-i18n="chess.playAs">Juegas con</span>
-              <select name="color">
-                <option value="white" data-i18n="chess.color.white">Blancas</option>
-                <option value="black" data-i18n="chess.color.black">Negras</option>
-                <option value="random" data-i18n="chess.color.random">Al azar</option>
-              </select>
-            </label>
-            <div class="form-actions">
-              <button class="button-link" type="submit" data-i18n="chess.play">Jugar</button>
-            </div>
-          </form>
+            <form class="lobby-form" id="machine-form">
+              <fieldset class="field">
+                <legend data-i18n="chess.level">Dificultad</legend>
+              <div class="segmented" role="radiogroup">
+                <label><input type="radio" name="level" value="easy"><span data-i18n="chess.level.easy">Fácil</span></label>
+                <label><input type="radio" name="level" value="normal" checked><span data-i18n="chess.level.normal">Normal</span></label>
+                <label><input type="radio" name="level" value="hard"><span data-i18n="chess.level.hard">Difícil</span></label>
+              </div>
+              </fieldset>
+              <fieldset class="field">
+                <legend data-i18n="chess.playAs">Juegas con</legend>
+              <div class="segmented" role="radiogroup">
+                <label><input type="radio" name="color" value="white"><span data-i18n="chess.color.white">Blancas</span></label>
+                <label><input type="radio" name="color" value="random" checked><span data-i18n="chess.color.random">Al azar</span></label>
+                <label><input type="radio" name="color" value="black"><span data-i18n="chess.color.black">Negras</span></label>
+              </div>
+              </fieldset>
+              <button class="lobby-button" type="submit" data-i18n="chess.play">Jugar</button>
+            </form>
+          </section>
 
-          <div class="chess-online">
-            <form class="panel form" id="room-form">
-              <h2 class="card-title" data-i18n="chess.vsPerson">Contra otra persona</h2>
+          <section class="lobby-card">
+            <h2 class="card-title" data-i18n="chess.vsPerson">Contra otra persona</h2>
+            <form class="lobby-form" id="room-form">
               <label class="field">
                 <span data-i18n="chess.clock">Reloj</span>
                 <select name="clock">
@@ -66,29 +66,27 @@
                   <option value="30+0">30 min</option>
                 </select>
               </label>
-              <label class="field">
-                <span data-i18n="chess.playAs">Juegas con</span>
-                <select name="color">
-                  <option value="random" data-i18n="chess.color.random">Al azar</option>
-                  <option value="white" data-i18n="chess.color.white">Blancas</option>
-                  <option value="black" data-i18n="chess.color.black">Negras</option>
-                </select>
-              </label>
-              <div class="form-actions">
-                <button class="button-link" type="submit" data-i18n="chess.createRoom">Crear sala</button>
+              <fieldset class="field">
+                <legend data-i18n="chess.playAs">Juegas con</legend>
+              <div class="segmented" role="radiogroup">
+                <label><input type="radio" name="color" value="white"><span data-i18n="chess.color.white">Blancas</span></label>
+                <label><input type="radio" name="color" value="random" checked><span data-i18n="chess.color.random">Al azar</span></label>
+                <label><input type="radio" name="color" value="black"><span data-i18n="chess.color.black">Negras</span></label>
               </div>
+              </fieldset>
+              <button class="lobby-button" type="submit" data-i18n="chess.createRoom">Crear sala</button>
             </form>
 
-            <form class="panel form" id="join-form">
+            <p class="lobby-or"><span data-i18n="chess.or">o</span></p>
+
+            <form class="lobby-join" id="join-form">
               <label class="field">
                 <span data-i18n="chess.roomCode">Código de sala</span>
                 <input class="code-input" name="code" required minlength="6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false">
               </label>
-              <div class="form-actions">
-                <button class="button-link" type="submit" data-i18n="chess.join">Unirse a una sala</button>
-              </div>
+              <button class="lobby-button lobby-button-light" type="submit" data-i18n="chess.join">Unirse a una sala</button>
             </form>
-          </div>
+          </section>
         </div>
 
         <p class="form-error" id="lobby-error" role="alert"></p>
