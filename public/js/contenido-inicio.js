@@ -24,9 +24,9 @@ const CONTENIDO_INICIO = {
   es: {
     // ---------- Presentación (lo primero que se ve) ----------
     presentacion: {
-      frase: 'Convirtiendo ideas en software,',
+      frase: 'Nadia Coronel,',
       // Esta parte de la frase va en letra cursiva y color de acento
-      fraseDestacada: 'un proyecto cada vez.',
+      fraseDestacada: 'Ingeniera del Software, gamer, melómana.',
       subtitulo: [
         'Estudiante de Ingeniería del Software',
         'Presidenta de la asociación: ASTRA',
@@ -97,12 +97,12 @@ const CONTENIDO_INICIO = {
   // ============================ INGLÉS =============================
   en: {
     presentacion: {
-      frase: 'Building ideas into software,',
-      fraseDestacada: 'one project at a time.',
+      frase: 'Nadia Coronel,',
+      fraseDestacada: 'Software Engineer, gamer, music lover.',
       subtitulo: [
         'Software Engineering Student',
-        'Developer in Progress',
-        'Tech Enthusiast',
+        'President of: ASTRA students club',
+        'Meloncilla',
       ],
     },
 
