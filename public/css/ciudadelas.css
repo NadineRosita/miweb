@@ -1,16 +1,9 @@
-/* Ciudadelas. Pergamino y madera, como el ajedrez: los colores son fijos y valen para los dos temas. */
+/* Ciudadelas, en el cuaderno (css/noche.css).
+   Colores, letras y botones salen de noche.css y siguen al tema claro/oscuro.
+   Solo los cinco colores de los distritos son propios: son la información de las cartas. */
 
 .cd-page,
 .cd-dialog {
-  --parchment-1: #f6e8cf;
-  --parchment-2: #ecd7b2;
-  --wood: #5c3d24;
-  --wood-dark: #3a2614;
-  --wood-light: #b58863;
-  --ink: #3a2614;
-  --ink-soft: #6b4a2b;
-  --paper: #fff8ea;
-  --gold: #c8962b;
   --blue: #2f6fb5;
   --green: #3d9a4b;
   --purple: #8a4fb0;
@@ -37,42 +30,42 @@
 }
 
 /* ---------- Piezas generales ---------- */
+/* Cada bloque es una zona del cuaderno: una línea fina arriba y aire */
 .cd-panel {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   min-width: 0;
-  padding: 1.25rem;
-  background: linear-gradient(180deg, var(--parchment-1), var(--parchment-2));
-  border: 3px solid var(--wood);
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(60, 35, 15, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-  color: var(--ink);
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--linea);
+  color: var(--papel);
 }
 
 .cd-title {
   font-family: var(--font-title);
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--ink);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--papel);
 }
 
 .cd-title small {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--grafito);
 }
 
 .cd-subtitle {
   font-family: var(--font-title);
-  font-size: 1rem;
-  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--papel);
 }
 
 .cd-note {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  font-size: 0.875rem;
+  color: var(--grafito);
 }
 
 .cd-field {
@@ -84,11 +77,9 @@
 }
 
 .cd-field > span {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--grafito);
 }
 
 .cd-field input,
@@ -97,22 +88,23 @@
   width: 100%;
   min-height: 2.75rem;
   padding: 0.5rem 0.8rem;
-  background: var(--paper);
-  border: 2px solid var(--wood-light);
-  border-radius: 6px;
+  background: var(--noche);
+  border: 1px solid var(--linea);
+  border-radius: 4px;
   font: inherit;
-  color: var(--ink);
+  color: var(--papel);
 }
 
 .cd-field input:focus-visible,
-.cd-field select:focus-visible {
-  outline: 3px solid var(--wood);
+.cd-field select:focus-visible,
+.host-controls select:focus-visible {
+  outline: 2px solid var(--luz-luna);
   outline-offset: 1px;
 }
 
 .cd-code {
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -122,31 +114,35 @@
   gap: 0.75rem;
 }
 
+/* Los botones los crea el JavaScript con estas clases: mismo aspecto que .boton y .boton-luz */
 .cd-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 2.75rem;
-  padding: 0.45rem 1rem;
-  background: var(--paper);
-  border: 2px solid var(--wood-light);
-  border-radius: 6px;
-  font-weight: 700;
-  color: var(--ink);
+  padding: 0.6rem 1.35rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.35);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--papel);
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s, opacity 0.2s;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.25s ease;
 }
 
 .cd-button:hover:not(:disabled) {
-  background: #f0d9b5;
-  transform: translateY(-1px);
+  border-color: var(--papel);
 }
 
 .cd-button.is-primary {
-  background: var(--wood);
-  border-color: var(--wood-dark);
-  color: var(--paper);
+  background: var(--luz-luna);
+  border-color: var(--luz-luna);
+  color: var(--texto-boton);
 }
 
 .cd-button.is-primary:hover:not(:disabled) {
-  background: #7a5233;
+  background: var(--papel);
+  border-color: var(--papel);
 }
 
 .cd-button:disabled {
@@ -156,17 +152,17 @@
 
 .cd-button:focus-visible,
 .is-clickable:focus-visible {
-  outline: 3px solid var(--wood-dark);
-  outline-offset: 2px;
+  outline: 2px solid var(--luz-luna);
+  outline-offset: 3px;
 }
 
 .cd-link {
   margin-left: auto;
   padding: 0.25rem 0.5rem;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: underline;
-  color: var(--red);
+  color: var(--lampara);
   cursor: pointer;
 }
 
@@ -174,70 +170,59 @@
   display: inline-flex;
   align-items: center;
   padding: 0.1rem 0.6rem;
-  background: rgba(92, 61, 36, 0.12);
-  border: 1px solid rgba(92, 61, 36, 0.3);
-  border-radius: 100px;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
-  color: var(--ink);
+  color: var(--papel);
 }
 
 .chip.is-gold {
-  background: rgba(200, 150, 43, 0.25);
-  border-color: var(--gold);
+  border-color: var(--luz-luna);
 }
 
 .chip.is-warn {
-  background: rgba(184, 57, 43, 0.15);
-  border-color: var(--red);
-  color: var(--red);
+  border-color: var(--lampara);
+  color: var(--lampara);
 }
 
 #cd-error:not(:empty) {
   margin-bottom: 1rem;
   padding: 0.6rem 1rem;
-  background: rgba(184, 57, 43, 0.12);
-  border: 1px solid var(--red);
-  border-radius: 6px;
+  border: 1px solid var(--lampara);
+  border-radius: 4px;
+  color: var(--lampara);
 }
 
 /* ---------- Menú ---------- */
+/* «Aprende a jugar»: una entrada destacada del cuaderno */
 .cd-tutorial-card {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin: 1.25rem 0;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, #5c3d24, #3a2614);
-  border: 3px solid var(--gold);
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(60, 35, 15, 0.35);
-  color: #fff8ea;
+  margin: 1.5rem 0;
+  padding: 1.5rem 0;
+  border-block: 1px solid var(--linea);
+  color: var(--papel);
 }
 
-.cd-tutorial-card .cd-title {
-  color: #ffe9b0;
+.cd-tutorial-card p {
+  color: var(--white2);
 }
 
 .cd-tutorial-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.cd-tutorial-card .cd-button.is-primary {
-  background: var(--gold);
-  border-color: #ffe9b0;
-  color: var(--wood-dark);
+  gap: 0.75rem;
 }
 
 .cd-menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: 1.25rem;
+  gap: 2rem 1.5rem;
   align-items: start;
 }
 
@@ -255,14 +240,14 @@
 
 .room-code strong {
   font-family: var(--font-title);
-  font-size: 1.6rem;
+  font-size: 2rem;
+  font-weight: 400;
   letter-spacing: 0.15em;
 }
 
 .member-list {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
 }
 
 .member {
@@ -270,14 +255,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.45rem 0.7rem;
-  background: var(--paper);
-  border: 1px solid var(--wood-light);
-  border-radius: 6px;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--linea);
 }
 
 .member-name {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .host-controls {
@@ -321,17 +304,12 @@
   gap: 0.4rem;
 }
 
-#cd-game .chip {
-  background: var(--paper);
-}
-
+/* El consejo del tutorial: una nota con la linterna a un lado */
 .coach {
   padding: 0.8rem 1rem;
-  background: #fff3c9;
-  border: 2px solid var(--gold);
-  border-left-width: 8px;
-  border-radius: 6px;
-  color: var(--ink);
+  background: var(--noche-2);
+  border-left: 3px solid var(--luz-luna);
+  color: var(--papel);
   line-height: 1.5;
 }
 
@@ -349,16 +327,16 @@
   gap: 0.5rem;
   min-width: 0;
   padding: 0.8rem;
-  background: linear-gradient(180deg, var(--parchment-1), var(--parchment-2));
-  border: 2px solid var(--wood-light);
-  border-radius: 8px;
-  color: var(--ink);
+  border: 1px solid var(--linea);
+  border-radius: 4px;
+  color: var(--papel);
 }
 
+/* Quien tiene el turno lleva la luz en el borde */
 .opponent.is-actor,
 .mine.is-actor {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(200, 150, 43, 0.45);
+  border-color: var(--luz-luna);
+  box-shadow: inset 0 0 0 1px var(--luz-luna);
 }
 
 .opponent.is-shielded {
@@ -376,19 +354,18 @@
 .opponent-stats {
   display: flex;
   gap: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .mine-gold {
   margin-left: auto;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .crown {
-  color: var(--gold);
+  color: var(--luz-luna);
   font-size: 1.2rem;
   line-height: 1;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .opponent-chars,
@@ -411,19 +388,20 @@
 }
 
 /* ---------- Cartas ---------- */
+/* Fondo de la noche con el borde del color del distrito; el texto siempre se lee */
 .mini {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   padding: 0.15rem 0.5rem 0.15rem 0.2rem;
-  background: var(--paper);
-  border: 2px solid var(--mini-color, var(--wood-light));
-  border-radius: 6px;
+  background: var(--noche-2);
+  border: 2px solid var(--mini-color, var(--linea));
+  border-radius: 4px;
   font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--ink);
+  color: var(--papel);
 }
 
 .mini-cost {
@@ -431,16 +409,16 @@
   place-items: center;
   width: 1.3rem;
   height: 1.3rem;
-  background: var(--mini-color, var(--wood));
+  background: var(--mini-color, var(--grafito));
   border-radius: 50%;
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
 }
 
 .mini-badge {
   padding: 0 0.3rem;
-  background: var(--red);
+  background: var(--lampara);
   border-radius: 4px;
   font-size: 0.7rem;
   color: #fff;
@@ -454,7 +432,8 @@
 
 .mini.is-clickable {
   cursor: pointer;
-  box-shadow: 0 0 0 2px rgba(184, 57, 43, 0.5);
+  outline: 2px solid var(--lampara);
+  outline-offset: 1px;
 }
 
 .mini.is-clickable:hover {
@@ -480,13 +459,12 @@
   width: 8.2rem;
   min-height: 9.5rem;
   padding: 2rem 0.6rem 0.6rem;
-  background: var(--paper);
-  border: 3px solid var(--card-color, var(--wood-light));
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(60, 35, 15, 0.25);
+  background: var(--noche-2);
+  border: 2px solid var(--card-color, var(--linea));
+  border-radius: 4px;
   text-align: left;
-  color: var(--ink);
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  color: var(--papel);
+  transition: transform 0.2s, opacity 0.2s;
 }
 
 .dcard-blue { --card-color: var(--blue); }
@@ -505,29 +483,27 @@
   height: 1.6rem;
   background: var(--card-color);
   border-radius: 50%;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
 }
 
 .dcard-name {
   font-family: var(--font-title);
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.1;
 }
 
 .dcard-text {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   line-height: 1.25;
-  color: var(--ink-soft);
+  color: var(--grafito);
 }
 
 .dcard-kind {
   margin-top: auto;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: var(--card-color);
 }
 
@@ -536,7 +512,7 @@
   top: 0.4rem;
   right: 0.4rem;
   padding: 0 0.35rem;
-  background: var(--red);
+  background: var(--lampara);
   border-radius: 4px;
   font-size: 0.75rem;
   color: #fff;
@@ -547,7 +523,6 @@
 }
 
 .dcard.is-clickable:hover:not(.is-disabled) {
-  box-shadow: 0 8px 16px rgba(60, 35, 15, 0.35);
   transform: translateY(-4px);
 }
 
@@ -557,7 +532,8 @@
 }
 
 .dcard.is-selected {
-  outline: 4px solid var(--gold);
+  outline: 3px solid var(--luz-luna);
+  outline-offset: 2px;
   transform: translateY(-6px);
 }
 
@@ -568,13 +544,12 @@
   gap: 0.3rem;
   width: 10rem;
   padding: 0.6rem 0.7rem 0.7rem 2.6rem;
-  background: var(--paper);
-  border: 3px solid var(--wood);
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(60, 35, 15, 0.25);
+  background: var(--noche-2);
+  border: 1px solid var(--linea);
+  border-radius: 4px;
   text-align: left;
-  color: var(--ink);
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  color: var(--papel);
+  transition: transform 0.2s, opacity 0.2s;
 }
 
 .ccard-number {
@@ -585,21 +560,22 @@
   place-items: center;
   width: 1.7rem;
   height: 1.7rem;
-  background: var(--wood);
+  background: var(--papel);
   border-radius: 50%;
-  font-weight: 800;
-  color: var(--paper);
+  font-weight: 700;
+  color: var(--noche);
 }
 
 .ccard-name {
   font-family: var(--font-title);
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .ccard-text {
   font-size: 0.72rem;
   line-height: 1.3;
-  color: var(--ink-soft);
+  color: var(--grafito);
 }
 
 .ccard.is-clickable {
@@ -607,7 +583,7 @@
 }
 
 .ccard.is-clickable:hover:not(.is-disabled) {
-  box-shadow: 0 8px 16px rgba(60, 35, 15, 0.35);
+  border-color: var(--papel);
   transform: translateY(-4px);
 }
 
@@ -616,8 +592,6 @@
   align-items: center;
   width: auto;
   padding: 0.15rem 0.6rem 0.15rem 2.1rem;
-  border-width: 2px;
-  box-shadow: none;
 }
 
 .ccard.is-compact .ccard-number {
@@ -630,13 +604,13 @@
 }
 
 .ccard.is-compact .ccard-name {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   white-space: nowrap;
 }
 
 .ccard.is-current {
-  background: #fff3c9;
-  border-color: var(--gold);
+  border-color: var(--luz-luna);
+  box-shadow: inset 0 0 0 1px var(--luz-luna);
 }
 
 .ccard.is-done {
@@ -668,8 +642,8 @@
 
 .timeline-owner {
   padding-left: 0.3rem;
-  font-size: 0.7rem;
-  color: var(--ink-soft);
+  font-size: 0.75rem;
+  color: var(--grafito);
 }
 
 .turn-banner {
@@ -688,16 +662,15 @@
 
 .mode-panel {
   padding: 0.7rem;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px dashed var(--wood-light);
-  border-radius: 6px;
+  border: 1px dashed var(--linea);
+  border-radius: 4px;
 }
 
 .over .winner {
   font-family: var(--font-title);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ink);
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: var(--papel);
 }
 
 .table-wrap {
@@ -713,8 +686,13 @@
 .scores th,
 .scores td {
   padding: 0.45rem 0.6rem;
-  border-bottom: 1px solid var(--wood-light);
+  border-bottom: 1px solid var(--linea);
   text-align: center;
+}
+
+.scores th {
+  font-weight: 400;
+  color: var(--grafito);
 }
 
 .scores th:first-child {
@@ -723,11 +701,11 @@
 
 .scores .total {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .scores .is-winner {
-  background: rgba(200, 150, 43, 0.28);
+  background: rgba(var(--accent-rgb), 0.12);
 }
 
 /* ---------- Mi zona ---------- */
@@ -741,16 +719,14 @@
 
 /* ---------- Registro ---------- */
 .cd-log {
-  padding: 0.7rem 1rem;
-  background: rgba(var(--ink-rgb), 0.05);
-  border: 1px solid rgba(var(--ink-rgb), 0.12);
-  border-radius: 8px;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--linea);
   font-size: 0.88rem;
 }
 
 .cd-log summary {
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .cd-log ol {
@@ -772,7 +748,7 @@
 
 @keyframes cd-pulse {
   50% {
-    box-shadow: 0 0 0 6px rgba(200, 150, 43, 0.55);
+    box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.5);
   }
 }
 
@@ -783,25 +759,20 @@
   margin: auto;
   padding: 1.5rem;
   overflow-y: auto;
-  background: linear-gradient(180deg, #f6e8cf, #ecd7b2);
-  border: 3px solid #5c3d24;
-  border-radius: 8px;
-  color: #3a2614;
+  background: var(--noche);
+  border: 1px solid var(--linea);
+  border-radius: 4px;
+  color: var(--papel);
 }
 
 .cd-dialog::backdrop {
-  background: rgba(20, 12, 8, 0.65);
+  background: rgba(8, 12, 26, 0.7);
 }
 
 .cd-dialog[open] {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-}
-
-.cd-dialog .cd-title,
-.cd-dialog .cd-subtitle {
-  color: #3a2614;
 }
 
 .cd-dialog .cd-button {
@@ -835,6 +806,6 @@
   }
 
   .cd-tutorial-card {
-    padding: 1rem;
+    padding: 1rem 0;
   }
 }
