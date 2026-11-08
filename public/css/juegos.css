@@ -144,7 +144,7 @@ body[data-page="juegos"] .sky {
 /* ---------- Tarjetas de cristal ---------- */
 .laguna {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 340px));
+  grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 320px));
   justify-content: center;
   gap: 1.25rem;
   margin-top: 2.5rem;
