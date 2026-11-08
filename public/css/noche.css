@@ -1,0 +1,270 @@
+/* ============================================================
+   NOCHE: la base común de toda la web («Cuaderno de observación»)
+   Letras, colores y piezas compartidas. Se carga después de
+   styles.css en todas las páginas, así que manda sobre él.
+   Cada página puede añadir lo suyo (inicio.css, juegos.css…).
+   ============================================================ */
+
+/* ---------- Letras (servidas desde la propia web) ---------- */
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('../fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('../fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('../fonts/instrument-sans-latin-standard-normal.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Colores ---------- */
+/* De noche: tinta azul, papel y luz de luna. El rojo es la linterna roja
+   de observar (no deslumbra): solo marca lo que se puede usar ya. */
+:root {
+  --noche: #101a33;
+  --noche-2: #18244a;
+  --papel: #e9e3d3;
+  --grafito: #9ba2b9;
+  --luz-luna: #f1e4ae;
+  --lampara: #ec6a55;
+  --linea: rgba(233, 227, 211, 0.14);
+  --sombra-luna: #1a2650;
+  --crater: rgba(120, 104, 60, 0.16);
+  --texto-boton: #101a33;
+
+  /* Los nombres de siempre (styles.css y los juegos) siguen a la noche */
+  --black: var(--noche);
+  --dark: var(--noche-2);
+  --dark2: #223061;
+  --white: var(--papel);
+  --white2: #cfc9ba;
+  --gray: var(--grafito);
+  --gray2: #3a4670;
+  --accent: var(--luz-luna);
+  --accent2: var(--luz-luna);
+  --ink-rgb: 233, 227, 211;
+  --bg-rgb: 16, 26, 51;
+  --accent-rgb: 241, 228, 174;
+  --sky-moon: #e9e3d3;
+  --sky-opacity: 0.06;
+
+  --font-title: 'Instrument Serif', 'Times New Roman', serif;
+  --font-text: 'Instrument Sans', system-ui, sans-serif;
+  --font-accent: var(--font-title);
+}
+
+/* De día: el mismo cuaderno a la luz, papel azulado y tinta */
+:root[data-theme="light"] {
+  --noche: #e7eaf0;
+  --noche-2: #dde1ea;
+  --papel: #18213d;
+  --grafito: #4e5672;
+  --luz-luna: #18213d;
+  --lampara: #b8372a;
+  --linea: rgba(24, 33, 61, 0.16);
+  --sombra-luna: #d3d8e3;
+  --crater: rgba(24, 33, 61, 0.08);
+  --texto-boton: #e7eaf0;
+
+  /* styles.css define estos mismos para el modo claro: aquí se repiten para mandar */
+  --black: var(--noche);
+  --dark: var(--noche-2);
+  --white: var(--papel);
+  --gray: var(--grafito);
+  --accent: var(--luz-luna);
+  --accent2: var(--luz-luna);
+  --dark2: #cfd5e1;
+  --white2: #2c3555;
+  --gray2: #c3c9d6;
+  --ink-rgb: 24, 33, 61;
+  --bg-rgb: 231, 234, 240;
+  --accent-rgb: 24, 33, 61;
+  --sky-moon: #8f98b3;
+  --sky-opacity: 0.1;
+}
+
+/* ---------- Base ---------- */
+body {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  /* La serif solo tiene un grosor: mejor regular que una negrita inventada */
+  font-synthesis: none;
+}
+
+/* El latido de la luna del logo distraía de todo lo demás */
+.moon-icon {
+  animation: none;
+}
+
+.footer-deco {
+  display: none;
+}
+
+/* ---------- Títulos ---------- */
+.section-title,
+.card-title,
+.site-menu nav > a {
+  font-weight: 400;
+}
+
+.section-title {
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.75rem, 6vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+
+.section-text {
+  max-width: 34em;
+}
+
+.logo {
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+/* ---------- Botones ---------- */
+.boton,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.35rem;
+  border: 1px solid rgba(var(--ink-rgb), 0.35);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--papel);
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.boton:hover,
+.button-link:hover {
+  background: none;
+  border-color: var(--papel);
+  color: var(--papel);
+}
+
+.boton-luz,
+.boton-luz:hover {
+  background: var(--luz-luna);
+  border-color: var(--luz-luna);
+  color: var(--texto-boton);
+}
+
+.boton-luz:hover {
+  background: var(--papel);
+  border-color: var(--papel);
+}
+
+.enlace {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--ink-rgb), 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.25s ease;
+}
+
+.enlace:hover {
+  text-decoration-color: currentColor;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--luz-luna);
+  outline-offset: 3px;
+}
+
+/* ---------- Entrada del cuaderno: páginas que aún están por llegar ---------- */
+.entrada {
+  min-height: 70svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.entrada-luna {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 2rem;
+}
+
+.entrada-luna .luna-sombra {
+  fill: var(--sombra-luna);
+}
+
+.entrada-luna .luna-luz {
+  fill: var(--luz-luna);
+}
+
+.entrada-luna .luna-borde {
+  fill: none;
+  stroke: rgba(var(--ink-rgb), 0.35);
+  stroke-width: 1.5;
+}
+
+.entrada .section-text {
+  margin-bottom: 2rem;
+  font-size: 1.1875rem;
+}
+
+.entrada .acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ---------- Estado de un proyecto ---------- */
+/* Punto rojo encendido: se puede usar ya. Aro: aún no. Punto lleno: código. */
+.estado {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-top: 0.45rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--grafito);
+}
+
+.estado-punto {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.estado-jugable {
+  color: var(--papel);
+}
+
+.estado-jugable .estado-punto {
+  background: var(--lampara);
+  border-color: var(--lampara);
+  box-shadow: 0 0 10px var(--lampara);
+}
+
+.estado-codigo .estado-punto {
+  background: currentColor;
+}
+

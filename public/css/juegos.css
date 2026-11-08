@@ -1,0 +1,381 @@
+/* ============================================================
+   JUEGOS: Frutiger Aero dentro del cuaderno
+   De noche (tema oscuro): una laguna bajo la luna, con cristal,
+   burbujas y botones de gel en aguamarina.
+   De día (tema claro): el aero de siempre, cielo azul y colina verde.
+   Las letras, los colores del texto y la barra son los de toda la web.
+   ============================================================ */
+
+body[data-page="juegos"] {
+  /* Colores propios del aero nocturno */
+  --aqua: #5fe6d4;
+  --aqua-hondo: #109fb2;
+  --cristal-fondo: linear-gradient(180deg, rgba(150, 220, 255, 0.16), rgba(40, 120, 170, 0.07));
+  --cristal-borde: rgba(190, 235, 255, 0.3);
+  --cristal-brillo: rgba(255, 255, 255, 0.16);
+  --cristal-texto: #c9dcea;
+  --cristal-dato: #8fd3e0;
+  --gel: linear-gradient(180deg, #c4fff4 0%, #6ee9d8 47%, #1bb4b2 53%, #0e8f9b 100%);
+  --gel-borde: rgba(220, 255, 250, 0.75);
+  --gel-texto: #052535;
+  --gel-sombra: rgba(20, 190, 200, 0.45);
+  --orbe: radial-gradient(circle at 32% 26%, #e2fff7 0 9%, #6ee9d8 36%, #109fb2 74%, #0a5f80);
+
+  --cielo: linear-gradient(180deg, #050f27 0%, #0a1f4a 40%, #0d3560 64%, #0b4a63 80%, #083443 100%);
+
+  background: #050f27;
+}
+
+/* ---------- Paisaje ---------- */
+body[data-page="juegos"] .sky {
+  display: none;
+}
+
+/* El cielo va en una capa fija (y no en el fondo de body) para que en
+   móvil no se corte al hacer scroll */
+.escena {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--cielo);
+  pointer-events: none;
+}
+
+/* La luna, brillante como un orbe de cristal */
+.escena-luna {
+  position: absolute;
+  top: 12vh;
+  right: 11vw;
+  width: clamp(100px, 13vw, 180px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #fffdf3 0 16%, #f6ecc4 42%, #dcd2a8 76%, #b9b08a);
+  box-shadow:
+    0 0 50px 8px rgba(241, 228, 174, 0.32),
+    0 0 180px 50px rgba(110, 200, 255, 0.12);
+}
+
+.escena-luna::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 18%;
+  width: 46%;
+  height: 30%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+}
+
+/* La laguna: el agua empieza en el horizonte */
+.escena-agua {
+  position: absolute;
+  inset: 72vh 0 0;
+  background: linear-gradient(180deg, rgba(60, 200, 210, 0.22), rgba(6, 40, 60, 0.75));
+  border-top: 1px solid rgba(140, 240, 240, 0.35);
+  box-shadow: 0 -1px 24px rgba(95, 230, 212, 0.25);
+}
+
+/* El reflejo de la luna en el agua, en rayas que se van apagando */
+.escena-reflejo {
+  position: absolute;
+  top: 72vh;
+  bottom: 0;
+  right: calc(11vw + clamp(100px, 13vw, 180px) * 0.2);
+  z-index: 1;
+  width: calc(clamp(100px, 13vw, 180px) * 0.6);
+  background:
+    repeating-linear-gradient(180deg, rgba(241, 228, 174, 0.38) 0 2px, transparent 2px 7px, rgba(241, 228, 174, 0.2) 7px 8px, transparent 8px 14px),
+    radial-gradient(ellipse at 50% 0, rgba(241, 228, 174, 0.22), transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent 80%), radial-gradient(ellipse at 50% 0, #000 30%, transparent 72%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(180deg, #000, transparent 80%), radial-gradient(ellipse at 50% 0, #000 30%, transparent 72%);
+  mask-composite: intersect;
+  filter: blur(1.2px);
+}
+
+/* Burbujas de cristal */
+.burbujas span {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%,
+    rgba(255, 255, 255, 0.8) 0 7%,
+    rgba(255, 255, 255, 0.12) 22%,
+    rgba(120, 230, 255, 0.05) 60%,
+    rgba(160, 240, 255, 0.28) 100%);
+  border: 1px solid rgba(190, 240, 255, 0.35);
+  box-shadow: inset 0 0 12px rgba(120, 220, 255, 0.25), 0 0 18px rgba(90, 200, 255, 0.14);
+}
+
+.burbujas span:nth-child(1) { top: 18vh; left: 6vw; width: 110px; height: 110px; }
+.burbujas span:nth-child(2) { top: 58vh; left: 3vw; width: 54px; height: 54px; }
+.burbujas span:nth-child(3) { top: 34vh; right: 4vw; width: 64px; height: 64px; }
+.burbujas span:nth-child(4) { top: 80vh; left: 18vw; width: 38px; height: 38px; }
+.burbujas span:nth-child(5) { top: 8vh; left: 44vw; width: 26px; height: 26px; }
+.burbujas span:nth-child(6) { top: 66vh; right: 26vw; width: 84px; height: 84px; }
+.burbujas span:nth-child(7) { top: 88vh; right: 8vw; width: 30px; height: 30px; }
+.burbujas span:nth-child(8) { top: 46vh; left: 30vw; width: 18px; height: 18px; }
+
+/* Flotan muy despacio: es lo único que se mueve solo en la página */
+@media (prefers-reduced-motion: no-preference) {
+  .burbujas span {
+    animation: flota 11s ease-in-out infinite alternate;
+  }
+
+  .burbujas span:nth-child(2n) { animation-duration: 14s; animation-delay: -4s; }
+  .burbujas span:nth-child(3n) { animation-duration: 17s; animation-delay: -9s; }
+}
+
+@keyframes flota {
+  to {
+    transform: translateY(-22px);
+  }
+}
+
+/* ---------- Cabecera ---------- */
+.juegos {
+  width: min(100%, 1120px);
+}
+
+.juegos .section-title {
+  text-shadow: 0 0 28px rgba(95, 230, 212, 0.35);
+}
+
+/* ---------- Tarjetas de cristal ---------- */
+.laguna {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(228px, 100%), 1fr));
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.cristal {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.6rem 1.5rem 1.5rem;
+  overflow: hidden;
+  background: var(--cristal-fondo);
+  border: 1px solid var(--cristal-borde);
+  border-radius: 26px;
+  box-shadow:
+    0 18px 40px rgba(0, 10, 30, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -18px 30px rgba(60, 200, 230, 0.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  color: var(--papel);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* El brillo de cristal en la mitad de arriba */
+.cristal::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 58% 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--cristal-brillo), rgba(255, 255, 255, 0));
+  border-radius: 26px 26px 60% 60% / 26px 26px 25% 25%;
+  pointer-events: none;
+}
+
+a.cristal:hover,
+a.cristal:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(200, 245, 255, 0.6);
+  box-shadow:
+    0 22px 46px rgba(0, 10, 30, 0.5),
+    0 0 32px rgba(95, 230, 212, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -18px 30px rgba(60, 200, 230, 0.16);
+}
+
+a.cristal:focus-visible {
+  outline: 2px solid var(--aqua);
+  outline-offset: 4px;
+}
+
+/* Lo que aún no se puede jugar: cristal escarchado y borde a trazos */
+.cristal-escarcha {
+  background: rgba(255, 255, 255, 0.04);
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.cristal-escarcha .orbe {
+  background: radial-gradient(circle at 32% 26%, #f3f6fb 0 9%, #b9c6da 38%, #6d7c98 76%, #47546f);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), inset 0 -6px 10px rgba(0, 20, 50, 0.3);
+}
+
+/* El icono, en un orbe de cristal */
+.orbe {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  background: var(--orbe);
+  box-shadow: 0 6px 18px rgba(20, 180, 200, 0.4), inset 0 -6px 10px rgba(0, 60, 90, 0.35);
+}
+
+.orbe::after {
+  content: '';
+  position: absolute;
+  top: 6%;
+  left: 20%;
+  width: 60%;
+  height: 40%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+}
+
+.orbe svg {
+  width: 58%;
+  height: 58%;
+  fill: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 50, 80, 0.4));
+}
+
+.cristal .estado {
+  padding-top: 0;
+}
+
+.cristal-titulo {
+  font-family: var(--font-title);
+  font-size: 2.1rem;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.cristal-texto {
+  flex: 1;
+  color: var(--cristal-texto);
+}
+
+.cristal-dato {
+  font-size: 0.875rem;
+  color: var(--cristal-dato);
+}
+
+/* Botón de gel: brillo arriba y color abajo, como los de antes */
+.gel {
+  align-self: flex-start;
+  margin-top: 0.9rem;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid var(--gel-borde);
+  border-radius: 999px;
+  background: var(--gel);
+  box-shadow: 0 4px 14px var(--gel-sombra), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--gel-texto);
+  transition: filter 0.25s ease, box-shadow 0.25s ease;
+}
+
+a.cristal:hover .gel,
+a.cristal:focus-visible .gel {
+  filter: brightness(1.08) saturate(1.1);
+  box-shadow: 0 6px 20px var(--gel-sombra), inset 0 1px 0 #fff;
+}
+
+/* ============================================================
+   DE DÍA: el Frutiger Aero de siempre
+   ============================================================ */
+:root[data-theme="light"] body[data-page="juegos"] {
+  --cristal-fondo: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(190, 235, 255, 0.55));
+  --cristal-borde: rgba(255, 255, 255, 0.95);
+  --cristal-brillo: rgba(255, 255, 255, 0.75);
+  --cristal-texto: #1d5a85;
+  --cristal-dato: #0f7a8a;
+  --gel: linear-gradient(180deg, #c8fbb8 0%, #6fdc63 47%, #2fb34a 53%, #1f9a3c 100%);
+  --gel-borde: rgba(235, 255, 230, 0.9);
+  --gel-texto: #fff;
+  --gel-sombra: rgba(0, 110, 40, 0.35);
+  --orbe: radial-gradient(circle at 30% 25%, #b8ffd0, #27c4a8 55%, #0a8fb8);
+  --papel: #0b3a5e;
+  --grafito: #2a5c80;
+
+  --cielo:
+    radial-gradient(ellipse at 50% 120%, #7be07b 0 25%, transparent 55%),
+    linear-gradient(180deg, #2f9bff 0%, #7fd0ff 45%, #d9f6ff 100%);
+
+  background: #2f9bff;
+}
+
+:root[data-theme="light"] body[data-page="juegos"] .gel {
+  text-shadow: 0 1px 2px rgba(0, 80, 20, 0.45);
+}
+
+:root[data-theme="light"] .juegos .section-title {
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 80, 160, 0.55), 0 0 18px rgba(255, 255, 255, 0.6);
+}
+
+:root[data-theme="light"] .juegos .section-text {
+  color: #0b3a5e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme="light"] .cristal {
+  box-shadow:
+    0 8px 24px rgba(0, 90, 170, 0.3),
+    inset 0 1px 0 #fff,
+    inset 0 -10px 20px rgba(80, 190, 255, 0.25);
+}
+
+:root[data-theme="light"] a.cristal:hover,
+:root[data-theme="light"] a.cristal:focus-visible {
+  border-color: #fff;
+  box-shadow:
+    0 12px 30px rgba(0, 120, 220, 0.45),
+    0 0 22px rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 #fff,
+    inset 0 -10px 20px rgba(80, 190, 255, 0.35);
+}
+
+:root[data-theme="light"] a.cristal:focus-visible {
+  outline-color: #0b3a5e;
+}
+
+:root[data-theme="light"] .cristal-escarcha {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* De día no hay luna ni laguna: el orbe es una burbuja más y el agua es la colina */
+:root[data-theme="light"] .escena-luna {
+  background: radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.95) 0 30%, rgba(230, 248, 255, 0.85));
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme="light"] .escena-reflejo,
+:root[data-theme="light"] .escena-agua {
+  display: none;
+}
+
+:root[data-theme="light"] .burbujas span {
+  background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.95) 0 10%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0.3));
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 600px) {
+  .escena-luna {
+    top: 9vh;
+    right: 6vw;
+  }
+
+  .escena-reflejo {
+    right: calc(6vw + 20px);
+  }
+
+  .burbujas span:nth-child(1),
+  .burbujas span:nth-child(6) {
+    opacity: 0.5;
+  }
+}

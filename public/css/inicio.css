@@ -1,0 +1,503 @@
+/* ============================================================
+   INICIO: «Cuaderno de observación»
+   La página es una noche mirando la luna. La luna grande cambia
+   de fase con el scroll y la barra de fases es el índice.
+   Se carga después de styles.css y solo afecta a Inicio.
+   ============================================================ */
+
+/* La luna de Inicio ya es la grande: fuera el sol/luna común del fondo */
+body[data-page="inicio"] .sky {
+  display: none;
+}
+
+:root[data-theme="light"] body[data-page="inicio"] .luna-luz {
+  fill: #fbf7ea;
+}
+
+/* ---------- La luna grande ---------- */
+.luna-grande {
+  position: fixed;
+  top: 50%;
+  right: -9vw;
+  z-index: -1;
+  width: min(74vh, 44vw);
+  aspect-ratio: 1;
+  transform: translateY(-46%);
+  pointer-events: none;
+}
+
+.luna-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* Cuanta más luna, más halo */
+  filter: drop-shadow(0 0 calc(var(--luz, 0) * 70px) rgba(241, 228, 174, calc(var(--luz, 0) * 0.22)));
+}
+
+.luna-sombra {
+  fill: var(--sombra-luna);
+}
+
+.luna-luz {
+  fill: var(--luz-luna);
+}
+
+.luna-crateres {
+  fill: var(--crater);
+}
+
+.luna-ceniza {
+  fill: rgba(233, 227, 211, 0.025);
+}
+
+.luna-borde {
+  fill: none;
+  stroke: var(--linea);
+  stroke-width: 0.6;
+}
+
+/* ---------- Índice de fases ---------- */
+.fases {
+  position: fixed;
+  top: 50%;
+  left: 2rem;
+  z-index: 10;
+  transform: translateY(-50%);
+}
+
+.fases ol {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  list-style: none;
+}
+
+/* El hilo que une las lunas se va llenando con la noche */
+.fases ol::before,
+.fases ol::after {
+  content: '';
+  position: absolute;
+  top: 1.1rem;
+  bottom: 1.1rem;
+  left: calc(0.6rem + 10px);
+  width: 1px;
+  background: var(--linea);
+}
+
+.fases ol::after {
+  bottom: auto;
+  height: calc((100% - 2.2rem) * var(--fill, 0));
+  background: var(--luz-luna);
+}
+
+.fases li {
+  position: relative;
+  z-index: 1; /* Las lunas por encima del hilo */
+}
+
+.fase {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--grafito);
+  transition: color 0.3s ease;
+}
+
+.luna-fase {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--noche);
+  border-radius: 50%;
+}
+
+.luna-fase .luna-borde {
+  stroke: rgba(var(--ink-rgb), 0.35);
+  stroke-width: 1;
+}
+
+.fase-nombre {
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.fase:hover,
+.fase[aria-current] {
+  color: var(--papel);
+}
+
+.fase:hover .fase-nombre,
+.fase[aria-current] .fase-nombre {
+  opacity: 1;
+}
+
+.fase[aria-current] .luna-fase {
+  box-shadow: 0 0 0 4px var(--noche), 0 0 0 5px var(--luz-luna);
+}
+
+/* ---------- Columna de texto ---------- */
+body[data-page="inicio"] main {
+  padding-top: 0;
+}
+
+.cuaderno {
+  width: min(100% - 2.5rem, 40rem);
+  margin-left: clamp(12.5rem, 17vw, 16rem);
+}
+
+.cuaderno > section,
+.cuaderno > header {
+  padding-block: 7rem 2rem;
+  scroll-margin-top: 4rem;
+}
+
+.titulo-seccion {
+  margin-bottom: 1.25rem;
+  font-family: var(--font-title);
+  font-size: clamp(2.75rem, 6vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.texto-seccion {
+  max-width: 34em;
+  margin-bottom: 1rem;
+  color: var(--white2);
+}
+
+.subtitulo {
+  margin: 4.5rem 0 0.5rem;
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--grafito);
+}
+
+/* ---------- Presentación ---------- */
+.presentacion {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+}
+
+.cuaderno > .presentacion {
+  padding-block: 7rem 4.5rem;
+}
+
+.nombre {
+  margin-left: -0.05em; /* La N alinea su trazo, no su caja, con el texto */
+  margin-bottom: 1.75rem;
+  font-family: var(--font-title);
+  font-size: clamp(4.25rem, 11.5vw, 9.5rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.entradilla {
+  max-width: 30em;
+  margin-bottom: 2rem;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--white2);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.luna-hoy {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  color: var(--grafito);
+}
+
+.luna-mini {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.luna-mini .luna-borde {
+  stroke: rgba(var(--ink-rgb), 0.35);
+  stroke-width: 1.5;
+}
+
+/* La fórmula dibuja siempre la luz a la derecha; menguando va a la izquierda */
+.luna-menguando {
+  transform: scaleX(-1);
+}
+
+/* El único momento con movimiento propio: el nombre sale de la oscuridad
+   mientras la luna grande pasa de nueva a su primer hilo de luz */
+@media (prefers-reduced-motion: no-preference) {
+  .nombre {
+    animation: amanece 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .entradilla,
+  .acciones,
+  .luna-hoy {
+    animation: amanece 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both;
+  }
+}
+
+@keyframes amanece {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+/* ---------- Observaciones (proyectos) ---------- */
+.obs-lista {
+  margin-top: 2.5rem;
+}
+
+.obs {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0 1.5rem;
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--linea);
+}
+
+.obs-destacada {
+  padding-block: 2.5rem;
+}
+
+.obs-destacada .estado {
+  padding-top: 0.9rem;
+}
+
+.obs-titulo {
+  margin-bottom: 0.4rem;
+  font-family: var(--font-title);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.obs-destacada .obs-titulo {
+  font-size: clamp(2.25rem, 4vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.obs-texto {
+  margin-bottom: 0.75rem;
+  color: var(--white2);
+}
+
+.obs-destacada .obs-texto {
+  font-size: 1.125rem;
+  color: var(--papel);
+}
+
+.obs-dentro {
+  margin-bottom: 0.9rem;
+  font-size: 0.9375rem;
+  color: var(--white2);
+}
+
+.obs-dentro strong {
+  font-family: var(--font-title);
+  font-style: italic;
+  font-size: 1.15em;
+  font-weight: 400;
+  color: var(--papel);
+}
+
+.pila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  margin-bottom: 1.25rem;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--grafito);
+  font-variant-numeric: tabular-nums;
+}
+
+.obs:not(.obs-destacada) .pila:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Notas (sobre mí y herramientas) ---------- */
+.notas {
+  margin-top: 2.25rem;
+}
+
+.nota {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0 1.5rem;
+  padding-block: 0.9rem;
+  border-top: 1px solid var(--linea);
+}
+
+.nota dt {
+  font-size: 0.875rem;
+  color: var(--grafito);
+  padding-top: 0.15rem;
+}
+
+.nota dd {
+  color: var(--papel);
+}
+
+.herramientas em {
+  font-family: var(--font-title);
+  font-size: 1.15em;
+  color: var(--white2);
+}
+
+/* ---------- Contacto ---------- */
+.cuaderno > #contacto {
+  padding-bottom: 8rem;
+}
+
+.titulo-contacto {
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+}
+
+.correo {
+  display: inline-block;
+  margin: 1.25rem 0 1.75rem;
+  font-family: var(--font-title);
+  font-size: clamp(1.6rem, 4.6vw, 3rem);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: rgba(var(--ink-rgb), 0.35);
+  transition: text-decoration-color 0.25s ease;
+}
+
+.correo:hover {
+  text-decoration-color: var(--luz-luna);
+}
+
+.aviso {
+  min-height: 1.5em;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--grafito);
+}
+
+.redes {
+  margin-top: 1.5rem;
+  color: var(--white2);
+}
+
+/* ---------- Pantallas medianas: la luna se aparta del texto ---------- */
+@media (max-width: 1280px) {
+  .luna-grande {
+    right: -16vw;
+    width: min(70vh, 46vw);
+  }
+}
+
+/* ---------- Móvil y tableta ---------- */
+@media (max-width: 1000px) {
+  .cuaderno {
+    width: auto;
+    margin-inline: 1.5rem;
+  }
+
+  .luna-grande {
+    top: 4.5rem;
+    right: -22vw;
+    width: 70vw;
+    opacity: 0.38;
+    transform: none;
+  }
+
+  .presentacion {
+    min-height: 92svh;
+  }
+
+  /* El índice baja a una barra: las cinco lunas y el nombre de donde estás */
+  .fases {
+    top: auto;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.2rem 0.4rem;
+    background: rgba(var(--bg-rgb), 0.88);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+  }
+
+  .fases ol {
+    flex-direction: row;
+    gap: 0;
+  }
+
+  .fases ol::before,
+  .fases ol::after {
+    display: none;
+  }
+
+  .fase {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    justify-content: center;
+    padding: 0.5rem 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .fase-nombre {
+    display: none;
+  }
+
+  .fase[aria-current] .fase-nombre {
+    display: inline;
+    white-space: nowrap;
+  }
+
+  .fase[aria-current] .luna-fase {
+    box-shadow: none;
+  }
+
+  body[data-page="inicio"] .footer {
+    padding-bottom: 5rem; /* Que la barra de fases no tape el pie */
+  }
+}
+
+@media (max-width: 600px) {
+  .obs,
+  .nota {
+    grid-template-columns: 1fr;
+  }
+
+  .estado,
+  .obs-destacada .estado {
+    padding: 0 0 0.6rem;
+  }
+
+  .nota dt {
+    padding: 0 0 0.2rem;
+  }
+
+  .cuaderno > section {
+    padding-top: 5rem;
+  }
+}

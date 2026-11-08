@@ -6,44 +6,88 @@
   <title>Juegos — NadineRoss</title>
   <link rel="icon" href="imagenes/luna-menguante.svg" type="image/svg+xml">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700..800;1,700..900&family=Source+Serif+4:wght@400..700&display=swap" rel="stylesheet">
-
   <script src="js/theme-init.js"></script>
   <script src="js/i18n.js"></script>
+  <link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/noche.css">
+  <link rel="stylesheet" href="css/juegos.css">
   <script src="js/layout.js" defer></script>
   <script src="js/script.js" defer></script>
 </head>
 <body data-page="juegos">
-  <main id="top">
-    <section class="page-section">
-      <h1 class="section-title" data-i18n="nav.juegos">Juegos</h1>
-      <p class="section-text" data-i18n="games.intro">Pequeños proyectos para jugar un rato.</p>
+  <!-- El paisaje: de noche una laguna con la luna; de día, el aero de siempre -->
+  <div class="escena" aria-hidden="true">
+    <div class="escena-luna"></div>
+    <div class="escena-reflejo"></div>
+    <div class="escena-agua"></div>
+    <div class="burbujas">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
 
-      <!-- Cada juego es una tarjeta que lleva a su propia página -->
-      <div class="card-grid">
-        <a class="card game-card" href="ajedrez.html">
-          <svg class="game-icon" viewBox="0 0 45 45" aria-hidden="true">
-            <circle cx="22.500" cy="13" r="5.500" />
-            <path d="M17 19.500h11v2.500H17z" />
-            <path d="M19 22c0 5-2 8-5 12.500h17c-3-4.500-5-7.500-5-12.500z" />
-            <path d="M11 39.500h23v-3a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2z" />
-          </svg>
-          <h2 class="card-title" data-i18n="chess.title">Ajedrez</h2>
-          <p class="card-text" data-i18n="games.chess">Contra la máquina o contra quien quieras, con un código de sala.</p>
-          <span class="card-link" data-i18n="games.play">Jugar →</span>
+  <main id="top">
+    <section class="page-section juegos">
+      <h1 class="section-title" data-i18n="nav.juegos">Juegos</h1>
+      <p class="section-text" data-i18n="games.intro">Tres juegos que funcionan aquí mismo. Entra en uno y juega.</p>
+
+      <!-- Cada juego es una tarjeta de cristal que lleva a su página -->
+      <div class="laguna">
+        <a class="cristal" href="ajedrez.html">
+          <span class="orbe">
+            <svg viewBox="0 0 45 45" aria-hidden="true">
+              <circle cx="22.500" cy="13" r="5.500" />
+              <path d="M17 19.500h11v2.500H17z" />
+              <path d="M19 22c0 5-2 8-5 12.500h17c-3-4.500-5-7.500-5-12.500z" />
+              <path d="M11 39.500h23v-3a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2z" />
+            </svg>
+          </span>
+          <p class="estado estado-jugable"><span class="estado-punto"></span><span data-i18n="games.status.play">Se puede jugar</span></p>
+          <h2 class="cristal-titulo" data-i18n="chess.title">Ajedrez</h2>
+          <p class="cristal-texto" data-i18n="games.chess">Contra la máquina o contra quien quieras, con un código de sala.</p>
+          <p class="cristal-dato" data-i18n="games.chess.players">1 jugador contra la máquina, o 2 en una sala</p>
+          <span class="gel" data-i18n="games.chess.cta">Jugar al ajedrez</span>
         </a>
-        <a class="card game-card" href="ciudadelas.html">
-          <svg class="game-icon" viewBox="0 0 45 45" aria-hidden="true">
-            <path d="M6 38V14h5v4h4v-4h5v4h5v-4h5v4h4v-4h5v24z" />
-            <path d="M19 38v-9a3.500 3.500 0 0 1 7 0v9z" fill="none" stroke="currentColor" stroke-width="0" />
-          </svg>
-          <h2 class="card-title" data-i18n="cd.title">Ciudadelas</h2>
-          <p class="card-text" data-i18n="games.ciudadelas">Cartas y estrategia para 2 a 7 jugadores, con bots y un tutorial.</p>
-          <span class="card-link" data-i18n="games.play">Jugar →</span>
+
+        <a class="cristal" href="ciudadelas.html">
+          <span class="orbe">
+            <svg viewBox="0 0 45 45" aria-hidden="true">
+              <path d="M6 38V14h5v4h4v-4h5v4h5v-4h5v4h4v-4h5v24zM19.5 38v-8a3 3 0 0 1 6 0v8z" fill-rule="evenodd" />
+            </svg>
+          </span>
+          <p class="estado estado-jugable"><span class="estado-punto"></span><span data-i18n="games.status.play">Se puede jugar</span></p>
+          <h2 class="cristal-titulo" data-i18n="cd.title">Ciudadelas</h2>
+          <p class="cristal-texto" data-i18n="games.ciudadelas">Cartas y estrategia para 2 a 7 jugadores, con bots y un tutorial.</p>
+          <p class="cristal-dato" data-i18n="games.ciudadelas.players">De 2 a 7 jugadores, con bots si faltan</p>
+          <span class="gel" data-i18n="games.ciudadelas.cta">Jugar a Ciudadelas</span>
         </a>
+
+        <a class="cristal" href="mi-pet.html">
+          <span class="orbe">
+            <svg viewBox="0 0 45 45" aria-hidden="true">
+              <path d="M10 9l7 7a13 13 0 0 1 11 0l7-7v14a13 13 0 1 1-25 0z" />
+              <circle cx="17.5" cy="26" r="2.2" fill="#0b3a5e" />
+              <circle cx="27.5" cy="26" r="2.2" fill="#0b3a5e" />
+            </svg>
+          </span>
+          <p class="estado estado-jugable"><span class="estado-punto"></span><span data-i18n="games.status.play">Se puede jugar</span></p>
+          <h2 class="cristal-titulo" data-i18n="nav.mi-pet">Mi Pet</h2>
+          <p class="cristal-texto" data-i18n="games.pet">Adopta una mascota, cuídala y juega a sus siete minijuegos.</p>
+          <p class="cristal-dato" data-i18n="games.pet.players">1 jugador, tu progreso se guarda en tu cuenta</p>
+          <span class="gel" data-i18n="games.pet.cta">Adoptar una mascota</span>
+        </a>
+
+        <article class="cristal cristal-escarcha">
+          <span class="orbe">
+            <svg viewBox="0 0 45 45" aria-hidden="true">
+              <path d="M22.5 6a8 8 0 0 1 4 14.9V37l-4 3-4-3v-2.5l2.5-2-2.5-2v-2l2.5-2-2.5-2v-5.6A8 8 0 0 1 22.5 6zm0 4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" fill-rule="evenodd" />
+            </svg>
+          </span>
+          <p class="estado estado-desarrollo"><span class="estado-punto"></span><span data-i18n="games.status.dev">En desarrollo</span></p>
+          <h2 class="cristal-titulo" data-i18n="nav.jaja-que-tonto">jaja, que tonto</h2>
+          <p class="cristal-texto" data-i18n="games.escape">Un escape room que estoy construyendo. Todavía no se puede jugar.</p>
+        </article>
       </div>
     </section>
   </main>

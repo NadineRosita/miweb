@@ -15,12 +15,12 @@ const i18n = (() => {
 
   const TEXTS = {
     es: {
-      'title.inicio': 'NadineRoss',
+      'title.inicio': 'Nadia Coronel',
       'title.juegos': 'Juegos — NadineRoss',
       'title.aplicaciones': 'Aplicaciones — NadineRoss',
       'title.mi-pet': 'Mi Pet — NadineRoss',
       'title.jaja-que-tonto': 'jaja, que tonto — NadineRoss',
-      'meta.description': 'Portfolio de Nadine Ross, estudiante de Ingeniería del Software en la Universidad de Sevilla y desarrolladora en formación.',
+      'meta.description': 'Portfolio de Nadia Coronel (Nadine), estudiante de Ingeniería del Software en la Universidad de Sevilla. Juegos multijugador, apps y herramientas que puedes probar aquí.',
 
       'nav.inicio': 'Inicio',
       'nav.juegos': 'Juegos',
@@ -52,7 +52,22 @@ const i18n = (() => {
       'pet.register': 'Crear cuenta',
 
       'title.ajedrez': 'Ajedrez — NadineRoss',
-      'games.intro': 'Pequeños proyectos para jugar un rato.',
+      'games.intro': 'Tres juegos que funcionan aquí mismo. Entra en uno y juega.',
+      'games.status.play': 'Se puede jugar',
+      'games.status.dev': 'En desarrollo',
+      'games.chess.players': '1 jugador contra la máquina, o 2 en una sala',
+      'games.chess.cta': 'Jugar al ajedrez',
+      'games.ciudadelas.players': 'De 2 a 7 jugadores, con bots si faltan',
+      'games.ciudadelas.cta': 'Jugar a Ciudadelas',
+      'games.pet': 'Adopta una mascota, cuídala y juega a sus siete minijuegos.',
+      'games.pet.players': '1 jugador, tu progreso se guarda en tu cuenta',
+      'games.pet.cta': 'Adoptar una mascota',
+      'games.escape': 'Un escape room que estoy construyendo. Todavía no se puede jugar.',
+      'apps.empty': 'Aquí irán las aplicaciones que se pueden usar desde el navegador. Todavía no hay ninguna publicada; mientras tanto, los juegos sí funcionan.',
+      'apps.cta': 'Ir a los juegos',
+      'apps.back': 'Ver todos mis proyectos',
+      'escape.empty': 'Un escape room que estoy construyendo. Todavía no se puede jugar: cuando esté listo, la puerta se abrirá aquí.',
+      'escape.cta': 'Jugar a otra cosa mientras',
       'games.chess': 'Contra la máquina o contra quien quieras, con un código de sala.',
       'games.play': 'Jugar →',
 
@@ -184,12 +199,12 @@ const i18n = (() => {
     },
 
     en: {
-      'title.inicio': 'NadineRoss',
+      'title.inicio': 'Nadia Coronel',
       'title.juegos': 'Games — NadineRoss',
       'title.aplicaciones': 'Apps — NadineRoss',
       'title.mi-pet': 'My Pet — NadineRoss',
       'title.jaja-que-tonto': 'haha, how silly — NadineRoss',
-      'meta.description': 'Portfolio of Nadine Ross, a Software Engineering student at the University of Seville and developer in progress.',
+      'meta.description': 'Portfolio of Nadia Coronel (Nadine), a Software Engineering student at the University of Seville. Multiplayer games, apps and tools you can try right here.',
 
       'nav.inicio': 'Home',
       'nav.juegos': 'Games',
@@ -221,7 +236,22 @@ const i18n = (() => {
       'pet.register': 'Create account',
 
       'title.ajedrez': 'Chess — NadineRoss',
-      'games.intro': 'Small projects to play for a while.',
+      'games.intro': 'Three games that run right here. Open one and play.',
+      'games.status.play': 'Playable now',
+      'games.status.dev': 'In progress',
+      'games.chess.players': '1 player against the computer, or 2 in a room',
+      'games.chess.cta': 'Play chess',
+      'games.ciudadelas.players': '2 to 7 players, with bots to fill in',
+      'games.ciudadelas.cta': 'Play Citadels',
+      'games.pet': 'Adopt a pet, look after it and play its seven minigames.',
+      'games.pet.players': '1 player, your progress is saved to your account',
+      'games.pet.cta': 'Adopt a pet',
+      'games.escape': 'An escape room I\'m building. It isn\'t playable yet.',
+      'apps.empty': 'This is where apps you can use in the browser will go. None are published yet; in the meantime, the games do work.',
+      'apps.cta': 'Go to the games',
+      'apps.back': 'See all my projects',
+      'escape.empty': 'An escape room I\'m building. It isn\'t playable yet: when it\'s ready, the door will open here.',
+      'escape.cta': 'Play something else meanwhile',
       'games.chess': 'Against the machine or anyone you like, with a room code.',
       'games.play': 'Play →',
 

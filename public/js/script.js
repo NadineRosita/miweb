@@ -68,6 +68,9 @@ function initMenu() {
   const hamburger = document.getElementById('hamburger');
   const menu = document.getElementById('site-menu');
   const hoverMode = window.matchMedia('(min-width: 1001px) and (hover: hover)');
+  // El panel que se abría al acercar el ratón al borde queda apagado: en ordenador
+  // las pestañas ya se ven en la barra. Cambia a true para recuperarlo.
+  const EDGE_MENU = false;
 
   const isOpen = () => menu.classList.contains('open');
 
@@ -81,7 +84,7 @@ function initMenu() {
 
   hamburger.addEventListener('click', (event) => {
     // Con ratón ya está abierto al llegar al botón. Un clic de teclado tiene detail 0.
-    if (hoverMode.matches && event.detail > 0) return;
+    if (EDGE_MENU && hoverMode.matches && event.detail > 0) return;
 
     setOpen(!isOpen());
 
@@ -94,7 +97,7 @@ function initMenu() {
   });
 
   document.addEventListener('mousemove', (event) => {
-    if (!hoverMode.matches) return;
+    if (!EDGE_MENU || !hoverMode.matches) return;
 
     const { clientX: x, clientY: y } = event;
     const nearButton = x < NEAR_BUTTON_X_PX && y < NEAR_BUTTON_Y_PX;

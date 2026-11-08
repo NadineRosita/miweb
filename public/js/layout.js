@@ -20,9 +20,9 @@ const NAV_LINKS = [
     id: 'inicio',
     href: 'index.html',
     sections: [
+      { id: 'proyectos' },
       { id: 'sobre-mi' },
       { id: 'conocimientos' },
-      { id: 'proyectos' },
       { id: 'contacto' },
     ],
   },
@@ -55,6 +55,14 @@ function navLinksHtml(currentPage) {
   }).join('');
 }
 
+// Pestañas siempre visibles en ordenador (sin submenús): que se vea que hay juegos
+function inlineNavHtml(currentPage) {
+  return NAV_LINKS.map(({ id, href }) => {
+    const current = id === currentPage ? ' aria-current="page"' : '';
+    return `<a href="${href}"${current} data-i18n="nav.${id}"></a>`;
+  }).join('');
+}
+
 function headerHtml(currentPage) {
   const links = navLinksHtml(currentPage);
   const socials = SOCIAL_LINKS.map(({ short, label, href }) => (
@@ -73,6 +81,8 @@ function headerHtml(currentPage) {
         ${MOON_ICON}
         <span class="logo-name">${SITE_NAME}</span>
       </a>
+
+      <nav class="nav-inline" data-i18n-aria="nav.label">${inlineNavHtml(currentPage)}</nav>
 
       <div class="nav-actions">
         <div class="nav-socials">${socials.join('')}</div>

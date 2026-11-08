@@ -427,6 +427,38 @@ main {
   }
 }
 
+/* ---------- Pestañas visibles en la barra (ordenador) ---------- */
+.nav-inline {
+  display: none;
+}
+
+@media (min-width: 1001px) {
+  .hamburger {
+    display: none;
+  }
+
+  .nav-inline {
+    display: flex;
+    gap: 1.6rem;
+    margin-right: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .nav-inline a {
+    color: var(--white2);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.4em;
+    transition: color var(--transition), text-decoration-color var(--transition);
+  }
+
+  .nav-inline a:hover,
+  .nav-inline a[aria-current="page"] {
+    color: var(--white);
+    text-decoration-color: var(--accent);
+  }
+}
+
 /* ---------- Fondo: sol o luna ---------- */
 /* La opacidad máxima de cada tema (--sky-opacity) mantiene el contraste del texto */
 .sky {
@@ -589,103 +621,6 @@ main {
   width: 3rem;
   height: 3rem;
   fill: var(--accent);
-}
-
-/* ---------- Sección Juegos: estética Frutiger Aero ---------- */
-body[data-page="juegos"] {
-  background:
-    radial-gradient(circle at 15% 12%, rgba(255, 255, 255, 0.85) 0 6%, transparent 6.5%),
-    radial-gradient(circle at 85% 22%, rgba(255, 255, 255, 0.6) 0 4%, transparent 4.5%),
-    radial-gradient(circle at 70% 78%, rgba(255, 255, 255, 0.5) 0 7%, transparent 7.5%),
-    radial-gradient(ellipse at 50% 120%, #7be07b 0 25%, transparent 55%),
-    linear-gradient(180deg, #2f9bff 0%, #7fd0ff 45%, #d9f6ff 100%);
-  background-attachment: fixed;
-  color: #0b3a5e;
-}
-
-body[data-page="juegos"] .section-title {
-  color: #fff;
-  text-shadow: 0 2px 6px rgba(0, 80, 160, 0.55), 0 0 18px rgba(255, 255, 255, 0.6);
-}
-
-body[data-page="juegos"] .section-text {
-  color: #0b3a5e;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-body[data-page="juegos"] .card {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(190, 235, 255, 0.55));
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 22px;
-  box-shadow:
-    0 8px 24px rgba(0, 90, 170, 0.3),
-    inset 0 1px 0 #fff,
-    inset 0 -10px 20px rgba(80, 190, 255, 0.25);
-  backdrop-filter: blur(10px) saturate(1.4);
-  -webkit-backdrop-filter: blur(10px) saturate(1.4);
-  color: #0b3a5e;
-}
-
-/* Brillo de cristal en la mitad superior */
-body[data-page="juegos"] .card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 55% 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.05));
-  border-radius: 22px 22px 60% 60% / 22px 22px 25% 25%;
-  pointer-events: none;
-}
-
-body[data-page="juegos"] .card > * {
-  position: relative;
-}
-
-body[data-page="juegos"] .card-text {
-  color: #1d5a85;
-}
-
-body[data-page="juegos"] .game-card:hover,
-body[data-page="juegos"] .game-card:focus-visible {
-  border-color: #fff;
-  transform: translateY(-4px) scale(1.02);
-  box-shadow:
-    0 12px 30px rgba(0, 120, 220, 0.45),
-    0 0 22px rgba(255, 255, 255, 0.8),
-    inset 0 1px 0 #fff,
-    inset 0 -10px 20px rgba(80, 190, 255, 0.35);
-}
-
-/* Icono como orbe de cristal verde-azulado */
-body[data-page="juegos"] .game-icon {
-  box-sizing: content-box;
-  width: 2.6rem;
-  height: 2.6rem;
-  padding: 0.5rem;
-  fill: #fff;
-  background: radial-gradient(circle at 30% 25%, #b8ffd0, #27c4a8 55%, #0a8fb8);
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 10px rgba(0, 110, 170, 0.45), inset 0 -6px 10px rgba(0, 90, 140, 0.35);
-  filter: drop-shadow(0 1px 1px rgba(0, 70, 110, 0.5));
-}
-
-body[data-page="juegos"] .card-title {
-  color: #0a4a7a;
-  text-shadow: 0 1px 0 #fff;
-}
-
-/* "Jugar" como botón de gel */
-body[data-page="juegos"] .card-link {
-  align-self: flex-start;
-  padding: 0.35rem 1.1rem;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 80, 40, 0.6);
-  background: linear-gradient(180deg, #8df29a 0%, #3fc95a 50%, #22a342 51%, #52d46c 100%);
-  border: 1px solid #1c8a37;
-  border-radius: 100px;
-  box-shadow: 0 3px 8px rgba(0, 100, 40, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* Tecnologías que sigue explorando */

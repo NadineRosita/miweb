@@ -3,30 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NadineRoss</title>
+  <title>Nadia Coronel</title>
   <meta name="description" data-i18n-content="meta.description" content="Portfolio de Nadine Ross, estudiante de Ingeniería del Software en la Universidad de Sevilla y desarrolladora en formación.">
   <link rel="icon" href="imagenes/luna-menguante.svg" type="image/svg+xml">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700..800;1,700..900&family=Source+Serif+4:wght@400..700&display=swap" rel="stylesheet">
+  <!-- Las letras de Inicio se sirven desde la propia web (css/inicio.css) -->
+  <link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
   <script src="js/theme-init.js"></script>
   <script src="js/i18n.js"></script>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/noche.css">
+  <link rel="stylesheet" href="css/inicio.css">
   <script src="js/layout.js" defer></script>
   <script src="js/contenido-inicio.js" defer></script>
+  <script src="js/luna.js" defer></script>
   <script src="js/inicio.js" defer></script>
   <script src="js/script.js" defer></script>
 </head>
 <body data-page="inicio">
-  <main id="top">
+  <!-- La luna grande: su fase sigue al scroll (js/luna.js) -->
+  <div class="luna-grande" id="luna-grande" aria-hidden="true"></div>
+  <nav class="fases" id="fases"></nav>
+
+  <main id="top" class="cuaderno">
     <!-- Los textos de estas secciones se editan en js/contenido-inicio.js -->
-    <header class="page-section page-intro" id="presentacion"></header>
-    <section class="page-section" id="sobre-mi"></section>
-    <section class="page-section" id="conocimientos"></section>
-    <section class="page-section" id="proyectos"></section>
-    <section class="page-section" id="contacto"></section>
+    <header class="presentacion" id="presentacion"></header>
+    <section id="proyectos"></section>
+    <section id="sobre-mi"></section>
+    <section id="conocimientos"></section>
+    <section id="contacto"></section>
   </main>
 </body>
 </html>
