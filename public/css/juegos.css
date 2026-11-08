@@ -144,7 +144,8 @@ body[data-page="juegos"] .sky {
 /* ---------- Tarjetas de cristal ---------- */
 .laguna {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(228px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(228px, 100%), 340px));
+  justify-content: center;
   gap: 1.25rem;
   margin-top: 2.5rem;
 }
@@ -195,18 +196,6 @@ a.cristal:focus-visible {
 a.cristal:focus-visible {
   outline: 2px solid var(--aqua);
   outline-offset: 4px;
-}
-
-/* Lo que aún no se puede jugar: cristal escarchado y borde a trazos */
-.cristal-escarcha {
-  background: rgba(255, 255, 255, 0.04);
-  border-style: dashed;
-  box-shadow: none;
-}
-
-.cristal-escarcha .orbe {
-  background: radial-gradient(circle at 32% 26%, #f3f6fb 0 9%, #b9c6da 38%, #6d7c98 76%, #47546f);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), inset 0 -6px 10px rgba(0, 20, 50, 0.3);
 }
 
 /* El icono, en un orbe de cristal */
@@ -340,10 +329,6 @@ a.cristal:focus-visible .gel {
 
 :root[data-theme="light"] a.cristal:focus-visible {
   outline-color: #0b3a5e;
-}
-
-:root[data-theme="light"] .cristal-escarcha {
-  background: rgba(255, 255, 255, 0.4);
 }
 
 /* De día no hay luna ni laguna: el orbe es una burbuja más y el agua es la colina */
