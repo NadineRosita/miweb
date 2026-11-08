@@ -131,18 +131,21 @@ function renderPortrait({ src, alt }) {
 
 function renderAbout({ titulo, parrafos, foto, notas }) {
   const notes = createElement('dl', 'notas');
+  // El retrato va al lado de las notas; sin foto, las notas ocupan todo el ancho
+  const body = createElement('div', foto ? 'sobre-mi-cuerpo con-retrato' : 'sobre-mi-cuerpo');
 
   notas.forEach(({ dato, valor }) => {
     const row = createElement('div', 'nota');
     row.append(createElement('dt', '', dato), createElement('dd', '', valor));
     notes.append(row);
   });
+  body.append(notes);
+  if (foto) body.append(renderPortrait(foto));
 
   document.getElementById('sobre-mi').append(
     createElement('h2', 'titulo-seccion', titulo),
     ...parrafos.map((text) => createElement('p', 'texto-seccion', text)),
-    ...(foto ? [renderPortrait(foto)] : []),
-    notes,
+    body,
   );
 }
 

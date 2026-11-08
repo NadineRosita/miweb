@@ -338,19 +338,38 @@ body[data-page="inicio"] main {
 }
 
 /* ---------- Retrato ---------- */
-/* Una lámina del cuaderno: de lejos, apagada como bajo la luna; al acercarse
-   el cursor, la luz entra, la foto se acerca un poco y un aro de luna se abre. */
+/* Una lámina del cuaderno junto a las notas, a la altura de la tabla. De lejos,
+   apagada como bajo la luna; al acercarse el cursor, la luz entra, la foto se
+   acerca un poco y un aro de luna se abre. */
+.sobre-mi-cuerpo.con-retrato {
+  display: grid;
+  grid-template-columns: 1fr 12.5rem;
+  gap: 0 2rem;
+  margin-top: 2.25rem;
+}
+
+.sobre-mi-cuerpo .notas {
+  margin-top: 0;
+}
+
+.sobre-mi-cuerpo.con-retrato .nota {
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0 1rem;
+}
+
 .retrato {
   position: relative;
-  width: min(100%, 17rem);
-  margin: 2rem 0 0.5rem;
-  aspect-ratio: 4 / 5;
+  align-self: stretch;
+  min-height: 14rem;
+  margin: 0;
+  border-top: 1px solid var(--linea);
+  padding-top: 0.9rem;
 }
 
 .retrato::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 0.9rem 0 0;
   border: 1px solid var(--luz-luna);
   border-radius: 2px;
   opacity: 0;
@@ -363,8 +382,7 @@ body[data-page="inicio"] main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
-  border: 1px solid var(--linea);
+  object-position: 64% 30%;
   border-radius: 2px;
 }
 
@@ -384,7 +402,7 @@ body[data-page="inicio"] main {
   }
 
   .retrato:hover::after {
-    inset: -0.6rem;
+    inset: calc(0.9rem - 0.5rem) -0.5rem -0.5rem;
     opacity: 0.8;
   }
 }
@@ -397,6 +415,21 @@ body[data-page="inicio"] main {
 
   .retrato:hover img {
     transform: none;
+  }
+}
+
+/* Estrecho: la foto pasa encima de las notas, pequeña, sin romper la columna */
+@media (max-width: 700px) {
+  .sobre-mi-cuerpo.con-retrato {
+    grid-template-columns: 1fr;
+  }
+
+  .retrato {
+    order: -1;
+    width: 11rem;
+    height: 14rem;
+    min-height: 0;
+    margin-bottom: 1.5rem;
   }
 }
 
