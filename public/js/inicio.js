@@ -115,7 +115,21 @@ function renderProjects(texts) {
 }
 
 // ---------- Sobre mí ----------
-function renderAbout({ titulo, parrafos, notas }) {
+function renderPortrait({ src, alt }) {
+  const figure = createElement('figure', 'retrato');
+  const image = createElement('img');
+
+  image.src = src;
+  image.alt = alt;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  image.width = 900;
+  image.height = 900;
+  figure.append(image);
+  return figure;
+}
+
+function renderAbout({ titulo, parrafos, foto, notas }) {
   const notes = createElement('dl', 'notas');
 
   notas.forEach(({ dato, valor }) => {
@@ -127,6 +141,7 @@ function renderAbout({ titulo, parrafos, notas }) {
   document.getElementById('sobre-mi').append(
     createElement('h2', 'titulo-seccion', titulo),
     ...parrafos.map((text) => createElement('p', 'texto-seccion', text)),
+    ...(foto ? [renderPortrait(foto)] : []),
     notes,
   );
 }

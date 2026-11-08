@@ -119,6 +119,8 @@ const CONTENIDO_INICIO = {
       parrafos: [
         'Me llamo Nadia Coronel, aunque casi todo el mundo me llama Nadine (y mis amigos, Meloncilla). Me interesan el desarrollo de aplicaciones, los sistemas y las bases de datos, y aprendo mejor construyendo cosas que otros puedan usar.',
       ],
+      // Retrato: la imagen está en public/imagenes/
+      foto: { src: 'imagenes/nadia.jpg', alt: 'Retrato de Nadia, con el pelo pelirrojo suelto y un colgante.' },
       // Pares de dato y valor
       notas: [
         { dato: 'Estudio', valor: 'Ingeniería del Software, Universidad de Sevilla' },
@@ -247,6 +249,7 @@ const CONTENIDO_INICIO = {
       parrafos: [
         'I\'m Nadia Coronel, though almost everyone calls me Nadine (and my friends, Meloncilla). I\'m into application development, systems and databases, and I learn best by building things other people can use.',
       ],
+      foto: { src: 'imagenes/nadia.jpg', alt: 'Portrait of Nadia, with loose red hair and a pendant necklace.' },
       notas: [
         { dato: 'Studying', valor: 'Software Engineering, University of Seville' },
         { dato: 'Leading', valor: 'ASTRA, a student association at ETSII' },

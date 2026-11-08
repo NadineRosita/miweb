@@ -337,6 +337,69 @@ body[data-page="inicio"] main {
   margin-bottom: 0;
 }
 
+/* ---------- Retrato ---------- */
+/* Una lámina del cuaderno: de lejos, apagada como bajo la luna; al acercarse
+   el cursor, la luz entra, la foto se acerca un poco y un aro de luna se abre. */
+.retrato {
+  position: relative;
+  width: min(100%, 17rem);
+  margin: 2rem 0 0.5rem;
+  aspect-ratio: 4 / 5;
+}
+
+.retrato::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--luz-luna);
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: inset 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.45s ease;
+}
+
+.retrato img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 1px solid var(--linea);
+  border-radius: 2px;
+}
+
+@media (hover: hover) {
+  .retrato {
+    overflow: visible;
+  }
+
+  .retrato img {
+    filter: grayscale(0.55) brightness(0.88) contrast(1.05);
+    transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .retrato:hover img {
+    filter: none;
+    transform: scale(1.025);
+  }
+
+  .retrato:hover::after {
+    inset: -0.6rem;
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retrato img,
+  .retrato::after {
+    transition: none;
+  }
+
+  .retrato:hover img {
+    transform: none;
+  }
+}
+
 /* ---------- Notas (sobre mí y herramientas) ---------- */
 .notas {
   margin-top: 2.25rem;
