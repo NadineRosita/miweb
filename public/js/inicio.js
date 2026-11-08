@@ -115,37 +115,81 @@ function renderProjects(texts) {
 }
 
 // ---------- Sobre mí ----------
-function renderPortrait({ src, alt }) {
+// El retrato es lo primero de la sección: grande, con la luz de la luna que sigue al
+// cursor, una ligera inclinación y un amanecer la primera vez que se ve.
+let portraitSeen = false;
+
+function renderPortrait({ src, alt, nombre, pie }) {
   const figure = createElement('figure', 'retrato');
+  const frame = createElement('div', 'retrato-marco');
   const image = createElement('img');
+  const caption = createElement('figcaption', 'retrato-pie');
 
   image.src = src;
   image.alt = alt;
-  image.loading = 'lazy';
   image.decoding = 'async';
-  image.width = 900;
-  image.height = 900;
-  figure.append(image);
+  image.width = 1254;
+  image.height = 1254;
+  const plate = createElement('div', 'retrato-lamina');
+
+  plate.append(image, createElement('span', 'retrato-luz'));
+  frame.append(
+    plate,
+    ...['nw', 'ne', 'sw', 'se'].map((corner) => createElement('span', `esquina esquina-${corner}`)),
+  );
+  caption.append(createElement('span', 'retrato-nombre', nombre), createElement('span', 'retrato-datos', pie));
+  figure.append(frame, caption);
+
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover)').matches;
+
+  // Amanece al llegar a la pantalla (una sola vez, aunque se cambie de idioma)
+  if (calm || portraitSeen || !('IntersectionObserver' in window)) {
+    figure.classList.add('aparecido');
+  } else {
+    const watcher = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      portraitSeen = true;
+      figure.classList.add('aparecido');
+      watcher.disconnect();
+    }, { threshold: 0.35 });
+    watcher.observe(figure);
+  }
+
+  // La luz sigue al cursor y la lámina se inclina hacia él
+  if (fine && !calm) {
+    frame.addEventListener('pointermove', (event) => {
+      const box = frame.getBoundingClientRect();
+      const x = (event.clientX - box.left) / box.width;
+      const y = (event.clientY - box.top) / box.height;
+
+      frame.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+      frame.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+      frame.style.setProperty('--ry', `${((x - 0.5) * 7).toFixed(2)}deg`);
+      frame.style.setProperty('--rx', `${((0.5 - y) * 7).toFixed(2)}deg`);
+    });
+    frame.addEventListener('pointerleave', () => {
+      ['--mx', '--my', '--rx', '--ry'].forEach((name) => frame.style.removeProperty(name));
+    });
+  }
+
   return figure;
 }
 
 function renderAbout({ titulo, parrafos, foto, notas }) {
   const notes = createElement('dl', 'notas');
-  // El retrato va al lado de las notas; sin foto, las notas ocupan todo el ancho
-  const body = createElement('div', foto ? 'sobre-mi-cuerpo con-retrato' : 'sobre-mi-cuerpo');
 
   notas.forEach(({ dato, valor }) => {
     const row = createElement('div', 'nota');
     row.append(createElement('dt', '', dato), createElement('dd', '', valor));
     notes.append(row);
   });
-  body.append(notes);
-  if (foto) body.append(renderPortrait(foto));
 
   document.getElementById('sobre-mi').append(
     createElement('h2', 'titulo-seccion', titulo),
+    ...(foto ? [renderPortrait(foto)] : []),
     ...parrafos.map((text) => createElement('p', 'texto-seccion', text)),
-    body,
+    notes,
   );
 }
 
