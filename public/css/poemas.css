@@ -1,0 +1,168 @@
+/* ============================================================
+   POEMAS: «la cara oculta» del cuaderno
+   Más íntima y más quieta que el resto: una sola columna estrecha,
+   alineada a la izquierda, sin tarjetas ni adornos. Usa los colores
+   y las letras de noche.css (por eso sigue al tema claro y al oscuro).
+   ============================================================ */
+
+/* Se llega desde la tinta de Inicio: la página sale de la noche poco a poco */
+@keyframes poemas-amanece {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+body[data-page="poemas"] main {
+  animation: poemas-amanece 0.7s ease both;
+}
+
+.poemas {
+  width: min(100% - 2.5rem, 32em);
+  margin-left: clamp(1.25rem, 12vw, 9rem);
+  padding-block: 3rem 5rem;
+}
+
+.poemas-titulo {
+  margin-bottom: 2.5rem;
+  font-family: var(--font-title);
+  font-size: clamp(2.75rem, 6vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.poemas-titulo:focus {
+  outline: none;
+}
+
+/* ---------- Estados ---------- */
+.poemas-aviso {
+  color: var(--grafito);
+  font-size: 0.9375rem;
+}
+
+.poemas-error {
+  max-width: 28em;
+}
+
+.poemas-error p {
+  margin-bottom: 1.25rem;
+  color: var(--white2);
+}
+
+/* ---------- Lista ---------- */
+.poemas-lista {
+  list-style: none;
+  border-top: 1px solid var(--linea);
+}
+
+.poemas-lista li {
+  border-bottom: 1px solid var(--linea);
+}
+
+.poemas-lista a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.15rem 1.5rem;
+  padding-block: 1.1rem;
+}
+
+.poemas-lista-titulo {
+  font-family: var(--font-title);
+  font-size: 1.75rem;
+  line-height: 1.2;
+  transition: color 0.25s ease;
+}
+
+.poemas-fecha {
+  font-size: 0.8125rem;
+  color: var(--grafito);
+}
+
+.poemas-lista a:hover .poemas-lista-titulo {
+  color: var(--luz-luna);
+}
+
+/* ---------- Un poema ---------- */
+.poema-titulo {
+  margin-bottom: 0.6rem;
+  font-family: var(--font-title);
+  font-size: clamp(2.5rem, 5.5vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+.poema-titulo:focus {
+  outline: none;
+}
+
+.poema-fecha {
+  display: block;
+  margin-bottom: 2.75rem;
+}
+
+/* pre-line respeta cada salto de línea y cada estrofa tal como están escritos */
+.poema-texto {
+  font-family: var(--font-title);
+  font-size: 1.375rem;
+  line-height: 1.75;
+  color: var(--papel);
+  text-align: left;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.poema-pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+  font-size: 0.9375rem;
+}
+
+.poema-pie a {
+  color: var(--grafito);
+  transition: color 0.25s ease;
+}
+
+.poema-pie a:hover {
+  color: var(--papel);
+}
+
+/* Si no hay anterior o siguiente, «Todos los poemas» sigue en su sitio */
+.poema-pie-todos {
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .poemas {
+    margin-left: auto;
+    padding-block: 1.5rem 4rem;
+  }
+
+  .poema-texto {
+    font-size: 1.25rem;
+    line-height: 1.7;
+  }
+
+  .poema-pie-todos {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="poemas"] main {
+    animation-duration: 0.2s;
+  }
+
+  .poemas-lista-titulo,
+  .poema-pie a {
+    transition: none;
+  }
+}
