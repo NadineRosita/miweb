@@ -80,7 +80,22 @@ function shakeKing(piece) {
   ], { duration: 240, iterations: 9, delay: 500, easing: 'linear' });
 }
 
-function resultCard(title, subtitle) {
+// Bocadillo sobre un rey: risa, llanto, etc. Se retira al terminar el final
+function kingBubble(board, color, text, mood) {
+  const square = board.kingSquare(color);
+
+  if (!square || !text) return () => {};
+
+  const bubble = document.createElement('div');
+
+  bubble.className = `chess-bubble is-${mood}`;
+  bubble.setAttribute('aria-hidden', 'true');
+  bubble.textContent = text;
+  square.append(bubble);
+  return () => bubble.remove();
+}
+
+function resultCard(title, subtitle, quip) {
   const card = document.createElement('div');
   const heading = document.createElement('strong');
   const detail = document.createElement('span');
@@ -90,6 +105,14 @@ function resultCard(title, subtitle) {
   heading.textContent = title;
   detail.textContent = subtitle;
   card.append(heading, detail);
+
+  if (quip) {
+    const joke = document.createElement('em');
+
+    joke.textContent = quip;
+    card.append(joke);
+  }
+
   return card;
 }
 
@@ -99,11 +122,11 @@ export function clearEnding() {
 }
 
 // kind: 'won', 'lost', 'draw' o 'stalemate'
-export function playEnding(board, { kind, title, subtitle, winner, loser, stuck }) {
+export function playEnding(board, { kind, title, subtitle, quip, bubbles = {}, winner, loser, stuck }) {
   clearEnding();
 
   const boardElement = board.element;
-  const card = resultCard(title, subtitle);
+  const card = resultCard(title, subtitle, quip);
   const removeConfetti = !reducedMotion() && kind === 'won' ? launchConfetti() : () => {};
 
   if (loser) board.setFallen(loser);
@@ -124,7 +147,24 @@ export function playEnding(board, { kind, title, subtitle, winner, loser, stuck 
   const stuckSquare = kind === 'stalemate' ? board.kingSquare(stuck) : null;
   stuckSquare?.classList.add('is-stuck');
 
+  const removeBubbles = [];
+
+  if (kind === 'won') {
+    removeBubbles.push(kingBubble(board, winner, bubbles.laugh, 'laugh'));
+    removeBubbles.push(kingBubble(board, loser, '😭', 'cry'));
+  }
+  if (kind === 'lost') {
+    removeBubbles.push(kingBubble(board, loser, `😭 ${bubbles.cry ?? ''}`, 'cry'));
+    removeBubbles.push(kingBubble(board, winner, '😆', 'laugh'));
+  }
+  if (kind === 'draw') {
+    removeBubbles.push(kingBubble(board, 'white', bubbles.draw, 'draw'));
+    removeBubbles.push(kingBubble(board, 'black', bubbles.draw, 'draw'));
+  }
+  if (kind === 'stalemate') removeBubbles.push(kingBubble(board, stuck, bubbles.stuck, 'stuck'));
+
   const finish = () => {
+    removeBubbles.forEach((remove) => remove());
     boardElement.classList.remove(`ending-${kind}`);
     stuckSquare?.classList.remove('is-stuck');
     card.remove();

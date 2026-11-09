@@ -191,6 +191,12 @@ export class Board {
     return null;
   }
 
+  // Deja al rey derrotado tumbado; render() lo mantiene así hasta reset()
+  setFallen(color) {
+    this.fallen = color;
+    this.kingSquare(color)?.classList.add('is-fallen');
+  }
+
   kingPiece(color) {
     return this.kingSquare(color)?.querySelector('.piece');
   }

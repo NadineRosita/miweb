@@ -205,6 +205,12 @@ function endingKind() {
   return result === game.color ? 'won' : 'lost';
 }
 
+function pickQuip(kind) {
+  const lines = i18n.t(`chess.quip.${kind}`).split('|');
+
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+
 // Los finales de partida se ven una vez, al ocurrir: no al recargar una ya acabada
 function showEnding() {
   const current = game;
@@ -220,6 +226,13 @@ function showEnding() {
     playEnding(board, {
       kind,
       title: i18n.t(`chess.ending.${kind}`),
+      quip: pickQuip(kind),
+      bubbles: {
+        laugh: i18n.t('chess.laugh'),
+        cry: i18n.t('chess.cry'),
+        draw: i18n.t('chess.draw.bubble'),
+        stuck: i18n.t('chess.stuck.bubble'),
+      },
       subtitle: i18n.t(kind === 'stalemate' ? 'chess.outcome.draw' : `chess.reason.${reason}`),
       winner: isDecisive ? result : null,
       loser: isDecisive ? opposite(result) : null,
