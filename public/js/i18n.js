@@ -343,7 +343,7 @@ const i18n = (() => {
       'chess.laugh': 'HA, HA, HA!',
       'chess.cry': 'Waaah…',
       'chess.draw.bubble': 'Draw?',
-      'chess.stuck.bubble': 'I can't move!',
+      'chess.stuck.bubble': 'I can\'t move!',
       'chess.ending.won': 'Victory!',
       'chess.ending.lost': 'Defeat',
       'chess.ending.draw': 'Draw',

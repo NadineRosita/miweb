@@ -29,7 +29,7 @@ const NAV_LINKS = [
   { id: 'juegos', href: 'juegos.html' },
   { id: 'aplicaciones', href: 'aplicaciones.html' },
   { id: 'mi-pet', href: 'mi-pet.html' },
-  { id: 'jaja-que-tonto', href: 'jaja-que-tonto.html' },
+  { id: 'jaja-que-tonto', href: 'https://youtu.be/xvFZjo5PgG0?si=hXCOP_HBWY98CeIc' },
 ];
 
 // Redes de la barra superior. Para añadir una, copia la línea con su dirección real.
