@@ -15,7 +15,7 @@ const REPO_OWNER = 'NadineRosita';
 const REPO_NAME = 'poemas';
 const REPO_FOLDER = 'poemas';
 
-const CACHE_MS = 10 * 60 * 1000; // lo que dura la copia en memoria
+const CACHE_MS = 60 * 1000; // lo que dura la copia en memoria
 const RETRY_MS = 60 * 1000; // tras un fallo, no se vuelve a insistir antes de esto
 const REQUEST_TIMEOUT_MS = 8000;
 const MAX_FILES = 300;

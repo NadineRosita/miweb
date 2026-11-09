@@ -37,4 +37,4 @@ Para volver a mostrarlo, vuelve a poner `borrador: false`.
 Abre el archivo → **⋯ → Delete file** → **Commit changes**. (Si te arrepientes, el historial de GitHub lo conserva.)
 
 ## ¿Cuándo se ve el cambio?
-La web guarda una copia de 10 minutos, así que **un cambio puede tardar hasta 10 minutos** en aparecer.
+La web guarda una copia de 1 minuto, así que **un cambio puede tardar hasta 1 minuto** en aparecer.

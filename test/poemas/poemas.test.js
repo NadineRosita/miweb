@@ -138,16 +138,16 @@ describe('servicio de poemas', () => {
     assert.equal(llamadas.length, 0);
   });
 
-  it('guarda 10 minutos la respuesta y luego vuelve a pedirla', async () => {
+  it('guarda 1 minuto la respuesta y luego vuelve a pedirla', async () => {
     const { service, reloj, llamadas } = servicio();
     await service.list();
     const primeras = llamadas.length;
     await service.get('marea');
-    reloj.t += 9 * 60 * 1000;
+    reloj.t += 50 * 1000;
     await service.list();
     assert.equal(llamadas.length, primeras);
 
-    reloj.t += 2 * 60 * 1000;
+    reloj.t += 20 * 1000;
     await service.list();
     assert.equal(llamadas.length, primeras * 2);
   });
@@ -170,7 +170,7 @@ describe('servicio de poemas', () => {
 
     assert.equal((await service.list()).length, 2);
     caido = true;
-    reloj.t += 11 * 60 * 1000;
+    reloj.t += 70 * 1000;
     assert.equal((await service.list()).length, 2);
   });
 
