@@ -1,8 +1,8 @@
 # Poemas: cómo se gestionan
 
-Los poemas viven en el repo **NadineRosita/poemas**, en la carpeta `poemas/`. La web solo los lee: todo
+Los poemas viven en el repo **NadineRosita/poemas**, directamente en la raíz (sin carpeta). La web solo los lee: todo
 se hace desde GitHub (en el navegador o en la app del móvil). Un archivo `.md` = un poema.
-`marea.md`, en esta carpeta, es un ejemplo.
+`marea.md`, junto a este README, es un ejemplo.
 
 ## Formato
 
@@ -23,8 +23,8 @@ Las estrofas se separan con una línea en blanco.
 - Un archivo mal escrito (sin cabecera, sin título, con fecha rara…) se ignora; no rompe los demás.
 
 ## Añadir
-Repo `poemas` → carpeta `poemas/` → **Add file → Create new file** → nombre `algo.md` → pega el formato → **Commit changes**.
-En la app de GitHub del móvil: abre el repo, entra en `poemas/`, pulsa **+** (o el menú **⋯**) → **New file**, escribe y haz commit.
+Repo `poemas` → **Add file → Create new file** → nombre `algo.md` → pega el formato → **Commit changes**.
+En la app de GitHub del móvil: abre el repo, pulsa **+** (o el menú **⋯**) → **New file**, escribe y haz commit.
 
 ## Editar
 Abre el archivo → icono del lápiz (en la app: **⋯ → Edit file**) → cambia lo que quieras → **Commit changes**.

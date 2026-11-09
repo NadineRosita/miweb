@@ -71,18 +71,18 @@ describe('formato de un poema', () => {
 });
 
 // GitHub simulado: devuelve el listado de la carpeta y cada archivo
-function fakeGithub(archivos, { fallar = false } = {}) {
+function fakeGithub(archivos, { fallar = false, carpeta = '' } = {}) {
   const llamadas = [];
   const fetchImpl = async (url, opciones) => {
     llamadas.push({ url, opciones });
     if (fallar) throw new Error('sin red: ghp_SECRETO');
 
     const ruta = url.split('/contents/')[1];
-    if (ruta === 'poemas') {
+    if (ruta === carpeta) {
       return new Response(JSON.stringify(Object.keys(archivos).map((name) => ({ name, type: 'file' }))), { status: 200 });
     }
 
-    const contenido = archivos[ruta.replace('poemas/', '')];
+    const contenido = archivos[carpeta ? ruta.replace(`${carpeta}/`, '') : ruta];
     if (contenido === undefined) return new Response('{}', { status: 404 });
     return new Response(contenido, { status: 200 });
   };
@@ -184,7 +184,16 @@ describe('servicio de poemas', () => {
     const { service, llamadas } = servicio();
     await service.list();
     assert.equal(llamadas[0].opciones.headers.Authorization, 'Bearer ghp_SECRETO');
-    assert.match(llamadas[0].url, /^https:\/\/api\.github\.com\/repos\/NadineRosita\/poemas\/contents\/poemas$/);
+    assert.match(llamadas[0].url, /^https:\/\/api\.github\.com\/repos\/NadineRosita\/poemas\/contents\/$/);
+  });
+});
+
+describe('carpeta del repo', () => {
+  it('si los poemas están dentro de una carpeta, la lee', async () => {
+    const github = fakeGithub(ARCHIVOS, { carpeta: 'poemas' });
+    const service = createPoemasService({ fetchImpl: github.fetchImpl, getToken: () => 'tok', folder: 'poemas' });
+    assert.equal((await service.list()).length, 2);
+    assert.match(github.llamadas[1].url, /contents\/poemas\/[a-z]+\.md$/);
   });
 });
 

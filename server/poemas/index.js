@@ -13,7 +13,7 @@ const { esIdValido, idDeArchivo, leerPoema, ordenarPublicados } = require('./for
 // ---------- Dónde están los poemas (cámbialo aquí) ----------
 const REPO_OWNER = 'NadineRosita';
 const REPO_NAME = 'poemas';
-const REPO_FOLDER = 'poemas';
+const REPO_FOLDER = ''; // carpeta dentro del repo; vacío = la raíz (usa 'poemas' si están en una carpeta)
 
 const CACHE_MS = 60 * 1000; // lo que dura la copia en memoria
 const RETRY_MS = 60 * 1000; // tras un fallo, no se vuelve a insistir antes de esto
@@ -86,7 +86,7 @@ function createPoemasService({
 
     // Si un archivo no se puede descargar falla todo: mejor la copia vieja que una lista incompleta
     const poems = await Promise.all(files.map(async ({ id, name }) => {
-      const response = await github(`${folder}/${name}`, 'application/vnd.github.raw+json');
+      const response = await github([folder, name].filter(Boolean).join('/'), 'application/vnd.github.raw+json');
       return leerPoema(id, await response.text());
     }));
 
