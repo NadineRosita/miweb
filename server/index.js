@@ -12,6 +12,7 @@ const { attachChessSockets, router: chessRouter } = require('./chess');
 const { attachCiudadelasSockets, router: ciudadelasRouter } = require('./ciudadelas');
 const { pool } = require('./db');
 const { router: petRouter } = require('./pet');
+const { createRouter: createPoemasRouter } = require('./poemas');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
@@ -29,6 +30,9 @@ app.get('/api/health', (req, res) => {
 
 // Ciudadelas vive en memoria: funciona sin base de datos
 app.use('/api/ciudadelas', express.json({ limit: '2kb' }), ciudadelasRouter);
+
+// Los poemas se leen de GitHub: tampoco necesitan base de datos
+app.use('/api/poemas', createPoemasRouter());
 
 app.use('/api', (req, res, next) => {
   if (pool) {
