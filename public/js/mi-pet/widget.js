@@ -7,7 +7,7 @@
 // Reacciona a: el clic (salta y dice algo), el cursor cuando se acerca (se para y lo mira)
 // y su propio estado (dormida o enferma no pasea). El botón de la esquina la oculta.
 
-import { fill, L } from './dialogos.js';
+import { fill, L, pick, timeOfDay } from './dialogos.js';
 import { motionFor, petFrame, SPRITE_SIZE } from './sprites.js';
 
 const COLLAPSED_KEY = 'mipet-widget-collapsed';
@@ -18,6 +18,7 @@ const MARGIN = 16;
 const SCALE = 3; // La velocidad de la habitación está en píxeles de sprite: aquí se amplía
 const CURIOUS_RADIUS = 130; // Distancia del cursor a la que se para a mirarlo
 const REACT_MS = 1600;
+const WATCH_COOLDOWN_MS = 30000;
 const CORNER = 56; // Hueco a la derecha para el botón de ocultar
 // En estas páginas hay mucho que pulsar: empieza recogido para no estorbar
 const BUSY_PAGES = ['ajedrez'];
@@ -35,13 +36,33 @@ function poseFor(mood) {
   return mood === 'veryHappy' || mood === 'inLove' ? 'happy' : 'idle';
 }
 
-function pickLine(pet, catalog) {
-  const { common, species } = catalog.dialogues;
+// key: una reacción concreta (poke, watch…) o nada para una frase espontánea
+function pickLine(pet, catalog, key = null) {
+  const { common, species, affinity, branch } = catalog.dialogues;
   const own = species[pet.species] ?? {};
-  const pool = common[pet.mood] ? [...common[pet.mood], ...(own[pet.mood] ?? [])] : [...own.idle, ...common.idle];
-  const lines = pool.filter(([line]) => !line.includes('{user}')); // Aquí no se sabe el nombre
+  const page = common[`page_${document.body.dataset.page}`] ?? [];
+  let pool;
 
-  return fill(L(lines[Math.floor(Math.random() * lines.length)]), { pet: pet.name });
+  if (key) {
+    pool = [...(common[key] ?? []), ...(own[key] ?? [])];
+  } else if (['sick', 'sleeping', 'hungry', 'tired', 'dirty', 'bored'].includes(pet.mood)) {
+    // Si le pasa algo, habla de ello; de vez en cuando también de la web
+    pool = [...common[pet.mood], ...(own[pet.mood] ?? []), ...(own[pet.mood] ?? []), ...common.web.slice(0, 4)];
+  } else {
+    const period = timeOfDay(new Date().getHours(), catalog.config.dayHours);
+    const tiers = catalog.config.affinityTiers;
+
+    pool = [...common.idle, ...common.web, ...common.web, ...page, ...page, ...(common[period] ?? []), ...(own[period] ?? [])];
+    pool.push(...(own.idle ?? []), ...(own.idle ?? []));
+    if (common[pet.mood]) pool.push(...common[pet.mood]);
+    tiers.slice(1, (pet.affinityTier ?? 0) + 1).forEach((tier) => pool.push(...(affinity[tier.id] ?? [])));
+    if (pet.evolution) pool.push(...(branch[pet.evolution] ?? []));
+  }
+
+  // Aquí no se sabe el nombre del jugador: se descartan las frases que lo usan
+  const lines = pool.filter(([line]) => !line.includes('{user}'));
+
+  return fill(L(pick(lines.length ? lines : common.web)), { pet: pet.name });
 }
 
 async function fetchJson(path) {
@@ -102,6 +123,7 @@ function mount(pet, catalog) {
   const state = {
     x: 0, dir: -1, target: null, restUntil: 0, reactUntil: 0,
     frame: 0, nextFrame: 0, cursor: null, speakUntil: 0,
+    lastWatch: 0, lastClick: 0, clicks: 0,
   };
   let bubbleTimer = null;
 
@@ -141,10 +163,10 @@ function mount(pet, catalog) {
     }, BUBBLE_MS);
   };
 
-  const speak = (force = false) => {
+  const speak = (key = null) => {
     if (collapsed() || document.hidden) return;
-    if (pet.away && !force) return;
-    showBubble(pickLine(pet, catalog));
+    if (pet.away && !key) return;
+    showBubble(pickLine(pet, catalog, key));
   };
 
   const scheduleSpeech = () => {
@@ -188,16 +210,24 @@ function mount(pet, catalog) {
     state.dir = dx >= 0 ? 1 : -1;
     state.target = null;
     state.restUntil = Math.max(state.restUntil, now + 600);
+    // Al notar el cursor lo comenta, pero no cada vez que pasa por delante
+    if (now - state.lastWatch > WATCH_COOLDOWN_MS && !stays) {
+      state.lastWatch = now;
+      if (Math.random() < 0.5) speak('watch');
+    }
     return true;
   };
 
   const react = () => {
     const now = performance.now();
 
+    // Varios clics seguidos tienen su propia reacción
+    state.clicks = now - state.lastClick < 3000 ? state.clicks + 1 : 1;
+    state.lastClick = now;
     state.reactUntil = now + REACT_MS;
     state.target = null;
     state.restUntil = now + REACT_MS + 800;
-    speak(true);
+    speak(state.clicks >= 4 ? 'poked' : 'poke');
   };
 
   let last = performance.now();

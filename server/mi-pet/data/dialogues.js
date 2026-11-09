@@ -112,6 +112,82 @@ const common = {
   renamed: [['¿Ese es mi nombre nuevo? Tendré que actualizar mis tarjetas.', 'Is that my new name? I will need new business cards.']],
   back: [['He vuelto. El mundo es enorme y yo tengo hambre.', 'I am back. The world is huge and I am hungry.']],
   expedition: [['Estoy fuera. Si llaman, di que estoy explorando.', 'I am out. If anyone calls, say I am exploring.']],
+
+  // Cuando la mascota anda por el resto de la web (widget). web: en cualquier página;
+  // page_<página>: según la página (data-page); watch: el cursor se le acerca;
+  // poke: le hacen clic; poked: le hacen clic muchas veces seguidas
+  web: [
+    ['Me he escapado de la habitación. Que no se entere nadie.', 'I escaped from the room. Do not tell anyone.'],
+    ['Esta parte de la web da menos miedo de lo que pensaba.', 'This part of the website is less scary than I thought.'],
+    ['Voy de un lado a otro para parecer ocupado.', 'I walk back and forth to look busy.'],
+    ['Si ves un píxel suelto por aquí, es mío.', 'If you see a loose pixel around here, it is mine.'],
+    ['Estoy haciendo de mascota de la barra inferior. Es un trabajo digno.', 'I am working as the bottom-bar mascot. It is honest work.'],
+    ['No te preocupes por mí, estoy supervisando el scroll.', 'Do not mind me, I am supervising the scroll.'],
+    ['¿Esto se puede hacer clic? ¿Y esto? ¿Y esto?', 'Can this be clicked? And this? And this?'],
+    ['Cada vez que haces scroll, el suelo se mueve. Qué mareo bonito.', 'Every time you scroll the floor moves. What a nice dizziness.'],
+    ['He visto un enlace roto. Lo he mirado fijamente hasta que se ha arreglado. Mentira.', 'I saw a broken link. I stared at it until it fixed itself. Lie.'],
+    ['Aquí hay mucho texto. Yo solo sé de comida y de paredes.', 'There is a lot of text here. I only know about food and walls.'],
+    ['Si necesitas algo, estaré caminando. Siempre estoy caminando.', 'If you need anything, I will be walking. I am always walking.'],
+    ['Pulsa el botón de la esquina si quieres que me esconda. No me ofendo. Un poco.', 'Press the corner button if you want me to hide. I will not be offended. Slightly.'],
+    ['Me gusta ver cómo lees. Es como un espectáculo muy lento.', 'I like watching you read. It is like a very slow show.'],
+    ['Ojalá esta página tuviera una nevera.', 'I wish this page had a fridge.'],
+    ['He tenido una idea. Ya se me ha olvidado.', 'I had an idea. I already forgot it.'],
+  ],
+  page_inicio: [
+    ['Esta es la página de inicio. Es como el recibidor, pero con más opiniones.', 'This is the home page. Like a hallway, but with more opinions.'],
+    ['Aquí es donde todo empieza. Yo empecé en un huevo.', 'This is where everything starts. I started in an egg.'],
+    ['Buena página. Mucho espacio para pasear.', 'Nice page. Lots of room to walk.'],
+  ],
+  page_juegos: [
+    ['¿Juegos? ¡Yo también sé jugar! Bueno, sé perder.', 'Games? I can play too! Well, I can lose.'],
+    ['Tanto juego y yo con hambre.', 'So many games and I am hungry.'],
+    ['Apuesto por ti. Aunque no sé a qué.', 'I am betting on you. Though I do not know on what.'],
+  ],
+  page_ajedrez: [
+    ['El caballo se mueve en L. Yo también si me empujan.', 'The knight moves in an L. So do I if pushed.'],
+    ['Cuidado con el alfil. Tiene pinta de resentido.', 'Watch out for the bishop. He looks resentful.'],
+    ['No entiendo el enroque, pero lo respeto.', 'I do not understand castling, but I respect it.'],
+  ],
+  page_ciudadelas: [
+    ['Ciudadelas. Yo solo quiero una torre con vistas.', 'Citadels. I just want a tower with a view.'],
+    ['Me pido el asesino. No, el ladrón. No, el rey.', 'I call the assassin. No, the thief. No, the king.'],
+    ['Cuidado, que aquí se traiciona con una sonrisa.', 'Careful, people betray with a smile here.'],
+  ],
+  page_poemas: [
+    ['Poemas. Me sé uno: «Tengo hambre, tengo hambre, tengo hambre».', 'Poems. I know one: "I am hungry, I am hungry, I am hungry".'],
+    ['Leo despacio para que dure más.', 'I read slowly so it lasts longer.'],
+    ['Esto huele a tinta y a tarde tranquila.', 'This smells like ink and a quiet afternoon.'],
+  ],
+  page_aplicaciones: [
+    ['Aplicaciones. Yo soy una, creo. La mejor, seguro.', 'Apps. I am one, I think. The best one, surely.'],
+    ['Todo esto lo ha hecho una persona. Yo me emociono solo con pasear.', 'One person made all this. I get excited just walking.'],
+  ],
+  'page_jaja-que-tonto': [
+    ['Jaja, qué tonto. Lo dice el nombre, no yo.', 'Haha, so silly. The name says so, not me.'],
+    ['No sé qué es esto, pero me río por si acaso.', 'I do not know what this is, but I laugh just in case.'],
+  ],
+  watch: [
+    ['Te veo. Sí, a ti, con el cursor.', 'I see you. Yes, you, with the cursor.'],
+    ['¿Me vas a pulsar? Es una pregunta legítima.', 'Are you going to click me? That is a fair question.'],
+    ['Ese cursor se acerca con intenciones sospechosas.', 'That cursor is approaching with suspicious intentions.'],
+    ['Hola. Estoy fingiendo que no te he visto.', 'Hi. I am pretending I did not see you.'],
+    ['Quieto ahí. Déjame olerte el ratón.', 'Stay there. Let me sniff the mouse.'],
+    ['Si me haces cosquillas me enfado. Un poco.', 'If you tickle me I get angry. A little.'],
+  ],
+  poke: [
+    ['¡Eh! ¡Eso es un clic en mi cara!', 'Hey! That is a click on my face!'],
+    ['Presente. ¿Qué querías?', 'Present. What did you want?'],
+    ['Auch. Mentira, no me ha dolido. Pero gracias por avisar.', 'Ouch. Lie, it did not hurt. But thanks for the warning.'],
+    ['¿Era una caricia o un clic? Acepto los dos.', 'Was that a pet or a click? I accept both.'],
+    ['¡Salto porque quiero, no porque me hayas pulsado!', 'I jump because I want to, not because you clicked me!'],
+    ['Clic recibido. Lo guardo con los demás.', 'Click received. I am filing it with the others.'],
+  ],
+  poked: [
+    ['¡Vale, vale, que ya sé que estoy aquí!', 'Okay, okay, I know I am here!'],
+    ['Si sigues así voy a empezar a cobrar por clic.', 'If you keep this up I will start charging per click.'],
+    ['Me vas a gastar el sprite.', 'You are going to wear out my sprite.'],
+    ['Esto empieza a ser un minijuego. Dame puntos.', 'This is turning into a minigame. Give me points.'],
+  ],
 };
 
 const species = {

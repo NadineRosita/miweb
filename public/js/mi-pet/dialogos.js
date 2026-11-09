@@ -22,7 +22,7 @@ export function timeOfDay(hours, config) {
 const recent = [];
 
 // Evita repetir las últimas frases
-function pick(pool) {
+export function pick(pool) {
   const fresh = pool.filter((line) => !recent.includes(line));
   const options = fresh.length ? fresh : pool;
   const line = options[Math.floor(Math.random() * options.length)];

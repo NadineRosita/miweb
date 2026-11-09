@@ -56,10 +56,11 @@ function widgetView(save, now) {
   const pet = save.pets[save.activePetId];
   if (!pet || !save.settings.widget) return { active: false };
 
-  const { name, species, variant, evolution, equipped } = pet;
+  const { name, species, variant, evolution, equipped, affinityTier } = pet;
 
   return {
-    active: true, name, species, variant, evolution, equipped, mood: moodOf(pet), rainbow: pet.rainbowUntil > now,
+    active: true, name, species, variant, evolution, equipped, affinityTier, mood: moodOf(pet),
+    rainbow: pet.rainbowUntil > now,
     away: save.expedition?.petId === pet.id,
   };
 }
