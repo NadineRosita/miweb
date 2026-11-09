@@ -20,6 +20,17 @@ const RETRY_MS = 60 * 1000; // tras un fallo, no se vuelve a insistir antes de e
 const REQUEST_TIMEOUT_MS = 8000;
 const MAX_FILES = 300;
 
+// Solo para los logs del servidor (nunca llega al navegador ni incluye el token)
+const HINTS = {
+  401: ' (el token no es válido o ha caducado)',
+  403: ' (el token no tiene permiso, o se agotó el límite de GitHub)',
+  404: ' (la carpeta no existe, o el token no tiene acceso a ese repo: GitHub responde 404 en ambos casos)',
+};
+
+function logProblem(message) {
+  console.error(`[poemas] ${message}`);
+}
+
 class PoemasError extends Error {
   constructor(code, status) {
     super(code);
@@ -42,7 +53,10 @@ function createPoemasService({
 
   async function github(path, accept) {
     const token = getToken();
-    if (!token) throw new PoemasError('poemas_unavailable', 503);
+    if (!token) {
+      logProblem('falta la variable POEMAS_GITHUB_TOKEN');
+      throw new PoemasError('poemas_unavailable', 503);
+    }
 
     const response = await fetchImpl(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
       headers: {
@@ -53,7 +67,10 @@ function createPoemasService({
       },
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
-    if (!response.ok) throw new PoemasError('poemas_unavailable', 503);
+    if (!response.ok) {
+      logProblem(`GitHub respondió ${response.status} al leer ${owner}/${repo}/${path}${HINTS[response.status] ?? ''}`);
+      throw new PoemasError('poemas_unavailable', 503);
+    }
     return response;
   }
 
@@ -93,6 +110,7 @@ function createPoemasService({
       })
       .catch((error) => {
         // Si GitHub falla y hay copia, se sirve la copia
+        if (!(error instanceof PoemasError)) logProblem(`no se pudo conectar con GitHub (${error.name})`);
         retryAt = now() + RETRY_MS;
         if (copy) return copy.poems;
         throw error instanceof PoemasError ? error : new PoemasError('poemas_unavailable', 503);
