@@ -8,6 +8,11 @@
 //  Si cambias algo en uno, cámbialo también en el otro.
 //  Dentro de un texto en inglés, un apóstrofo se escribe \'
 //
+//  Lo que va entre llaves en el valor de una nota de «Sobre mí» es una puerta
+//  secreta: '{Escribo}, observo la luna…'. Al mantener pulsada esa palabra
+//  se abre la sección de poemas (ver js/puerta-poemas.js). Para moverla o
+//  quitarla, mueve o quita las llaves; pon una sola por idioma.
+//
 //  El orden de las secciones es el de la luna: la página empieza
 //  en luna nueva y llega a luna llena en Contacto.
 // ============================================================
@@ -126,7 +131,7 @@ const CONTENIDO_INICIO = {
         { dato: 'Estudio', valor: 'Ingeniería del Software, Universidad de Sevilla' },
         { dato: 'Presido', valor: 'ASTRA, asociación de estudiantes de la ETSII' },
         { dato: 'Busco', valor: 'Proyectos y oportunidades para seguir aprendiendo' },
-        { dato: 'Fuera de clase', valor: 'Escribo, observo la luna, hago fotos y juego a Hollow Knight' },
+        { dato: 'Fuera de clase', valor: '{Escribo}, observo la luna, hago fotos y juego a Hollow Knight' },
       ],
     },
 
@@ -254,7 +259,7 @@ const CONTENIDO_INICIO = {
         { dato: 'Studying', valor: 'Software Engineering, University of Seville' },
         { dato: 'Leading', valor: 'ASTRA, a student association at ETSII' },
         { dato: 'Looking for', valor: 'Projects and opportunities to keep learning' },
-        { dato: 'Outside class', valor: 'I write, watch the moon, take photos and play Hollow Knight' },
+        { dato: 'Outside class', valor: '{I write}, watch the moon, take photos and play Hollow Knight' },
       ],
     },
 

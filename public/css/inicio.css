@@ -676,3 +676,70 @@ body[data-page="inicio"] main {
     padding-top: 5rem;
   }
 }
+
+/* ---------- La puerta a los poemas (la palabra entre llaves en contenido-inicio.js) ---------- */
+/* La misma letra y el mismo color que el texto: solo una mancha de tinta justo después,
+   como cuando la pluma se queda apoyada. Sin subrayado ni enlace a la vista. */
+.puerta {
+  position: relative;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.puerta::after {
+  content: '';
+  display: inline-block;
+  width: 0.34em;
+  height: 0.3em;
+  margin-left: 0.14em;
+  background: currentColor;
+  border-radius: 58% 42% 55% 45% / 46% 60% 40% 54%;
+  transform: translateY(0.02em) rotate(-12deg);
+  transform-origin: 30% 60%;
+}
+
+.puerta:focus-visible {
+  outline: 2px solid var(--luz-luna);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .puerta::after {
+    transition: transform 0.35s ease;
+  }
+}
+
+@media (hover: hover) {
+  .puerta:hover::after,
+  .puerta-pulsada::after {
+    transform: translateY(0.02em) rotate(-12deg) scale(1.45);
+  }
+}
+
+.puerta-pulsada::after {
+  transform: translateY(0.02em) rotate(-12deg) scale(1.45);
+}
+
+/* La tinta: crece desde la palabra y deja la pantalla de color noche */
+.tinta-puerta {
+  position: fixed;
+  z-index: 3000;
+  border-radius: 50%;
+  background: var(--noche);
+  box-shadow: 0 0 0 1px rgba(var(--ink-rgb), 0.22), 0 0 60px rgba(var(--ink-rgb), 0.1);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Con prefers-reduced-motion no hay tinta que se extienda: solo un fundido */
+.tinta-puerta-fundido {
+  inset: 0;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 0;
+}

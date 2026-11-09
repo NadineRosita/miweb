@@ -181,7 +181,9 @@ function renderAbout({ titulo, parrafos, foto, notas }) {
 
   notas.forEach(({ dato, valor }) => {
     const row = createElement('div', 'nota');
-    row.append(createElement('dt', '', dato), createElement('dd', '', valor));
+    const value = createElement('dd');
+    value.append(...Puerta.nodes(valor));
+    row.append(createElement('dt', '', dato), value);
     notes.append(row);
   });
 
