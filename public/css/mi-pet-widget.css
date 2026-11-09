@@ -1,17 +1,33 @@
-/* Mascota flotante de las demás páginas. Usa los colores del tema de la web. */
+/* Mascota de las demás páginas. Usa los colores del tema de la web.
+   .pet-widget es una franja sin altura pegada al borde inferior (JS mueve .pet-widget-walker). */
 .pet-widget {
   position: fixed;
-  right: 16px;
+  left: 0;
+  right: 0;
   bottom: 16px;
+  height: 0;
   z-index: 800; /* Por debajo de la navbar y del menú */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  pointer-events: none; /* Solo sus botones reciben clics: el resto no estorba */
+  pointer-events: none; /* Solo la mascota y sus botones reciben clics: el resto no estorba */
+}
+
+.pet-widget-walker {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 64px;
+  height: 64px;
+  will-change: transform;
+}
+
+.pet-widget-walker[hidden] {
+  display: none;
 }
 
 .pet-widget-bubble {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: max-content;
   max-width: 200px;
   padding: 0.4rem 0.6rem;
   background: var(--dark);
@@ -23,6 +39,30 @@
   color: var(--white);
 }
 
+.pet-widget-bubble[hidden] {
+  display: none;
+}
+
+.pet-widget-pet {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pet-widget-pet canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* Atajo a la página de la mascota: aparece al pasar por encima o al enfocar */
+.pet-widget-home,
 .pet-widget-toggle {
   display: grid;
   place-items: center;
@@ -35,12 +75,37 @@
   line-height: 1;
   color: var(--white2);
   pointer-events: auto;
-  transition: background var(--transition), color var(--transition);
+  transition: background var(--transition), color var(--transition), opacity var(--transition);
 }
 
+.pet-widget-home {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  opacity: 0;
+}
+
+.pet-widget-walker:hover .pet-widget-home,
+.pet-widget-home:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .pet-widget-home {
+    opacity: 1;
+  }
+}
+
+.pet-widget-home:hover,
 .pet-widget-toggle:hover {
   background: var(--accent);
   color: var(--black);
+}
+
+.pet-widget-toggle {
+  position: absolute;
+  right: 16px;
+  bottom: 0;
 }
 
 .pet-widget.is-collapsed .pet-widget-toggle {
@@ -49,27 +114,8 @@
   font-size: 1rem;
 }
 
-.pet-widget-pet {
-  display: block;
-  width: 64px;
-  height: 64px;
-  pointer-events: auto;
-  transition: transform var(--transition);
-}
-
-.pet-widget-pet:hover {
-  transform: translateY(-3px);
-}
-
-.pet-widget-pet canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  image-rendering: pixelated;
-}
-
 @media (max-width: 600px) {
-  .pet-widget-pet {
+  .pet-widget-walker {
     width: 48px;
     height: 48px;
   }
